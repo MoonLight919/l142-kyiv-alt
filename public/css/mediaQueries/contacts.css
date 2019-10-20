@@ -1,0 +1,51 @@
+@media (min-width: 1px)
+{
+    .myborder{
+        border: none;
+        border-top:  3px dotted royalblue;
+    }
+    .myborder #phones{
+        border-top:  3px dotted royalblue;
+        align-items: center;
+        justify-content: center;
+    }
+}
+@media (min-width: 370px) 
+{
+
+}
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) 
+{
+
+}
+
+@media (min-width: 720px) 
+{
+
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) 
+{
+    .myborder{
+        border: 3px dotted royalblue;
+        padding: 15px;
+    }
+    .myborder #phones{
+        align-items: flex-start;
+        border-top: none;
+    }
+}
+
+ /* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) 
+{
+
+}
+
+ /* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) 
+{
+    
+}

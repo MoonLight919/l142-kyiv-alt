@@ -1,0 +1,29 @@
+section{
+    min-height: 100vh;
+}
+#delete-me{
+    padding: 100px;
+}
+#delete-me img{
+    border-radius: 100px;
+}
+.date-block{
+    /* width: 120px; */
+    line-height: 200%;
+    padding: 0 .5em;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.news-item{
+    margin: 25px;
+    padding: 15px !important;
+    width: auto;
+}
+
+.news-item img{
+    /* width: 150px; */
+    height: 150px;
+    background: 50% 50%;
+    background-size: cover;
+}

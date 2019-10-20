@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ліцей №142 | Новини</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style/common.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style/news.css" />
+    <link rel="stylesheet" type="text/css" href="../css/fonts.css">
+    <link rel="stylesheet" type="text/css" href="../css/mediaQueries/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/mediaQueries/news.css">
+    <link rel="import" href="../uploadableContent/footer.html">
+    <link rel="import" href="../uploadableContent/frame.html">
+    <link rel="import" href="../uploadableContent/header.html">
+    <link rel="import" href="../uploadableContent/menu.html">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous" defer>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/divjax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous" defer></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous" defer></script>
+    <script type="text/javascript">
+        let arr = ["common.js", "news.js",];
+        let directoryPath = '../scripts/';
+        function downloadJSAtOnload(fileName) 
+        {
+            let elem = document.createElement("script");
+            elem.type = 'module';
+            elem.src = directoryPath + fileName + '?' + Math.random(1, 1000);
+            document.body.appendChild(elem);
+        }
+        arr.forEach(element => {
+            if (window.addEventListener)
+                window.addEventListener("load", downloadJSAtOnload.bind(downloadJSAtOnload, element), false);
+            else if (window.attachEvent)
+                window.attachEvent("onload", downloadJSAtOnload.bind(downloadJSAtOnload, element));
+            else
+                window.onload = downloadJSAtOnload.bind(downloadJSAtOnload, element);
+        });
+    </script>
+</head>
+<body>
+    <section class="container-fluid d-flex align-items-center flex-column">
+        <h2 class="text-4 text-color-teal text-center" id="section-header">Останні новини</h2>
+        <!-- <div id="delete-me" class="flex-grow-1">
+            <img src="../images/depositphotos_72813225-stock-illustration-stamp-please-wait-in-red.jpg" alt="">
+        </div> -->
+        <div id="upload" class="flex-grow-1 row justify-content-around d-flex w-100">
+            <!-- <div class="news-item col-sm-11 col-md-5 col-lg-3 item myborder">
+                <div class="background-color-teal text-color-white date-block text-center">
+                    10 Серпня
+                </div>
+                <a href="/" class="item flex-grow-1 w-100 justify-content-around">
+                    <img src="../images/DSC_6803.jpg" alt="">
+                    <p>
+                        Це зразок того, як буде виглядати пост!
+                    </p>
+                </a>
+            </div> -->
+            
+        </div>
+    </section>
+</body>
+</html>

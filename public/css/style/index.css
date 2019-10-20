@@ -1,0 +1,108 @@
+/*#region Sections*/
+#section1{
+    background: url(https://img.lookmytrips.com/images/look77nd/570bb5e1ff936715e9074252-5aaebdfb6c4cf-1datffr-lbcvr.jpg) no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+}
+/* #section2{
+    min-height: 1000px;
+} */
+#section3{
+    /* height: 400px; */
+    background-color: #71BE46;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+#section4{
+    margin-top: 50px;
+    height: 500px;
+    background-color: lightblue;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+/*#endregion*/
+/*#region Flip card*/
+.button .back{
+	transform: rotateY(-180deg);
+    z-index: 49;
+}
+.button .front{
+    z-index: 50;
+}
+.button .front,
+.button .back{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+    top: 0;
+    background-color: white;
+    backface-visibility: hidden;
+}
+.button{
+    perspective: 300px;
+    position: relative;
+}
+.front img{
+    padding: 10px;
+}
+/* #endregion */
+/*#region Table styles*/
+#cont{
+    height: 90%;
+    width: 80%;
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    grid-template-columns: repeat(8, 1fr);
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+}
+#cont>div, #cont>a{
+    border: 3px dotted royalblue;
+}
+#cont a{
+    color: black;
+}
+.achievements{
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-around;
+}
+.achievements div{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    width: 34%;
+    height: auto;
+}
+.p-about-kpi{
+    width: calc(33%);
+    color: black;
+    text-align: center;
+}
+/*#endregion#*/
+/* #region Section 1*/
+.bottom-logo{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* #endregion */
+/* #region Section 2*/
+#header-section2{
+    font-size: 32px !important;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+/* #endregion */
+/* #region Section 3*/
+#section3 .button{
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+/* #endregion */

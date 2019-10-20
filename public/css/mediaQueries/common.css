@@ -1,0 +1,303 @@
+@media (min-width: 1px)
+{
+    #leftMenuSide .menu-resized{
+        display: none;
+    }
+    #rightMenuSide .menu-resized{
+        display: block;
+    }
+    #logo-text{
+        margin-left: 10px;
+    }
+    .text-3{
+        font-size: 14px !important;
+    }
+    .text-2{
+        font-size: 14px !important;
+    }
+    .img-1{
+        width: 120px;
+        height: 120px;
+    }
+    .margin-right-for-search{
+        margin-right: 10px;
+    }
+    #logo-text{
+        margin-left: 10px;
+        font-size: 28px;
+    }
+    .top-down #logo-text{
+        font-size: 28px;
+    }
+    #menuButtonInner{
+        font-size: 16px;
+    }
+    .searchButton{
+        font-size: 16px;
+    }
+    .searchInput{
+        font-size: 16px;
+        width: 150px;
+    }
+    #rightMenuSide .searchInput{
+        font-size: 16px;
+    }
+    .searchExpanded1 .searchButton{
+        margin-right: 170px;
+    }
+    .searchExpanded1 input{
+        left: calc(100% - 175px);
+    }
+    .searchExpanded2 .searchButton{
+        margin-right: 150px;
+    }
+    .searchExpanded2 input{
+        left: calc(100% - 160px);
+    }
+    #leftMenuSide{
+        top: calc(50%);
+        left: calc(-100%);
+        width: 100%;
+        height: 50%;
+    }
+    #rightMenuSide{
+        right: calc(-100%);
+        width: 100%;
+        height: 50%;
+    }
+    #menuButtonInner{
+        font-size: 16px;
+    }
+    .text-4{
+        font-size: 36px !important;
+    }
+    header .searchButton{
+        display: none;
+    }
+    #footer-links-bottom a{
+        font-size: 16px;
+    }
+    #footer-links-bottom{
+        display: none;
+    }
+    #footer-links-top{
+        display: flex;
+        flex-direction: column;
+    }
+    #footer-links-top .button{
+        margin-top: 10px;
+    }
+    #footer-links-top div:nth-child(1){
+        margin-top: 20px;
+    }
+}
+@media (min-width: 370px) 
+{
+    .top-down #logo-text {
+        font-size: 26px;
+    }
+    #logo-text {
+        margin-left: 10px;
+        font-size: 26px;
+    }
+    .searchExpanded1 .searchButton{
+        margin-right: 170px;
+    }
+    .searchExpanded1 input{
+        left: calc(100% - 175px);
+    }
+    .searchExpanded2 .searchButton{
+        margin-right: 180px;
+    }
+    .searchExpanded2 input{
+        left: calc(100% - 190px);
+    }
+    header .searchButton{
+        display: inline-block;
+    }    
+    .text-3{
+        font-size: 16px !important;
+    }
+    .text-4{
+        font-size: 40px !important;
+    }
+}
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) 
+{
+    #footer-links-top .button{
+        margin-top: 0;
+    }
+    #footer-links-top div:nth-child(1){
+        margin-top: 0;
+    }
+    /* section{
+        background: red;
+    } */
+    .margin-right-for-search{
+        margin-right: 20px;
+    }
+    #logo-text{
+        margin-left: 20px;
+        font-size: 34px;
+    }
+    .top-down #logo-text{
+        font-size: 34px;
+    }
+    #top .searchInput{
+        font-size: 20px;
+        width: 250px;
+    }
+    .searchExpanded1 .searchButton{
+        margin-right: 270px;
+    }
+    .searchExpanded1 input{
+        left: calc(100% - 275px);
+    }
+    /* .text-3{
+        font-size: 20px !important;
+    } */
+    .text-2{
+        font-size: 16px !important;
+    }
+    #footer-links-top{
+        flex-direction: row;
+        /* margin: 0, 30px; */
+    }
+}
+
+@media (min-width: 720px) 
+{
+	/* section{
+		background: aqua;
+    } */
+    .margin-right-for-search{
+        margin-right: 35px;
+    }
+    #logo-text{
+        margin-left: 20px;
+    }
+    .text-4{
+        font-size: 48px !important;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) 
+{
+    #leftMenuSide .menu-resized{
+        display: block;
+    }
+    #rightMenuSide .menu-resized{
+        display: none;
+    }
+    /* section{
+        background: green;
+    } */
+    #leftMenuSide{
+        top: 0;
+        left: calc(-40%);
+        width: 40%;
+        height: 100%;
+    }
+    #rightMenuSide{
+        right: calc(-61%);
+        width: 60%;
+        height: 100%;
+    }
+    #top .searchInput{
+        font-size: 20px;
+    }
+    .text-3{
+        font-size: 20px !important;
+    }
+    .text-2{
+        font-size: 18px !important;
+    }
+    #footer-links-bottom a{
+        font-size: 12px;
+        padding: 5px;
+    }
+    #footer-links-top{
+        flex-direction: column;
+        /* margin: 0, 30px; */
+    }
+}
+
+ /* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) 
+{
+    /* section{
+        background: blue;
+    } */
+    .margin-right-for-search{
+        margin-right: 40px;
+    }
+    #logo-text{
+        margin-left: 40px;
+    }
+    #top .searchInput{
+        font-size: 20px;
+    }
+    .searchExpanded1 .searchButton{
+        margin-right: 325px;
+    }
+    .searchExpanded1 input{
+        left: calc(100% - 350px);
+    }
+    .searchExpanded2 .searchButton{
+        margin-right: 300px;
+    }
+    .searchExpanded2 input{
+        left: calc(100% - 330px);
+    }
+    .searchButton{
+        font-size: 25px;
+    }
+    #menuButtonInner{
+        font-size: 25px;
+    }
+    #footer-links-bottom a{
+        font-size: 15px;
+    }
+    #footer-links-bottom{
+        display: flex;
+    }
+    #footer-links-top{
+        display: none;
+        /* flex-direction: column; */
+        /* margin: 0, 30px; */
+    }
+}
+
+ /* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) 
+{
+    /* section{
+        background: purple;
+    } */
+    #top .searchInput{
+        font-size: 25px;
+    }
+    .margin-right-for-search{
+        margin-right: 70px;
+    }
+    #logo-text{
+        margin-left: 70px;
+    }
+    .searchExpanded1 .searchButton{
+        margin-right: 350px;
+    }
+    .searchExpanded1 input{
+        left: calc(100% - 400px);
+    }
+    .searchExpanded2 .searchButton{
+        margin-right: 300px;
+    }
+    .searchExpanded2 input{
+        left: calc(100% - 350px);
+    }
+    #footer-links-bottom a{
+        font-size: 16px;
+    }
+}

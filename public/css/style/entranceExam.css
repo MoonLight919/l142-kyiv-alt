@@ -1,0 +1,24 @@
+.exams{
+    padding: 20px;
+    border: 4px ridge teal !important;
+}
+section{
+    background-color: honeydew;
+}
+.margin-top-2{
+    margin-top: 150px;
+}
+.margin-top-1{
+    margin-top: 75px;
+}
+.row-ext h3{
+    margin-bottom: 0;
+}
+.row-ext div{
+    margin-left: 30px;
+    margin-right: 30px;
+}
+.row-ext{
+    display: flex;
+    justify-content: center;
+}

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ліцей №142 | Головна</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style/index.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style/common.css" />
+    <link rel="stylesheet" type="text/css" href="../css/fonts.css">
+    <link rel="stylesheet" type="text/css" href="../css/mediaQueries/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/mediaQueries/common.css">
+    <link rel="import" href="../uploadableContent/footer.html">
+    <link rel="import" href="../uploadableContent/frame.html">
+    <link rel="import" href="../uploadableContent/header.html">
+    <link rel="import" href="../uploadableContent/menu.html">
+    <!-- <link rel="import" href="../uploadableContent/news.html"> -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous" defer>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous" defer></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous" defer></script>
+    <script type="text/javascript">
+        let arr = ["common.js", "index.js"];
+        let directoryPath = '../scripts/';
+        function downloadJSAtOnload(fileName) 
+        {
+            let elem = document.createElement("script");
+            elem.src = directoryPath + fileName + '?' + Math.random(1, 1000);
+            elem.type = 'module';
+            document.body.appendChild(elem);
+        }
+        arr.forEach(element => {
+            if (window.addEventListener)
+                window.addEventListener("load", downloadJSAtOnload.bind(downloadJSAtOnload, element), false);
+            else if (window.attachEvent)
+                window.attachEvent("onload", downloadJSAtOnload.bind(downloadJSAtOnload, element));
+            else
+                window.onload = downloadJSAtOnload.bind(downloadJSAtOnload, element);
+        });
+    </script>
+</head>
+<body>
+    <section id="section1">
+        <div class="bottom-logo img-3-container background-color-teal">
+            <img src="https://upload.wikimedia.org/wikipedia/uk/thumb/e/e1/Flag142.gif/250px-Flag142.gif" alt="Lycee#142">
+        </div>
+    </section>
+    <section id="section2" class="d-flex justify-content-center align-items-center">
+        <div id="cont">
+            <div id="item1" class="button flip-card" data-w="400" data-h="400">
+                <div class="front item with-border">
+                    <img class="img-1" src="../images/subwayPng.png" alt="...">
+                    <p class="text-4 text-color-for-subway">1 хв</p>
+                    <p class="text-3">До станції метро 'Політехнічний інститут'</p>
+                </div>
+                <div class="back">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d635.1231708379642!2d30.465861750900512!3d50.45054956421073!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x40d4ce83b06d9ee7%3A0x1d170c10bb79676c!2sPolitekhnichnyi+instytut%2C+Kyiv!3m2!1d50.4507894!2d30.4659534!4m5!1s0x40d4ce83a7df13ef%3A0xc9b5e309c3f1c350!2z0L_RgNC-0LLRg9C70L7QuiDQn9C-0LvRltGC0LXRhdC90ZbRh9C90LjQuSwgMtCQLCDQmtC40ZfQsiwg0KPQutGA0LDRl9C90LA!3m2!1d50.450442599999995!2d30.465890499999997!5e0!3m2!1sru!2sua!4v1552740684018" frameborder="0" style="border:0" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div id="item4" class="button flip-card" data-w="400" data-h="500">
+                <div class="front item with-border">
+                    <img class="img-1" src="../images/tram.svg" alt="...">
+                    <p class="text-4 text-color-for-tram">5 хв</p>
+                    <p class="text-3">До станції трамваю 'Політехнічна'</p>
+                </div>
+                <div class="back item">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d2540.63003817731!2d30.464905191775056!3d50.44799142225549!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x40d4ce9b4e57c783%3A0xae50eae36f54b692!2z0YHRgtCw0L3RhtC40Y8gItCf0L7Qu9C40YLQtdGF0L3QuNGH0LXRgdC60LDRjyI!3m2!1d50.44659!2d30.466569999999997!4m5!1s0x40d4ce83a7df13ef%3A0xc9b5e309c3f1c350!2z0L_RgNC-0LLRg9C70L7QuiDQn9C-0LvRltGC0LXRhdC90ZbRh9C90LjQuSwgMtCQLCDQmtC40ZfQsiwg0KPQutGA0LDRl9C90LA!3m2!1d50.450442599999995!2d30.465890499999997!5e0!3m2!1sru!2sua!4v1552744137716" frameborder="0" style="border:0" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div id="item2" class="item">
+                <p  id="header-section2" class="text-4 text-color-teal">Щорічно, наш ліцей - це:</p>
+                <div class="achievements">
+                    <div class="button">
+                        <div class="w-100 h-100 with-border">
+                            <img class="img-1" src="../images/medalPng.png" alt="...">
+                            <p class="text-4 text-color-teal">67</p>
+                            <p class="text-2">Медалістів олімпіад та конкурсів</p>
+                        </div>
+                    </div>
+                    <div class="button">
+                        <div class="w-100 h-100 with-border">
+                            <img class="img-1" src="../images/test.png" alt="...">
+                            <p class="text-4 text-color-teal">76+</p>
+                            <p class="text-2">Учнів успішно вступають в обрані університети</p>
+                        </div>
+                    </div>
+                    <div class="button">
+                        <div class="w-100 h-100 with-border">
+                            <img class="img-1" src="../images/МАН.png" alt="...">
+                            <p class="text-4 text-color-teal">55</p>
+                            <p class="text-2">Учасників Київської МАН</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="item3" class="button">
+                <div class="front item with-border">
+                    <img class="img-1" src="../images/library.png" alt="...">
+                    <p class="text-4 text-color-for-library">1250+</p>
+                    <p class="text-3">Різноманітних позашкільних книжок у бібліотеці</p>
+                </div>
+            </div>
+            <a id="item5" class="button" href="/teachers">
+				<div class="front item with-border">
+					<img class="img-1" src="../images/teachers.png" alt="...">
+					<p class="text-4 text-color-for-teachers">27</p>
+					<p class="text-3">Вчителів вищої категорії</p>
+				</div>
+            </a>
+            <div id="item6" class="item">
+                <!-- <p class="text-4 text-color-seagreen header-section2">Самоврядування ліцею</p>
+                <div class="achievements">
+                    <iframe src="Chapter1.pptx">Your browser does not support.</iframe>
+                </div> -->
+            </div>
+            <div id="item7" class="item flex-row justify-content-around">
+				<div class="button img-2 flip-card" data-w="400" data-h="300">
+					<div class="front with-border">
+						<img class="w-100 h-100" src="../images/universityJpg.jpg" alt="...">
+					</div>
+					<div class="back">
+					</div>
+				</div>
+				<p class="p-about-kpi">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore rerum vel, iure pariatur accusamus repellat quis a natus labore odio non aspernatur similique neque odit.</p>
+                <div class="button img-2 flip-card" data-w="400" data-h="300">
+					<div class="front with-border">
+						<img class="w-100 h-100" src="../images/parkJpg.jpg" alt="...">
+					</div>
+					<div class="back">
+					</div>
+				</div>
+            </div>
+            <div id="item8" class="button">
+                <div class="front item with-border">
+                    <img class="img-1" src="../images/security.png" alt="...">
+                    <p class="text-3">Надійна охорона</h6>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="section3" class="container-fluid d-flex align-items-center flex-column">
+        <div class="row">
+            <div class="col-sm-12 item">
+                <h3 class="text-4 text-color-white">Майбутнім абітурієнтам</h3>
+                <img class="w-100" src="../images/divider.png" alt="">
+            </div>
+        </div>
+        <div class="row flex-grow-1 d-flex align-items-center">
+            <a class="col-lg-3 col-md-6 col-sm-12 button" href="/entranceExam">
+                <div class="item">
+                    <img src="../images/Exam.png" alt="" class="img-1">
+                    <p class="text-3 text-color-white">Вступні екзамени</p>
+                </div>
+            </a>
+            <a class="col-lg-3 col-md-6 col-sm-12 button" href="/financeReports">
+                <div class="item">
+                    <img src="../images/inf_Vidkr.png" alt="" class="img-1">
+                    <p class="text-3 text-color-white">Інформаційна відкритість</p>
+                </div>
+            </a>
+            <div class="col-lg-3 col-md-6 col-sm-12 button">
+                <div class="item">
+                    <img src="../images/inner_furniture.png" alt="" class="img-1">
+                    <p class="text-3 text-color-white">В середині ліцею</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 button">
+                <div class="item">
+                    <img src="../images/parents.png" alt="" class="img-1">
+                    <p class="text-3 text-color-white">Інформація для батьків</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="section4" class="container-fluid d-flex justify-content-between align-items-center flex-column">
+        <div class="item">
+            <h3 class="text-4 text-color-white">Відомі випускники ліцею</h3>
+            <img class="w-100" src="../images/divider2.png" alt="">
+        </div>
+        <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner" id="myCar">
+                <div class="car-item item">
+                    <img src="../images/person.png" alt="" class="img-1">
+                    <p class="text-2 text-color-white">Famous Person 1</p>
+                    <p class="text-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus fugiat modi ea fuga laboriosam quos officia non quisquam eius neque expedita reiciendis, rerum cum! Aliquam error molestiae harum deleniti vitae.</p>
+                </div>
+                <div class="car-item item">
+                    <img src="../images/person.png" alt="" class="img-1">
+                    <p class="text-2 text-color-white">Famous Person 2</p>
+                    <p class="text-1">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consectetur sint, repellat numquam quasi, minima minus impedit harum recusandae ex, repellendus blanditiis cum dicta tenetur maiores veritatis delectus velit nostrum! Doloremque.</p>
+                </div>
+                <div class="car-item item">
+                    <img src="../images/person.png" alt="" class="img-1">
+                    <p class="text-2 text-color-white">Famous Person 3</p>
+                    <p class="text-1">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae rerum doloremque numquam voluptas minima repudiandae cupiditate perspiciatis commodi eius sit quam, placeat iusto eaque aut dolor magni suscipit quod aspernatur!</p>
+                </div>
+                <div class="car-item item">
+                    <img src="../images/person.png" alt="" class="img-1">
+                    <p class="text-2 text-color-white">Famous Person 4</p>
+                    <p class="text-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus fugiat modi ea fuga laboriosam quos officia non quisquam eius neque expedita reiciendis, rerum cum! Aliquam error molestiae harum deleniti vitae.</p>
+                </div>
+                <div class="car-item item">
+                    <img src="../images/person.png" alt="" class="img-1">
+                    <p class="text-2 text-color-white">Famous Person 5</p>
+                    <p class="text-1">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consectetur sint, repellat numquam quasi, minima minus impedit harum recusandae ex, repellendus blanditiis cum dicta tenetur maiores veritatis delectus velit nostrum! Doloremque.</p>
+                </div>
+                <div class="car-item item">
+                    <img src="../images/person.png" alt="" class="img-1">
+                    <p class="text-2 text-color-white">Famous Person 6</p>
+                    <p class="text-1">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae rerum doloremque numquam voluptas minima repudiandae cupiditate perspiciatis commodi eius sit quam, placeat iusto eaque aut dolor magni suscipit quod aspernatur!</p>
+                </div>
+                <div class="car-item item">
+                    <img src="../images/person.png" alt="" class="img-1">
+                    <p class="text-2 text-color-white">Famous Person 7</p>
+                    <p class="text-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus fugiat modi ea fuga laboriosam quos officia non quisquam eius neque expedita reiciendis, rerum cum! Aliquam error molestiae harum deleniti vitae.</p>
+                </div>
+                <div class="car-item item">
+                    <img src="../images/person.png" alt="" class="img-1">
+                    <p class="text-2 text-color-white">Famous Person 8</p>
+                    <p class="text-1">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consectetur sint, repellat numquam quasi, minima minus impedit harum recusandae ex, repellendus blanditiis cum dicta tenetur maiores veritatis delectus velit nostrum! Doloremque.</p>
+                </div>
+                <div class="car-item item">
+                    <img src="../images/person.png" alt="" class="img-1">
+                    <p class="text-2 text-color-white">Famous Person 9</p>
+                    <p class="text-1">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae rerum doloremque numquam voluptas minima repudiandae cupiditate perspiciatis commodi eius sit quam, placeat iusto eaque aut dolor magni suscipit quod aspernatur!</p>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleInterval" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleInterval" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </section>
+</body>
+</html>

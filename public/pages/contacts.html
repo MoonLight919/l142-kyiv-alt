@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ліцей №142 | Контакти</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style/common.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style/contacts.css" />
+    <link rel="stylesheet" type="text/css" href="../css/fonts.css">
+    <link rel="stylesheet" type="text/css" href="../css/mediaQueries/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/mediaQueries/contacts.css">
+    <link rel="import" href="../uploadableContent/footer.html">
+    <link rel="import" href="../uploadableContent/frame.html">
+    <link rel="import" href="../uploadableContent/header.html">
+    <link rel="import" href="../uploadableContent/menu.html">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous" defer>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/divjax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous" defer></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous" defer></script>
+    <script type="text/javascript">
+        let arr = ["common.js", "contacts.js",];
+        let directoryPath = '../scripts/';
+        function downloadJSAtOnload(fileName) 
+        {
+            let elem = document.createElement("script");
+            elem.type = 'module';
+            elem.src = directoryPath + fileName + '?' + Math.random(1, 1000);
+            document.body.appendChild(elem);
+        }
+        arr.forEach(element => {
+            if (window.addEventListener)
+                window.addEventListener("load", downloadJSAtOnload.bind(downloadJSAtOnload, element), false);
+            else if (window.attachEvent)
+                window.attachEvent("onload", downloadJSAtOnload.bind(downloadJSAtOnload, element));
+            else
+                window.onload = downloadJSAtOnload.bind(downloadJSAtOnload, element);
+        });
+    </script>
+</head>
+<body>
+    <section class="container d-flex align-items-center flex-column">
+        <div class="item mb-4" id="section-header">
+            <h2 class="text-4 text-color-for-teachers text-center">Контактна інформація</h2>
+        </div>
+        <div class="row w-100" id="map-item">
+            <div class="col-sm-12 col-md-6 pb-4  pt-4" >
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2540.498244399213!2d30.463701815154682!3d50.45044599524716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4ce83a875fd8f%3A0x6963c6c16206841e!2z0JvRltGG0LXQuSDihJYxNDI!5e0!3m2!1sru!2sua!4v1565116308294!5m2!1sru!2sua" allowfullscreen></iframe>
+            </div>
+            <div class="col-sm-12 col-md-6 d-flex d-flex pl-5 flex-column pb-4  pt-4" id="phones">
+                <h3 class="text-2 text-color-teal">Електронна пошта: l142@ukr.net</h3>
+                <h3 class="text-2 text-color-teal">Директор ліцею: 236-19-20</h3>
+                <h3 class="text-2 text-color-teal">Кураторська: 236-12-60</h3>
+                <h3 class="text-2 text-color-teal">Заступник директора: 236-09-98</h3>
+                <h3 class="text-2 text-color-teal">Приймальня: 0442791920</h3>
+            </div>
+        </div>
+        <div class="row w-100">
+            <div class="col-sm-12 col-md-5 d-flex flex-column myborder  pb-4  pt-4">
+                <h3 class="text-3 text-color-teal">Батьківська громада</h3>
+                <div class="item flex-row mt-3 justify-content-around">
+                    <a href="https://142.school/"><img src="../images/TW-Web-Icon.png" class="img-1" alt=""></a>
+                    <a href="https://www.facebook.com/groups/153846498628495"><img src="../images/fb-logo.png" class="img-1" alt=""></a>
+                </div>
+            </div>
+            <div class="col-sm-12 offset-md-0 offset-md-1 col-md-6 d-flex flex-column myborder  pb-4  pt-4">
+                <h3 class="text-3 text-color-teal">Ми у Facebook та сайті Солом'янської РДА</h3>
+                <div class="item flex-row mt-3 justify-content-around">
+                    <a href="http://www.solor.gov.ua/learn/45"><img src="../images/TW-Web-Icon.png" class="img-1" alt=""></a>
+                    <a href="https://www.facebook.com/pages/%D0%9B%D1%96%D1%86%D0%B5%D0%B9-142/493494667487852"><img src="../images/fb-logo.png" class="img-1" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

@@ -1,0 +1,38 @@
+section{
+    background-color: whitesmoke; 
+}
+.margin-top-50{
+    margin-top: 50px;
+}
+.teacher-image{
+    height: 256px;
+    width: 220px;
+    border-radius: 20px;
+}
+.teachers-row div{
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.department-header{
+    padding: 20px;
+    border-width: 4px;
+    border-color: teal;
+}
+#mathAndIt-header{
+    border-style: dashed;
+}
+#physics-header{
+    border-style: dotted;
+}
+#ukr-header{
+    border-style: outset;
+}
+#zarlit-header{
+    border-style: inset;
+}
+.department-header h3{
+    margin-bottom: 0;
+}
+img{
+    object-fit: cover;
+}
