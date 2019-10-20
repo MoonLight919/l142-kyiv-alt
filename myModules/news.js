@@ -5,6 +5,7 @@ var schedule = require('node-schedule');
 let db = require('./db');
 let pathHelper = require('./pathHelper');
 var iconv = require('iconv-lite');
+var path = require('path');
 
 let images = ['jpeg', 'webp', 'gif', 'png', 'apng', 'ico', 'bmp', 'jpg'];
 let docs = [
@@ -61,6 +62,44 @@ const SCOPES = [
 // created automatically when the authorization flow completes for the first
 // time.
 const TOKEN_PATH = 'token.json';
+
+exports.startSchedule = function startSchedule(timeString) {
+  var job = schedule.scheduleJob(timeString, async function(){
+    if(global.drive == undefined){
+      readCredentialsAndAuthorize().then(listFiles);
+    }
+    else
+      listFiles();
+  });
+}
+
+exports.sendToConverter = function sendToConverter() {
+  cloudconvert = new (require('cloudconvert'))('sJo6q3UWyqWZP40py0HhLt1EFuToyZuMPzdG5oMs0fLXwlUjehaq9xtsMyX1G3NJ');
+  let parts = filename.split('.');
+  return fs.createReadStream(path.resolve('.') + '/buff')
+  .pipe(cloudconvert.convert({
+      "inputformat": parts[1],
+      "outputformat": "html",
+      "input": "upload",
+      "converteroptions": {
+          "page_range": null,
+          "outline": null,
+          "zoom": 1.3,
+          "page_width": null,
+          "page_height": null,
+          "embed_css": true,
+          "embed_javascript": true,
+          "embed_image": true,
+          "embed_font": true,
+          "split_pages": false,
+          "space_as_offset": false,
+          "simple_html": null,
+          "bg_format": "png",
+          "input_password": null,
+          "templating": null
+      }
+  }));
+}
 
 function readCredentialsAndAuthorize() {
   console.log('reading credentials...');
@@ -142,24 +181,28 @@ function getAccessToken(oAuth2Client, callback) {
 */
 function listFiles() {
   let googleDriveCredentials = JSON.parse(fs.readFileSync('googleDriveCredentials.json'));
-  let keys = ['news'];
-  let processingFunctions = [processNews];
-  for (let index = 0; index < keys.length; index++) {
+  let keys = ['news_incomes'];
+  let processingHandlers = [processNews];
+  let dbSendHandlers = [sendToDb];
+  for (let i = 0; i < keys.length; i++) {
     global.drive.files.list({
-      q: `'${googleDriveCredentials.folders[keys[index]]}' in parents`,
+      q: `'${googleDriveCredentials.folders[keys[i]]}' in parents`,
       pageSize: 10,
       fields: 'nextPageToken, files(id, name)',
     }, async function(err, res){
       if (err) return console.log('The API returned an error: ' + err);
       let files = res.data.files;
+      let dataForDb = [];
       if (files.length) {
         console.log('Files:');
-        for (let index = 0; index < files.length; index++) {
-          let deleteFunction = deleteFile.bind(null, files[index].id);
-          console.log(`${files[index].name} (${files[index].id})`);
-          await downloadFile(files[index].id, files[index].name, deleteFunction);
+        for (let j = 0; j < files.length; j++) {
+          let deleteFunction = deleteFile.bind(null, files[j].id);
+          console.log(`${files[j].name} (${files[j].id})`);
+          if(!images.includes(filename.split('.')[1]))
+            await downloadFile(files[j].id, files[j].name, deleteFunction);
+            processingHandlers[i](files[j], dataForDb); 
         }
-        processingFunctions[index](files);
+        dbSendHandlers[i](dataForDb);
       } else {
         console.log('No files found.');
       }
@@ -167,25 +210,26 @@ function listFiles() {
   }
 }
 
-function processNews(files) {
-  let data = [];
-  files.forEach(element => {
-    let parts = element.name.split('.');
-    if(docs.includes(parts[1])){
-      data["contentName"] = element.id;
-      console.log('Content recieved');
-    }
-    else if(images.includes(parts[1])){
-      data["imageFile"] = element.id + '.' +  parts[1];
-      console.log('Photo recieved');
-    }
-    else if(parts[1] == 'txt'){
-      console.log('Title recieved');
-      data["title"] = fs.readFileSync(pathHelper.dataDirectory + 'news_drive/' + element.id + '.txt');
-      data["title"] = iconv.encode(iconv.decode(data["title"], "cp1251"), "utf8").toString();
-      console.log(data["title"]);
-    }
-  });
+function processNews(file, dataForDb) {
+  let parts = file.name.split('.');
+  if(docs.includes(parts[1])){
+    dataForDb["contentName"] = file.id;
+    dataForDb["streamForConvertedContent"] = sendToConverter()
+    console.log('Content recieved');
+  }
+  else if(images.includes(parts[1])){
+    dataForDb["imageFile"] = file.id + '.' +  parts[1];
+    console.log('Photo recieved');
+  }
+  else if(parts[1] == 'txt'){
+    console.log('Title recieved');
+    dataForDb["title"] = fs.readFileSync(pathHelper.dataDirectory + 'news_drive/' + file.id + '.txt');
+    dataForDb["title"] = iconv.encode(iconv.decode(dataForDb["title"], "cp1251"), "utf8").toString();
+    console.log(dataForDb["title"]);
+  }
+}
+
+function sendToDb(data) {
   if(!data.includes(undefined))
   {
     let currentDate = new Date();
@@ -200,7 +244,7 @@ function processNews(files) {
 
 function downloadFile(fileid, filename, callback) {
   let parts = filename.split('.');
-  let path = './data/news_drive/' + fileid + '.' +  parts[1];
+  let path =  path.resolve('.') + '/buff';
   var dest = fs.createWriteStream(path.toString(), {encoding: 'utf8'});
   return new Promise(function(resolve, reject){
     global.drive.files.get({fileId: fileid, alt: 'media'}, {responseType: 'stream'},
@@ -222,16 +266,6 @@ function downloadFile(fileid, filename, callback) {
   });
 }
 
-exports.startSchedule = function startSchedule(timeString) {
-  var job = schedule.scheduleJob(timeString, async function(){
-    if(global.drive == undefined){
-      readCredentialsAndAuthorize().then(listFiles);
-    }
-    else
-      listFiles()
-  });
-}
-
 function deleteFile(fileid) {
   global.drive.files.delete({
     fileId: fileid
@@ -242,35 +276,4 @@ function deleteFile(fileid) {
           console.log('Successfully deleted');
       }
   });
-}
-
-exports.sendToConverter = sendToConverter;
-
-function sendToConverter(filename) {
-  cloudconvert = new (require('cloudconvert'))('sJo6q3UWyqWZP40py0HhLt1EFuToyZuMPzdG5oMs0fLXwlUjehaq9xtsMyX1G3NJ');
-  let parts = filename.split('.');
-  fs.createReadStream( pathHelper.dataDirectory + 'news_drive/' + filename)
-  .pipe(cloudconvert.convert({
-      "inputformat": parts[1],
-      "outputformat": "html",
-      "input": "upload",
-      "converteroptions": {
-          "page_range": null,
-          "outline": null,
-          "zoom": 1.5,
-          "page_width": null,
-          "page_height": null,
-          "embed_css": true,
-          "embed_javascript": true,
-          "embed_image": true,
-          "embed_font": true,
-          "split_pages": false,
-          "space_as_offset": false,
-          "simple_html": null,
-          "bg_format": "png",
-          "input_password": null,
-          "templating": null
-      }
-  }))
-  .pipe(fs.createWriteStream(pathHelper.dataDirectory + 'news_html/' + parts[0] + '.html'));
 }
