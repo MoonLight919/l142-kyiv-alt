@@ -6,6 +6,7 @@ let db = require('./db');
 let pathHelper = require('./pathHelper');
 var iconv = require('iconv-lite');
 var path = require('path');
+var streamBuffers = require('stream-buffers');
 
 let images = ['jpeg', 'webp', 'gif', 'png', 'apng', 'ico', 'bmp', 'jpg'];
 let docs = [
@@ -52,6 +53,31 @@ let docs = [
   'zabw' 
 ];
 
+function cloudconvertOptions(parts) {
+  return {
+    "inputformat": parts[1],
+    "outputformat": "html",
+    "input": "upload",
+    "converteroptions": {
+      "page_range": null,
+      "outline": null,
+      "zoom": 1.3,
+      "page_width": null,
+      "page_height": null,
+      "embed_css": true,
+      "embed_javascript": true,
+      "embed_image": true,
+      "embed_font": true,
+      "split_pages": false,
+      "space_as_offset": false,
+      "simple_html": null,
+      "bg_format": "png",
+      "input_password": null,
+      "templating": null
+    }
+  };
+}
+
 // If modifying these scopes, delete token.json.
 const SCOPES = [
   'https://www.googleapis.com/auth/drive.metadata.readonly',
@@ -73,32 +99,22 @@ exports.startSchedule = function startSchedule(timeString) {
   });
 }
 
-exports.sendToConverter = function sendToConverter() {
+exports.sendToConverter = async function sendToConverter(filename, downloadedData) {
   cloudconvert = new (require('cloudconvert'))('sJo6q3UWyqWZP40py0HhLt1EFuToyZuMPzdG5oMs0fLXwlUjehaq9xtsMyX1G3NJ');
   let parts = filename.split('.');
-  return fs.createReadStream(path.resolve('.') + '/buff')
-  .pipe(cloudconvert.convert({
-      "inputformat": parts[1],
-      "outputformat": "html",
-      "input": "upload",
-      "converteroptions": {
-          "page_range": null,
-          "outline": null,
-          "zoom": 1.3,
-          "page_width": null,
-          "page_height": null,
-          "embed_css": true,
-          "embed_javascript": true,
-          "embed_image": true,
-          "embed_font": true,
-          "split_pages": false,
-          "space_as_offset": false,
-          "simple_html": null,
-          "bg_format": "png",
-          "input_password": null,
-          "templating": null
-      }
-  }));
+  let bufs = [], resData;
+  var myReadableStreamBuffer = new streamBuffers.ReadableStreamBuffer({
+    frequency: 10,      // in milliseconds.
+    chunkSize: 2048     // in bytes.
+  }); 
+  myReadableStreamBuffer.put(aBuffer);
+  await myReadableStreamBuffer.pipe(cloudconvert.convert(cloudconvertOptions(parts))).on('data', function(data){
+    bufs.push(data); 
+  })
+  .on('end', function(){
+    resData = Buffer.concat(bufs);
+  });
+  return resData;
 }
 
 function readCredentialsAndAuthorize() {
@@ -198,9 +214,10 @@ function listFiles() {
         for (let j = 0; j < files.length; j++) {
           let deleteFunction = deleteFile.bind(null, files[j].id);
           console.log(`${files[j].name} (${files[j].id})`);
+          let downloadedData;
           if(!images.includes(filename.split('.')[1]))
-            await downloadFile(files[j].id, files[j].name, deleteFunction);
-            processingHandlers[i](files[j], dataForDb); 
+            downloadedData = await downloadFile(files[j].id, files[j].name, deleteFunction);
+          processingHandlers[i](files[j], dataForDb, downloadedData);
         }
         dbSendHandlers[i](dataForDb);
       } else {
@@ -210,11 +227,11 @@ function listFiles() {
   }
 }
 
-function processNews(file, dataForDb) {
+function processNews(file, dataForDb, downloadedData) {
   let parts = file.name.split('.');
   if(docs.includes(parts[1])){
     dataForDb["contentName"] = file.id;
-    dataForDb["streamForConvertedContent"] = sendToConverter()
+    dataForDb["dataBuffer"] = sendToConverter(file.name, downloadedData)
     console.log('Content recieved');
   }
   else if(images.includes(parts[1])){
@@ -223,8 +240,7 @@ function processNews(file, dataForDb) {
   }
   else if(parts[1] == 'txt'){
     console.log('Title recieved');
-    dataForDb["title"] = fs.readFileSync(pathHelper.dataDirectory + 'news_drive/' + file.id + '.txt');
-    dataForDb["title"] = iconv.encode(iconv.decode(dataForDb["title"], "cp1251"), "utf8").toString();
+    dataForDb["title"] = iconv.encode(iconv.decode(downloadedData, "cp1251"), "utf8").toString();
     console.log(dataForDb["title"]);
   }
 }
@@ -242,28 +258,25 @@ function sendToDb(data) {
   console.log('Done');
 }
 
-function downloadFile(fileid, filename, callback) {
+async function downloadFile(fileid, filename, callback) {
   let parts = filename.split('.');
-  let path =  path.resolve('.') + '/buff';
-  var dest = fs.createWriteStream(path.toString(), {encoding: 'utf8'});
-  return new Promise(function(resolve, reject){
-    global.drive.files.get({fileId: fileid, alt: 'media'}, {responseType: 'stream'},
+  let bufs = [], resData;
+ // return new Promise(function(resolve, reject){
+  await global.drive.files.get({fileId: fileid, alt: 'media'}, {responseType: 'stream'},
     function(err, res){
-      res.data.on('end', () => {
-        if(docs.includes(parts[1])){
-          sendToConverter(fileid + '.' +  parts[1]);
-          console.log('Sent to converter');
-        }
-        console.log('done downloadFile');
-        resolve('done downloadFile');
+      res.data.on('data', function(data){
+        bufs.push(data); 
+      })
+      .on('end', function(){
+        resData = Buffer.concat(bufs);
       })
       .on('error', err => {
         console.log('Error', err);
       })
       .on('end', callback)
-      .pipe(dest);
     });
-  });
+  //})
+  return resData;
 }
 
 function deleteFile(fileid) {
