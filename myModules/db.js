@@ -8,6 +8,7 @@ let config = JSON.parse(fs.readFileSync('dbCredentials.json'));
 const client = new Client(config["herokuMainDb"]);
 const pool = new Pool(config["herokuMainDb"]);
 
+//export function createNewsTable()
 exports.createNewsTable = function()
 { 
   client.connect();
@@ -26,6 +27,7 @@ exports.createNewsTable = function()
     client.end();
   });
 }
+//export function dropTable(name)
 exports.dropTable = function(name)
 { 
   client.connect();
@@ -37,6 +39,7 @@ exports.dropTable = function(name)
     client.end();
   });
 }
+//export function truncateTable(name)
 exports.truncateTable = function(name)
 { 
   client.connect();
@@ -48,6 +51,7 @@ exports.truncateTable = function(name)
     client.end();
   });
 }
+//export function changeEncoding()
 exports.changeEncoding = function()
 { 
   client.connect();
@@ -59,6 +63,7 @@ exports.changeEncoding = function()
     client.end();
   });
 }
+//export function showEncoding()
 exports.showEncoding = function()
 { 
   client.connect();
@@ -70,6 +75,7 @@ exports.showEncoding = function()
     client.end();
   });
 }
+//export function createAdditionalTable()
 exports.createAdditionalTable = function()
 { 
   client.connect();
@@ -86,6 +92,7 @@ exports.createAdditionalTable = function()
     client.end();
   });
 }
+//export function checkConnection()
 exports.checkConnection = function()
 { 
   client.connect();
@@ -98,6 +105,7 @@ exports.checkConnection = function()
     client.end();
   });
 }
+//export function insertNews(title, published, contentName, imageFile)
 exports.insertNews = function(title, published, contentName, imageFile)
 { 
   client.connect();
@@ -130,6 +138,7 @@ exports.insertNews = function(title, published, contentName, imageFile)
     client.end();
   });
 }
+//export function createNewsRowsCount()
 exports.createNewsRowsCount = function()
 { 
   client.connect();
@@ -142,6 +151,7 @@ exports.createNewsRowsCount = function()
     client.end();
   });
 }
+//export async function getManyNews(page, amount)
 exports.getManyNews = async function(page, amount)
 {
   let client = await pool.connect()
@@ -159,6 +169,7 @@ exports.getManyNews = async function(page, amount)
   console.log('Sending news...');
   return result.rows;
 }
+//export async function getNewsByIndex(index)
 exports.getNewsByIndex = async function(index)
 {
   let client = await pool.connect()

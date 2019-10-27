@@ -1,6 +1,6 @@
 var express = require('express');
 var sender = require('./myModules/sender');
-var pathHelper = require('./myModules/pathHelper');
+//var pathHelper = require('./myModules/pathHelper');
 let converter = require('./myModules/monthConverter');
 const fs = require('fs');
 let imageDataURI = require('image-data-uri');
@@ -35,7 +35,7 @@ router.get('/news', function(req, res, next) {
 });
 router.get('/news/:index', function(req, res, next) {
   let newsObject = db.getNewsByIndex(req.params.index).then(function(dbRes) {
-    res.sendFile(pathHelper.dataDirectory + 'news_html/' + dbRes + '.html');
+    //res.sendFile(pathHelper.dataDirectory + 'news_html/' + dbRes + '.html');
   });
 });
 
@@ -51,7 +51,7 @@ router.post('/news', jsonParser, function(req, res, next) {
     let image_buffer;
     Array.from(dbRes).forEach(element => {
       let imageFile = element[4].trim();
-      image_buffer = fs.readFileSync(pathHelper.dataDirectory + 'news_drive/' + imageFile);
+      //image_buffer = fs.readFileSync(pathHelper.dataDirectory + 'news_drive/' + imageFile);
       let dataUri = imageDataURI.encode(image_buffer, imageFile.split('.')[1]);
       let date = element[2].toString().split(' ');
       console.log(date[1]);

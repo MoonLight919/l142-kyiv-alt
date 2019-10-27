@@ -1,57 +1,18 @@
-const fs = require('fs');
-const readline = require('readline');
-const {google} = require('googleapis');
-var schedule = require('node-schedule');
+// import * as fs from 'fs'
+// import * as readline from 'readline'
+// import {google} from 'googleapis'
+// import * as schedule from 'node-schedule'
+// import * as db from './db'
+// import * as iconv from 'iconv-lite'
+// import * as streamBuffers from 'stream-buffers'
+// import * as htmlTableConverter from './newsConverterAvailableFormats'
+let readline = require('readline');
+let {google} = require('googleapis');
+let schedule = require('node-schedule');
 let db = require('./db');
-let pathHelper = require('./pathHelper');
-var iconv = require('iconv-lite');
-var path = require('path');
-var streamBuffers = require('stream-buffers');
-
-let images = ['jpeg', 'webp', 'gif', 'png', 'apng', 'ico', 'bmp', 'jpg'];
-let docs = [
-  'abw', 
-  'csv', 
-  'doc', 
-  'docm', 
-  'docx', 
-  'dot', 
-  'dotx', 
-  'dps', 
-  'et', 
-  'htm', 
-  'key', 
-  'key.zip', 
-  'lwp' ,
-  'md' ,
-  'numbers', 
-  'numbers.zip', 
-  'odp' ,
-  'ods' ,
-  'odt' ,
-  'pages', 
-  'pages.zip', 
-  'pdf' ,
-  'pot' ,
-  'potx' ,
-  'pps' ,
-  'ppsx' ,
-  'ppt' ,
-  'pptm' ,
-  'pptx' ,
-  'ps' ,
-  'rst' ,
-  'rtf' ,
-  'sda' ,
-  'sdc' ,
-  'sdw' ,
-  'wpd' ,
-  'wps' ,
-  'xls' ,
-  'xlsm' ,
-  'xlsx' ,
-  'zabw' 
-];
+let iconv = require('iconv-lite');
+let streamBuffers = require('stream-buffers');
+let htmlTableConverter = require('./newsConverterAvailableFormats');
 
 function cloudconvertOptions(parts) {
   return {
@@ -89,7 +50,8 @@ const SCOPES = [
 // time.
 const TOKEN_PATH = 'token.json';
 
-exports.startSchedule = function startSchedule(timeString) {
+//export function startSchedule(timeString) {
+exports.startSchedule = function(timeString) {
   var job = schedule.scheduleJob(timeString, async function(){
     if(global.drive == undefined){
       readCredentialsAndAuthorize().then(listFiles);
@@ -99,7 +61,8 @@ exports.startSchedule = function startSchedule(timeString) {
   });
 }
 
-exports.sendToConverter = async function sendToConverter(filename, downloadedData) {
+//export async function sendToConverter(filename, downloadedData) {
+exports.sendToConverter = async function(filename, downloadedData) {
   cloudconvert = new (require('cloudconvert'))('sJo6q3UWyqWZP40py0HhLt1EFuToyZuMPzdG5oMs0fLXwlUjehaq9xtsMyX1G3NJ');
   let parts = filename.split('.');
   let bufs = [], resData;
@@ -215,7 +178,7 @@ function listFiles() {
           let deleteFunction = deleteFile.bind(null, files[j].id);
           console.log(`${files[j].name} (${files[j].id})`);
           let downloadedData;
-          if(!images.includes(filename.split('.')[1]))
+          if(!newsConverterAvailableFormats.isImage(filename.split('.')[1]))
             downloadedData = await downloadFile(files[j].id, files[j].name, deleteFunction);
           processingHandlers[i](files[j], dataForDb, downloadedData);
         }
@@ -229,12 +192,12 @@ function listFiles() {
 
 function processNews(file, dataForDb, downloadedData) {
   let parts = file.name.split('.');
-  if(docs.includes(parts[1])){
+  if(newsConverterAvailableFormats.isDocument(parts[1])){
     dataForDb["contentName"] = file.id;
     dataForDb["dataBuffer"] = sendToConverter(file.name, downloadedData)
     console.log('Content recieved');
   }
-  else if(images.includes(parts[1])){
+  else if(newsConverterAvailableFormats.isImage(parts[1])){
     dataForDb["imageFile"] = file.id + '.' +  parts[1];
     console.log('Photo recieved');
   }

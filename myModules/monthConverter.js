@@ -1,4 +1,5 @@
-exports.numToUA = function(number) {
+exports.numToUA = function(number){
+//export function numToUA(number) {
     let arr = {
         '0' : 'Січня',
         '1' : 'Лютого',
@@ -15,7 +16,9 @@ exports.numToUA = function(number) {
     }
     return arr[number];
 }
-exports.EngToUA = function(number) {
+
+exports.EngToUA = function(number){
+//export function EngToUA(number) {
     let arr = {
         'Jan' : 'Січня',
         'Fab' : 'Лютого',
