@@ -40,7 +40,7 @@ function getValue(stringObject) {
     let start = stringObject.content.indexOf('<td>');
     let end = stringObject.content.indexOf('</td>');
     let value = stringObject.content.substr(start + 4, end - start - 4);
-    stringObject.content = removeRangeFromString(stringObject.content, start, end - start);
+    stringObject.content = removeRangeFromString(stringObject.content, start, end + 5);
     return value;
 }
 
@@ -54,14 +54,16 @@ exports.tableToDictionary = function(htmlTable){
         let key = getValue(htmlTableObject);
         let value = getValue(htmlTableObject);
         res.content[key] = value;
-        console.log(htmlTableObject.content.length);
+        let start = htmlTableObject.content.indexOf('<tr>');
+        let end = htmlTableObject.content.indexOf('</tr>');
+        htmlTableObject.content = removeRangeFromString(htmlTableObject.content, start, end + 5)
     }
     return res;
 }
 
-exports.arrayToTable = function(htmlTable){
+exports.arrayToTable = function(htmlTableObject){
 //export function arrayToTable(htmlTable) {
-
+    
 }
 
 exports.dictionaryToTable = function(htmlTable){

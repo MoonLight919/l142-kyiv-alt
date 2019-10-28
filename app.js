@@ -1138,6 +1138,9 @@ let array = htmlTableConverter.tableToDictionary(`<table style="width:600px" cla
   </tbody></table>`);
 console.log('Table:');
 
-console.log(JSON.stringify(array))
+console.log(array.content['html']);
+console.log(array.content['png']);
+console.log(array.content['txt']);
+
 
 module.exports = app;
