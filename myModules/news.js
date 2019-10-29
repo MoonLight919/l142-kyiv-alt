@@ -13,6 +13,7 @@ let db = require('./db');
 let iconv = require('iconv-lite');
 let streamBuffers = require('stream-buffers');
 let htmlTableConverter = require('./newsConverterAvailableFormats');
+var path = require('path');
 
 function cloudconvertOptions(parts) {
   return {
@@ -84,7 +85,7 @@ function readCredentialsAndAuthorize() {
   console.log('reading credentials...');
   
   // Load client secrets from a local file.
-    let credentials = fs.readFileSync('credentials.json');
+    let credentials = fs.readFileSync(path.resolve('.') + '/credentials/credentials.json');
 
     // Authorize a client with credentials, then call the Google Drive API.
     //return new Promise(function(resolve, reject){
@@ -159,10 +160,10 @@ function getAccessToken(oAuth2Client, callback) {
 * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
 */
 function listFiles() {
-  let googleDriveCredentials = JSON.parse(fs.readFileSync('googleDriveCredentials.json'));
+  let googleDriveCredentials = JSON.parse(fs.readFileSync(path.resolve('.') + '/credentials/googleDriveCredentials.json'));
   let keys = ['news_incomes'];
   let processingHandlers = [processNews];
-  let dbSendHandlers = [sendToDb];
+  let dbSendHandlers = [sendNewsToDb];
   for (let i = 0; i < keys.length; i++) {
     global.drive.files.list({
       q: `'${googleDriveCredentials.folders[keys[i]]}' in parents`,
@@ -194,7 +195,7 @@ function processNews(file, dataForDb, downloadedData) {
   let parts = file.name.split('.');
   if(newsConverterAvailableFormats.isDocument(parts[1])){
     dataForDb["contentName"] = file.id;
-    dataForDb["dataBuffer"] = sendToConverter(file.name, downloadedData)
+    dataForDb["convertedContentData"] = sendToConverter(file.name, downloadedData)
     console.log('Content recieved');
   }
   else if(newsConverterAvailableFormats.isImage(parts[1])){
@@ -203,12 +204,13 @@ function processNews(file, dataForDb, downloadedData) {
   }
   else if(parts[1] == 'txt'){
     console.log('Title recieved');
-    dataForDb["title"] = iconv.encode(iconv.decode(downloadedData, "cp1251"), "utf8").toString();
+    dataForDb["titleData"] = iconv.encode(iconv.decode(downloadedData, "cp1251"), "utf8").toString();
+    dataForDb["title"] = file.id;
     console.log(dataForDb["title"]);
   }
 }
 
-function sendToDb(data) {
+function sendNewsToDb(data) {
   if(!data.includes(undefined))
   {
     let currentDate = new Date();
@@ -251,5 +253,73 @@ function deleteFile(fileid) {
       } else {
           console.log('Successfully deleted');
       }
+  });
+}
+
+function storeFiles(filename, data, parentFolderId) {
+  let parts = filename.split('.');
+  var fileMetadata = {
+    'name': filename,
+    'parents': [parentFolderId]
+  };
+  let mimeTypes = JSON.parse(fs.readFileSync('helpfulData/mimeTypes.json'));
+  var media = {
+    mimeType: mimeTypes[parts[1]],
+    body: data
+  };
+  drive.files.create({
+    resource: fileMetadata,
+    media: media,
+    fields: 'id'
+  }, function (err, file) {
+    if (err)
+      console.error(err);
+    else 
+      console.log('File Id: ', file.data.id);
+  });
+}
+
+function createFolder(folderName, parentFolderId) {
+  var fileMetadata = {
+    'name': folderName,
+    'mimeType': 'application/vnd.google-apps.folder',
+    'parents': [parentFolderId]
+  };
+  drive.files.create({
+    resource: fileMetadata,
+    fields: 'id'
+  }, function (err, file) {
+    if (err) {
+      // Handle error
+      console.error(err);
+    } else {
+      console.log('Folder Id: ', file.id);
+    }
+  });
+}
+
+function moveFile(fileId, folderId) {
+  // Retrieve the existing parents to remove
+  drive.files.get({
+    fileId: fileId,
+    fields: 'parents'
+  }, function (err, file) {
+    if (err)
+      console.error(err);
+    else {
+      // Move the file to the another folder
+      var previousParents = file.parents.join(',');
+      drive.files.update({
+        fileId: fileId,
+        addParents: folderId,
+        removeParents: previousParents,
+        fields: 'id, parents'
+      }, function (err, file) {
+        if (err) {
+          console.error('Error while moving file: ' + err);
+        } else
+          console.log('File ' + fileId + ' has been succussfully moved to another folder');
+      });
+    }
   });
 }

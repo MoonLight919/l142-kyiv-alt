@@ -3,7 +3,7 @@ const { Pool } = require('pg');
 const fs = require('fs');
 const path = require('path');
 
-let config = JSON.parse(fs.readFileSync('dbCredentials.json'));
+let config = JSON.parse(fs.readFileSync(path.resolve('.') + '/credentials/dbCredentials.json'));
 
 const client = new Client(config["herokuMainDb"]);
 const pool = new Pool(config["herokuMainDb"]);

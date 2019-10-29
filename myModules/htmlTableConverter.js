@@ -1,4 +1,6 @@
-exports.tableToArray = function(htmlTable){
+const fs = require('fs');
+
+exports.tableToArray = function(htmlTable, pathToSave){
 //export function tableToArray(htmlTable) {
     let res = {};
     res.content = new Array();
@@ -26,6 +28,8 @@ exports.tableToArray = function(htmlTable){
         }
         htmlTable = removeRangeFromString(htmlTable, htmlTable.indexOf('<tr>'), htmlTable.indexOf('</tr>') + 5);
     }
+    if(pathToSave != undefined)
+        fs.writeFileSync(pathToSave, JSON.stringify(res));
     return res;
 }
 
@@ -44,10 +48,10 @@ function getValue(stringObject) {
     return value;
 }
 
-exports.tableToDictionary = function(htmlTable){
+exports.tableToDictionary = function(htmlTable, pathToSave){
 //export function tableToDictionary(htmlTable) {
     let res = {};
-    res.content = new Array();
+    res.content = {};
     let htmlTableObject = {};
     htmlTableObject.content = htmlTable;
     while (htmlTableObject.content.indexOf('<tr>') != -1) {
@@ -58,15 +62,7 @@ exports.tableToDictionary = function(htmlTable){
         let end = htmlTableObject.content.indexOf('</tr>');
         htmlTableObject.content = removeRangeFromString(htmlTableObject.content, start, end + 5)
     }
+    if(pathToSave != undefined)
+        fs.writeFileSync(pathToSave, JSON.stringify(res.content));
     return res;
-}
-
-exports.arrayToTable = function(htmlTableObject){
-//export function arrayToTable(htmlTable) {
-    
-}
-
-exports.dictionaryToTable = function(htmlTable){
-//export function dictionaryToTable(htmlTable) {
-
 }
