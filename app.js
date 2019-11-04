@@ -3,7 +3,7 @@
 // import * as cookieParser from 'cookie-parser';
 // import * as bodyParser from 'body-parser';
 // import * as logger from 'morgan';
-// import * as schedule from './myModules/news';
+// import * as schedule from './myModules/uploadNewContent';
 // import * as db from './myModules/db';
 // import * as https from 'https';
 // import * as htmlTableConverter from './myModules/htmlTableConverter';
@@ -12,11 +12,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
-var schedule = require('./myModules/news');
+var schedule = require('./myModules/uploadNewContent');
 var db = require('./myModules/db');
 var https = require("https");
 var htmlTableConverter = require('./myModules/htmlTableConverter');
-const fs = require('fs');
 
 
 var app = express();
@@ -33,11 +32,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', router);
 
-//db.truncateTable('additional');
+//db.truncateTable('news');
 //db.createNewsRowsCount();
 //console.log('done');
 
-schedule.startSchedule('5 * * * *');
+schedule.startSchedule('43 23 * * *');
 
 setInterval(function() {
     https.get("https://l142.herokuapp.com/");

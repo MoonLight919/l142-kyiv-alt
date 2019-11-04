@@ -17,8 +17,10 @@ exports.createNewsTable = function()
       id BIGSERIAL PRIMARY KEY,
       title TEXT NOT NULL,
       published DATE NOT NULL,
+      convertedContentId TEXT NOT NULL,
       contentName TEXT NOT NULL,
-      imageFile TEXT NOT NULL
+      imageFile TEXT NOT NULL,
+      folderId TEXT NOT NULL
     )`, (err, res) => {
     if (err) throw err;
     for (let row of res.rows) {
@@ -106,30 +108,28 @@ exports.checkConnection = function()
   });
 }
 //export function insertNews(title, published, contentName, imageFile)
-exports.insertNews = function(title, published, contentName, imageFile)
+exports.insertNews = function(title, published, convertedContentId, contentName, imageFile, folderId)
 { 
   client.connect();
-  console.log(`INSERT INTO News (title, published, contentName, imageFile) 
+  client.query(`INSERT INTO News (
+    title, 
+    published, 
+    convertedContentId, 
+    contentName, 
+    imageFile, 
+    folderId
+  ) 
   VALUES (
     '${title}', 
     '${published}', 
+    '${convertedContentId}', 
     '${contentName}', 
-    '${imageFile}
+    '${imageFile}, 
+    '${folderId}'
   '); 
   UPDATE Additional 
   SET value = value::int + 1 
-  WHERE name like 'NewsRowsCount'`);
-  
-  client.query(`INSERT INTO News (title, published, contentName, imageFile) 
-                VALUES (
-                  '${title}', 
-                  '${published}', 
-                  '${contentName}', 
-                  '${imageFile}
-                '); 
-                UPDATE Additional 
-                SET value = value::int + 1 
-                WHERE name like 'NewsRowsCount'`, (err, res) => {
+  WHERE name like 'NewsRowsCount'`, (err, res) => {
     if (err) {
       console.log(err);
       
