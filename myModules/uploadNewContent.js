@@ -133,9 +133,7 @@ function listFiles() {
           let deleteFunction = gdCRUD.deleteFile.bind(null, files[j].id);
           console.log(`${files[j].name} (${files[j].id})`);
           gdCRUD.downloadFile(files[j].id, files[j].name, deleteFunction).then(function (downloadedData) {
-            model.transitionalProcessing(files[j], downloadedData);
-            if(model.isCompleted())
-              model.finalProcessing();
+            model.process(files[j], downloadedData);
           });
         }
       }

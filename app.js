@@ -36,7 +36,7 @@ app.use('/', router);
 //db.createNewsRowsCount();
 //console.log('done');
 
-schedule.startSchedule('43 23 * * *');
+schedule.startSchedule('11 0 * * *');
 
 setInterval(function() {
     https.get("https://l142.herokuapp.com/");

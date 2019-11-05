@@ -1,4 +1,5 @@
 let streamBuffers = require('stream-buffers');
+let fs = require('fs');
 
 function cloudconvertOptions(fromExt, toExt) {
     return {
@@ -27,7 +28,12 @@ function cloudconvertOptions(fromExt, toExt) {
 
 //export async function sendToConverter(filename, downloadedData) {
 exports.sendToConverter = sendToConverter;
-async function sendToConverter(filename, toExt, downloadedData) {
+function sendToConverter(filename, toExt, downloadedData) {
+    let s = fs.createWriteStream('./123.docx');
+    console.log('DATA TO STORE: ');
+    console.log(downloadedData);
+    
+    //downloadedData.pipe(s);
     cloudconvert = new (require('cloudconvert'))('sJo6q3UWyqWZP40py0HhLt1EFuToyZuMPzdG5oMs0fLXwlUjehaq9xtsMyX1G3NJ');
     let parts = filename.split('.');
     let buffs = [], resData;
@@ -36,12 +42,14 @@ async function sendToConverter(filename, toExt, downloadedData) {
         chunkSize: 2048     // in bytes.
     }); 
     myReadableStreamBuffer.put(downloadedData);
-    await myReadableStreamBuffer.pipe(cloudconvert.convert(cloudconvertOptions(parts[1], toExt))).on('data', function(data){
-        buffs.push(data); 
+    return new Promise(function(resolve, reject){
+        myReadableStreamBuffer.pipe(cloudconvert.convert(cloudconvertOptions(parts[1], toExt))).on('data', function(data){
+            buffs.push(data); 
+        })
+        .on('end', function(){
+            resData = Buffer.concat(buffs);
+            console.log('Converted file arriving...');
+            resolve(resData);
+        });
     })
-    .on('end', function(){
-        resData = Buffer.concat(buffs);
-    });
-    console.log('Converted file arriving...');
-    return resData;
 }
