@@ -4,19 +4,19 @@ exports.downloadFile = async function(fileid, filename, callback) {
     let parts = filename.split('.');
     let bufs = [], resData;
     return new Promise(function(resolve, reject){
-    global.drive.files.get({fileId: fileid, alt: 'media'}, {responseType: 'stream'},
-        function(err, res){
-        res.data.on('data', function(data){
-            bufs.push(data); 
-        })
-        .on('end', function(){
-            resData = Buffer.concat(bufs);
-            resolve(resData);
-        })
-        .on('error', err => {
-            console.log('Error', err);
-        })
-        .on('end', callback)
+        global.drive.files.get({fileId: fileid, alt: 'media'}, {responseType: 'stream'},
+            function(err, res){
+            res.data.on('data', function(data){
+                bufs.push(data); 
+            })
+            .on('end', function(){
+                resData = Buffer.concat(bufs);
+                resolve(resData);
+            })
+            .on('error', err => {
+                console.log('Error', err);
+            })
+            .on('end', callback)
         });
     })
 }

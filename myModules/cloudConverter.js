@@ -1,5 +1,6 @@
 let streamBuffers = require('stream-buffers');
 let fs = require('fs');
+var stream = require('stream');
 
 function cloudconvertOptions(fromExt, toExt) {
     return {
@@ -29,27 +30,28 @@ function cloudconvertOptions(fromExt, toExt) {
 //export async function sendToConverter(filename, downloadedData) {
 exports.sendToConverter = sendToConverter;
 function sendToConverter(filename, toExt, downloadedData) {
-    let s = fs.createWriteStream('./123.docx');
-    console.log('DATA TO STORE: ');
-    console.log(downloadedData);
-    
-    //downloadedData.pipe(s);
     cloudconvert = new (require('cloudconvert'))('sJo6q3UWyqWZP40py0HhLt1EFuToyZuMPzdG5oMs0fLXwlUjehaq9xtsMyX1G3NJ');
     let parts = filename.split('.');
     let buffs = [], resData;
-    var myReadableStreamBuffer = new streamBuffers.ReadableStreamBuffer({
-        frequency: 10,      // in milliseconds.
-        chunkSize: 2048     // in bytes.
-    }); 
-    myReadableStreamBuffer.put(downloadedData);
     return new Promise(function(resolve, reject){
-        myReadableStreamBuffer.pipe(cloudconvert.convert(cloudconvertOptions(parts[1], toExt))).on('data', function(data){
-            buffs.push(data); 
-        })
-        .on('end', function(){
-            resData = Buffer.concat(buffs);
-            console.log('Converted file arriving...');
-            resolve(resData);
-        });
+        // var myReadableStreamBuffer = new streamBuffers.ReadableStreamBuffer({
+        //     frequency: 10,      // in milliseconds.
+        //     chunkSize: 2048     // in bytes.
+        // }); 
+        // myReadableStreamBuffer.put(downloadedData);
+
+        var bufferStream = new stream.PassThrough();
+        bufferStream.end(new Buffer.alloc(Array.from(downloadedData).length, downloadedData));
+
+        bufferStream.pipe(cloudconvert.convert(cloudconvertOptions(parts[1], toExt)))
+        .pipe(fs.createWriteStream('./123.html'));
+        // .on('data', function(data){
+        //     buffs.push(data); 
+        // })
+        // .on('end', function(){
+        //     resData = Buffer.concat(buffs);
+        //     console.log('Converted file arriving...');
+        //     resolve(resData);
+        // });
     })
 }
