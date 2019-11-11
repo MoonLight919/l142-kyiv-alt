@@ -1,4 +1,5 @@
 let fs = require('fs');
+var stream = require('stream');
 
 exports.downloadFile = async function(fileid, filename, callback) {
     let parts = filename.split('.');
@@ -33,19 +34,21 @@ exports.deleteFile = function(fileid) {
     });
 }
   
-exports.storeFiles = function(filename, data, parentFolderId) {
+exports.storeFile = function(filename, data, parentFolderId) {
     let parts = filename.split('.');
     var fileMetadata = {
         'name': filename,
         'parents': [parentFolderId]
     };
     let mimeTypes = JSON.parse(fs.readFileSync('helpfulData/mimeTypes.json'));
+    let dataStream = new stream.PassThrough();
+    dataStream.end(new Buffer.alloc(Array.from(data).length, data));
     var media = {
         mimeType: mimeTypes[parts[1]],
-        body: data
+        body: dataStream
     };
     return new Promise(function(resolve, reject){
-        drive.files.create({
+        global.drive.files.create({
         resource: fileMetadata,
         media: media,
         fields: 'id'
@@ -59,7 +62,7 @@ exports.storeFiles = function(filename, data, parentFolderId) {
     })
 }
   
-exports.storeFiles = function(folderName, parentFolderId) {
+exports.createFolder = function(folderName, parentFolderId) {
     var fileMetadata = {
         'name': folderName,
         'mimeType': 'application/vnd.google-apps.folder',
@@ -91,7 +94,7 @@ exports.moveFile = function(fileId, folderId) {
         console.error(err);
         else {
         // Move the file to the another folder
-        var previousParents = file.parents.join(',');
+        var previousParents = file.data.parents.join(',');
         global.drive.files.update({
             fileId: fileId,
             addParents: folderId,

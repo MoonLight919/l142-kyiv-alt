@@ -1,4 +1,3 @@
-let streamBuffers = require('stream-buffers');
 let fs = require('fs');
 var stream = require('stream');
 
@@ -27,31 +26,26 @@ function cloudconvertOptions(fromExt, toExt) {
     };
 }
 
-//export async function sendToConverter(filename, downloadedData) {
+//export function sendToConverter(filename, downloadedData) {
 exports.sendToConverter = sendToConverter;
 function sendToConverter(filename, toExt, downloadedData) {
     cloudconvert = new (require('cloudconvert'))('sJo6q3UWyqWZP40py0HhLt1EFuToyZuMPzdG5oMs0fLXwlUjehaq9xtsMyX1G3NJ');
     let parts = filename.split('.');
     let buffs = [], resData;
     return new Promise(function(resolve, reject){
-        // var myReadableStreamBuffer = new streamBuffers.ReadableStreamBuffer({
-        //     frequency: 10,      // in milliseconds.
-        //     chunkSize: 2048     // in bytes.
-        // }); 
-        // myReadableStreamBuffer.put(downloadedData);
-
         var bufferStream = new stream.PassThrough();
+        let resStream = new stream.PassThrough();
         bufferStream.end(new Buffer.alloc(Array.from(downloadedData).length, downloadedData));
-
         bufferStream.pipe(cloudconvert.convert(cloudconvertOptions(parts[1], toExt)))
-        .pipe(fs.createWriteStream('./123.html'));
-        // .on('data', function(data){
-        //     buffs.push(data); 
-        // })
-        // .on('end', function(){
-        //     resData = Buffer.concat(buffs);
-        //     console.log('Converted file arriving...');
-        //     resolve(resData);
-        // });
+        .pipe(resStream)
+        .on('data', function(data){
+            buffs.push(data);
+            console.log('chunk arrived');
+        })
+        .on('end', function(){
+            resData = Buffer.concat(buffs);
+            console.log('Converted file arriving...');
+            resolve(resData);
+        });
     })
 }

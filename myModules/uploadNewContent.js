@@ -130,11 +130,23 @@ function listFiles() {
       if (files.length) {
         console.log('Files:');
         for (let j = 0; j < files.length; j++) {
-          let deleteFunction = gdCRUD.deleteFile.bind(null, files[j].id);
+          console.log(`Won't be deleted`);
+          if(model.toDownload(files[j].name)){
+            let deleteFunction;
+            if(model.toDelete(files[j].name))
+              deleteFunction = gdCRUD.deleteFile.bind(null, files[j].id);
+            else
+              deleteFunction = () => {console.log(`Won't be deleted`);}
+            gdCRUD.downloadFile(files[j].id, files[j].name, deleteFunction).then(function (downloadedData) {
+              model.process(files[j], downloadedData);
+            });
+          }
+          else
+          {
+            model.process(files[j]);
+          }
           console.log(`${files[j].name} (${files[j].id})`);
-          gdCRUD.downloadFile(files[j].id, files[j].name, deleteFunction).then(function (downloadedData) {
-            model.process(files[j], downloadedData);
-          });
+          
         }
       }
       else {

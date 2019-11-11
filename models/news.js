@@ -3,6 +3,8 @@ let iconv = require('iconv-lite');
 let newsConverterAvailableFormats = require('../myModules/newsConverterAvailableFormats');
 let googleDriveCRUD = require('../myModules/googleDriveCRUD');
 let converter = require('../myModules/cloudConverter');
+let fs = require('fs');
+var path = require('path');
 
 exports.News = class {
   constructor() {
@@ -10,7 +12,7 @@ exports.News = class {
     this.published = -1,
     this.convertedContentId = -1,
     this.convertedContentData = -1,
-    this.contentName = -1,
+    this.contentId = -1,
     this.imageFile = -1,
     this.folderId = -1,
     this.GDFolderName = 'news_incomes'
@@ -18,11 +20,11 @@ exports.News = class {
   process(file, downloadedData) {
     let parts = file.name.split('.');
     if(newsConverterAvailableFormats.isDocument(parts[1])){
-      this.contentName = file.id;
-      converter.sendToConverter(file.name, 'html', downloadedData).then(function (data) {
+      this.contentId = file.id;
+      converter.sendToConverter(file.name, 'html', downloadedData).then((data) => {
         this.convertedContentData = data;
         if(this.isCompleted())
-          finalProcessing();
+          this.finalProcessing();
       });
       console.log('Content recieved');
     }
@@ -36,7 +38,7 @@ exports.News = class {
       console.log(this.title);
     }
     if(this.isCompleted())
-      finalProcessing();
+      this.finalProcessing();
   }
   finalProcessing() {
     console.log('Final processing...');
@@ -47,12 +49,13 @@ exports.News = class {
     let day = currentDate.getDate().toString();
     this.published = year + '-' + month + '-' + day;
     let googleDriveCredentials = JSON.parse(fs.readFileSync(path.resolve('.') + '/credentials/googleDriveCredentials.json'));
-    googleDriveCRUD.createFolder(this.title, googleDriveCredentials['news_all']).then(function(folderId) {
+    googleDriveCRUD.createFolder(this.title, googleDriveCredentials['news_all']).then((folderId) => {
       googleDriveCRUD.moveFile(this.imageFile.split('.')[0], folderId);
-      googleDriveCRUD.storeFiles(this.contentName, this.convertedContentData, folderId).then(function(fileId) {
+      googleDriveCRUD.moveFile(this.contentId, folderId);
+      googleDriveCRUD.storeFile(this.contentId, this.convertedContentData, folderId).then((fileId) => {
         this.convertedContentId = fileId;
         this.folderId = folderId;
-        db.insertNews(this.title, this.published, this.contentName, this.imageFile, this.folderId, this.convertedContentId);
+        db.insertNews(this.title, this.published, this.convertedContentId, this.contentId, this.imageFile, this.folderId);
       })
     });
     console.log('Done final processing');
@@ -61,14 +64,21 @@ exports.News = class {
     let allFields = [
       this.title,
       this.convertedContentData,
-      this.contentName,
+      this.contentId,
       this.imageFile
     ];
     console.log('DATA:');
     console.log(this.title);
     console.log(this.convertedContentData);
-    console.log(this.contentName);
+    console.log(this.contentId);
     console.log(this.imageFile);
     return !allFields.includes(-1);
+  }
+  toDelete(filename){
+    return filename.split('.')[1] == 'txt';
+  }
+  toDownload(filename){
+    let ext = filename.split('.')[1];
+    return ext == 'txt' || newsConverterAvailableFormats.isDocument(ext);
   }
 }

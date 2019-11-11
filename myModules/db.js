@@ -18,7 +18,7 @@ exports.createNewsTable = function()
       title TEXT NOT NULL,
       published DATE NOT NULL,
       convertedContentId TEXT NOT NULL,
-      contentName TEXT NOT NULL,
+      contentId TEXT NOT NULL,
       imageFile TEXT NOT NULL,
       folderId TEXT NOT NULL
     )`, (err, res) => {
@@ -108,14 +108,14 @@ exports.checkConnection = function()
   });
 }
 //export function insertNews(title, published, contentName, imageFile)
-exports.insertNews = function(title, published, convertedContentId, contentName, imageFile, folderId)
+exports.insertNews = function(title, published, convertedContentId, contentId, imageFile, folderId)
 { 
   client.connect();
-  client.query(`INSERT INTO News (
+  console.log(`INSERT INTO News (
     title, 
     published, 
     convertedContentId, 
-    contentName, 
+    contentId, 
     imageFile, 
     folderId
   ) 
@@ -123,10 +123,30 @@ exports.insertNews = function(title, published, convertedContentId, contentName,
     '${title}', 
     '${published}', 
     '${convertedContentId}', 
-    '${contentName}', 
-    '${imageFile}, 
+    '${contentId}', 
+    '${imageFile}', 
     '${folderId}'
-  '); 
+  ); 
+  UPDATE Additional 
+  SET value = value::int + 1 
+  WHERE name like 'NewsRowsCount'`);
+  
+  client.query(`INSERT INTO News (
+    title, 
+    published, 
+    convertedContentId, 
+    contentId, 
+    imageFile, 
+    folderId
+  ) 
+  VALUES (
+    '${title}', 
+    '${published}', 
+    '${convertedContentId}', 
+    '${contentId}', 
+    '${imageFile}', 
+    '${folderId}'
+  ); 
   UPDATE Additional 
   SET value = value::int + 1 
   WHERE name like 'NewsRowsCount'`, (err, res) => {
@@ -143,7 +163,7 @@ exports.createNewsRowsCount = function()
 { 
   client.connect();
   client.query(`INSERT INTO Additional (name, value) 
-                VALUES ('NewsRowsCount', 0)`, (err, res) => {
+                VALUES ('NewsRowsCount', 1)`, (err, res) => {
     if (err) throw err;
     for (let row of res.rows) {
       console.log(JSON.stringify(row));

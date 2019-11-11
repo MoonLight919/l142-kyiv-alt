@@ -32,11 +32,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', router);
 
-//db.truncateTable('news');
+//db.createNewsTable();
+//db.truncateTable('additional');
 //db.createNewsRowsCount();
 //console.log('done');
 
-schedule.startSchedule('40 14 * * *');
+schedule.startSchedule('21 23 * * *');
 
 setInterval(function() {
     https.get("https://l142.herokuapp.com/");
