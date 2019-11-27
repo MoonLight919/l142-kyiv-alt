@@ -1,6 +1,6 @@
 var express = require('express');
 var sender = require('./myModules/sender');
-//var pathHelper = require('./myModules/pathHelper');
+var pathHelper = require('./myModules/pathHelper');
 let converter = require('./myModules/monthConverter');
 const fs = require('fs');
 let imageDataURI = require('image-data-uri');
@@ -35,7 +35,10 @@ router.get('/news', function(req, res, next) {
 });
 router.get('/news/:index', function(req, res, next) {
   let newsObject = db.getNewsByIndex(req.params.index).then(function(dbRes) {
-    //res.sendFile(pathHelper.dataDirectory + 'news_html/' + dbRes + '.html');
+    const keyValue = {
+      'folderId' : 0
+    }
+    res.sendFile(pathHelper.dataDirectory + dbRes[keyValue['folderId']] + '/' + 'content.html');
   });
 });
 
@@ -46,19 +49,28 @@ router.post('/entranceExam', jsonParser, function(req, res, next) {
   sender.sendFile(req, res, 'entranceExam');
 });
 router.post('/news', jsonParser, function(req, res, next) {
+  const keyValue = {
+    'id' : 0,
+    'title' : 1,
+    'published' : 2,
+    'convertedContentId' : 3,
+    'contentId' : 4,
+    'imageFile' : 5,
+    'folderId' : 6
+  }
   let result = [];
   db.getManyNews(req.body.page, req.body.amount).then(function(dbRes) {
     let image_buffer;
     Array.from(dbRes).forEach(element => {
-      let imageFile = element[4].trim();
-      //image_buffer = fs.readFileSync(pathHelper.dataDirectory + 'news_drive/' + imageFile);
-      let dataUri = imageDataURI.encode(image_buffer, imageFile.split('.')[1]);
-      let date = element[2].toString().split(' ');
+      let imageExt = element[keyValue['imageFile']].split('.')[1];
+      image_buffer = fs.readFileSync(pathHelper.dataDirectory + element[keyValue['folderId']] + '/' + 'image.' + imageExt);
+      let dataUri = imageDataURI.encode(image_buffer, imageExt);
+      let date = element[keyValue['published']].toString().split(' ');
       console.log(date[1]);
       let resDate = date[2] + ' ' + converter.EngToUA(date[1]) + ' ' + date[3];
       result.push({
-        id : element[0],
-        title : element[1],
+        id : element[keyValue['id']],
+        title : element[keyValue['title']],
         published : resDate,
         imageSrc : dataUri
       });

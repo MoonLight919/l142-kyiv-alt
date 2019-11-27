@@ -163,7 +163,7 @@ exports.createNewsRowsCount = function()
 { 
   client.connect();
   client.query(`INSERT INTO Additional (name, value) 
-                VALUES ('NewsRowsCount', 1)`, (err, res) => {
+                VALUES ('NewsRowsCount', 0)`, (err, res) => {
     if (err) throw err;
     for (let row of res.rows) {
       console.log(JSON.stringify(row));
@@ -195,9 +195,20 @@ exports.getNewsByIndex = async function(index)
   let client = await pool.connect()
   let result = await client.query({
     rowMode: 'array',
-    text: `SELECT contentName FROM news WHERE id = ${index}`,
+    text: `SELECT folderId FROM news WHERE id = ${index}`,
   });
-  await client.end()
+  await client.end();
   console.log(result.rows[0]);
   return result.rows[0];
+}
+
+exports.getAllNewsFolders = async function()
+{
+  let client = await pool.connect()
+  let result = await client.query({
+    rowMode: 'array',
+    text: `SELECT folderId, convertedContentId, imageFile FROM news`,
+  });
+  await client.end()
+  return result.rows;
 }

@@ -12,7 +12,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
-var schedule = require('./myModules/uploadNewContent');
+var schedule = require('./googleDriveApi/manageContent');
 var db = require('./myModules/db');
 var https = require("https");
 var htmlTableConverter = require('./myModules/htmlTableConverter');
@@ -36,8 +36,12 @@ app.use('/', router);
 //db.truncateTable('additional');
 //db.createNewsRowsCount();
 //console.log('done');
+// db.getAllNewsFolders().then((dbRes) =>{
+//   console.log(JSON.stringify(dbRes));
+// });
 
-schedule.startSchedule('21 23 * * *');
+
+schedule.startSchedule('12 14 * * *');
 
 setInterval(function() {
     https.get("https://l142.herokuapp.com/");

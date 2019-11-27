@@ -1,9 +1,13 @@
 let fs = require('fs');
 var stream = require('stream');
+let path = require('path');
+let News = require('../models/news');
 
 exports.downloadFile = async function(fileid, filename, callback) {
     let parts = filename.split('.');
     let bufs = [], resData;
+    if(!callback)
+        callback = ()=>{};
     return new Promise(function(resolve, reject){
         global.drive.files.get({fileId: fileid, alt: 'media'}, {responseType: 'stream'},
             function(err, res){
@@ -93,19 +97,33 @@ exports.moveFile = function(fileId, folderId) {
         if (err)
         console.error(err);
         else {
-        // Move the file to the another folder
-        var previousParents = file.data.parents.join(',');
-        global.drive.files.update({
-            fileId: fileId,
-            addParents: folderId,
-            removeParents: previousParents,
-            fields: 'id, parents'
-        }, function (err, file) {
-            if (err) {
-            console.error('Error while moving file: ' + err);
-            } else
-            console.log('File ' + fileId + ' has been succussfully moved to another folder');
-        });
+            // Move the file to the another folder
+            var previousParents = file.data.parents.join(',');
+            global.drive.files.update({
+                fileId: fileId,
+                addParents: folderId,
+                removeParents: previousParents,
+                fields: 'id, parents'
+            }, function (err, file) {
+                if (err) {
+                console.error('Error while moving file: ' + err);
+                } else
+                console.log('File ' + fileId + ' has been succussfully moved to another folder');
+            });
         }
     });
 }
+
+/**
+* Lists the names and IDs of up to 100 files.
+* @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+*/
+exports.listFiles = function(handler, FolderName) {
+    let googleDriveCredentials = JSON.parse(fs.readFileSync(path.resolve('.') + '/credentials/googleDriveCredentials.json'));
+    // would like to replace it with classes if js had interfaces
+      global.drive.files.list({
+        q: `'${googleDriveCredentials.folders[FolderName]}' in parents`,
+        pageSize: 100,
+        fields: 'nextPageToken, files(id, name)',
+      }, handler);
+  }

@@ -1,10 +1,11 @@
 let db = require('../myModules/db');
 let iconv = require('iconv-lite');
 let newsConverterAvailableFormats = require('../myModules/newsConverterAvailableFormats');
-let googleDriveCRUD = require('../myModules/googleDriveCRUD');
+let googleDriveCRUD = require('../googleDriveApi/googleDriveCRUD');
 let converter = require('../myModules/cloudConverter');
 let fs = require('fs');
-var path = require('path');
+let path = require('path');
+let pathHelper = require('../myModules/pathHelper');
 
 exports.News = class {
   constructor() {
@@ -14,6 +15,7 @@ exports.News = class {
     this.convertedContentData = -1,
     this.contentId = -1,
     this.imageFile = -1,
+    this.imageData = -1,
     this.folderId = -1,
     this.GDFolderName = 'news_incomes'
   }
@@ -30,6 +32,7 @@ exports.News = class {
     }
     else if(newsConverterAvailableFormats.isImage(parts[1])){
       this.imageFile = file.id + '.' +  parts[1];
+      this.imageData = downloadedData;
       console.log('Photo recieved');
     }
     else if(parts[1] == 'txt'){
@@ -49,15 +52,24 @@ exports.News = class {
     let day = currentDate.getDate().toString();
     this.published = year + '-' + month + '-' + day;
     let googleDriveCredentials = JSON.parse(fs.readFileSync(path.resolve('.') + '/credentials/googleDriveCredentials.json'));
+    //uploading to google drive
     googleDriveCRUD.createFolder(this.title, googleDriveCredentials['news_all']).then((folderId) => {
       googleDriveCRUD.moveFile(this.imageFile.split('.')[0], folderId);
       googleDriveCRUD.moveFile(this.contentId, folderId);
       googleDriveCRUD.storeFile(this.contentId, this.convertedContentData, folderId).then((fileId) => {
+        //shitty approach
+        //googleDriveCRUD.moveFile(folderId, googleDriveCredentials['news_all']);
         this.convertedContentId = fileId;
         this.folderId = folderId;
         db.insertNews(this.title, this.published, this.convertedContentId, this.contentId, this.imageFile, this.folderId);
       })
+      //saving locally
+      let pathToFolder = pathHelper.dataDirectory + folderId
+      fs.mkdirSync(pathToFolder);
+      fs.writeFileSync(pathToFolder + '/image.' + this.imageFile.split('.')[1], this.imageData);
+      fs.writeFileSync(pathToFolder + '/content.html', this.convertedContentData);
     });
+
     console.log('Done final processing');
   }
   isCompleted(){
