@@ -17,7 +17,7 @@ exports.startSchedule = function(timeString) {
     }
     else
       gdCRUD.listFiles(processIncomingData, model.GDFolderName);
-    if(fs.readdirSync(pathHelper.dataDirectory).length == 0)
+    if(fs.readdirSync(pathHelper.dataDirectory).length == 1)
     {
       const keyValue = {
         'folderId' : 0,
