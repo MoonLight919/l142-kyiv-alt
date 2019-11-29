@@ -49,7 +49,7 @@ router.post('/entranceExam', jsonParser, function(req, res, next) {
   sender.sendFile(req, res, 'entranceExam');
 });
 router.post('/news', jsonParser, function(req, res, next) {
-  if(!fs.existsSync(pathHelper.dataDirectory)){
+  if(fs.existsSync(pathHelper.dataDirectory)){
     const keyValue = {
       'id' : 0,
       'title' : 1,
