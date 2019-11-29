@@ -25,6 +25,7 @@ exports.startSchedule = function(timeString) {
         'imageFile' : 2
       }
       db.getAllNewsFolders().then((dbRes)=>{
+        console.log(dbRes.length + ' news arrived');
         dbRes.forEach(element => {
           let pathToFolder = pathHelper.dataDirectory + element[keyValue['folderId']];
           fs.mkdirSync(pathToFolder);
@@ -39,6 +40,7 @@ exports.startSchedule = function(timeString) {
           gdCRUD.downloadFile(contentId, 'content.html').then(function (downloadedData) {
             fs.writeFileSync(pathToFolder + '/content.html', downloadedData);
           });
+          console.log('News saved');
         });
       });
     }
