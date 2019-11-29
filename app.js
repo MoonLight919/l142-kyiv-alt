@@ -41,7 +41,7 @@ app.use('/', router);
 // });
 
 
-schedule.startSchedule('5 * * * *');
+schedule.startSchedule('55 * * * *');
 
 setInterval(function() {
     https.get("https://l142.herokuapp.com/");

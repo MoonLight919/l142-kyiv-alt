@@ -49,34 +49,36 @@ router.post('/entranceExam', jsonParser, function(req, res, next) {
   sender.sendFile(req, res, 'entranceExam');
 });
 router.post('/news', jsonParser, function(req, res, next) {
-  const keyValue = {
-    'id' : 0,
-    'title' : 1,
-    'published' : 2,
-    'convertedContentId' : 3,
-    'contentId' : 4,
-    'imageFile' : 5,
-    'folderId' : 6
-  }
-  let result = [];
-  db.getManyNews(req.body.page, req.body.amount).then(function(dbRes) {
-    let image_buffer;
-    Array.from(dbRes).forEach(element => {
-      let imageExt = element[keyValue['imageFile']].split('.')[1];
-      image_buffer = fs.readFileSync(pathHelper.dataDirectory + element[keyValue['folderId']] + '/' + 'image.' + imageExt);
-      let dataUri = imageDataURI.encode(image_buffer, imageExt);
-      let date = element[keyValue['published']].toString().split(' ');
-      console.log(date[1]);
-      let resDate = date[2] + ' ' + converter.EngToUA(date[1]) + ' ' + date[3];
-      result.push({
-        id : element[keyValue['id']],
-        title : element[keyValue['title']],
-        published : resDate,
-        imageSrc : dataUri
+  if(!fs.existsSync(pathHelper.dataDirectory)){
+    const keyValue = {
+      'id' : 0,
+      'title' : 1,
+      'published' : 2,
+      'convertedContentId' : 3,
+      'contentId' : 4,
+      'imageFile' : 5,
+      'folderId' : 6
+    }
+    let result = [];
+    db.getManyNews(req.body.page, req.body.amount).then(function(dbRes) {
+      let image_buffer;
+      Array.from(dbRes).forEach(element => {
+        let imageExt = element[keyValue['imageFile']].split('.')[1];
+        image_buffer = fs.readFileSync(pathHelper.dataDirectory + element[keyValue['folderId']] + '/' + 'image.' + imageExt);
+        let dataUri = imageDataURI.encode(image_buffer, imageExt);
+        let date = element[keyValue['published']].toString().split(' ');
+        console.log(date[1]);
+        let resDate = date[2] + ' ' + converter.EngToUA(date[1]) + ' ' + date[3];
+        result.push({
+          id : element[keyValue['id']],
+          title : element[keyValue['title']],
+          published : resDate,
+          imageSrc : dataUri
+        });
       });
+      res.send(result);
     });
-    res.send(result);
-  });
+  }
 });
 
 
