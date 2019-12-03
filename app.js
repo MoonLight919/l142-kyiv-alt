@@ -41,10 +41,10 @@ app.use('/', router);
 // });
 
 
-schedule.startSchedule('55 * * * *');
+schedule.startSchedule('30 * * * *');
 
 setInterval(function() {
-    https.get("https://l142.herokuapp.com/");
+    https.get("https://l142-kyiv.herokuapp.com/");
 }, 300000); // every 5 minutes
 
 module.exports = app;
