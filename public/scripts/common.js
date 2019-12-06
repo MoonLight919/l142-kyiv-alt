@@ -87,6 +87,11 @@ $(function(){
             $('section').off('click', th);
         }
     }
+
+    //upload content (html imports replacement)
+    $('#uploadableContent').load('/uploadableContent', data, (responseText, textStatus, XMLHttpRequest)=>{
+        
+    })
 });
 
 //send request and receive file from server

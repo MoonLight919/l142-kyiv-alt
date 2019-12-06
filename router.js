@@ -33,6 +33,11 @@ router.get('/news', function(req, res, next) {
 router.get('/news', function(req, res, next) {
   sender.sendPage(res, 'news');
 });
+router.get('/uploadableContent', function(req, res, next) {
+  fs.readdirsync(pathHelper.dataDirectory + 'uploadableContent').forEach(element => {
+    
+  });
+});
 router.get('/news/:index', function(req, res, next) {
   let newsObject = db.getNewsByIndex(req.params.index).then(function(dbRes) {
     const keyValue = {
