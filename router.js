@@ -30,13 +30,12 @@ router.get('/contacts', function(req, res, next) {
 router.get('/news', function(req, res, next) {
   sender.sendPage(res, 'news');
 });
-router.get('/news', function(req, res, next) {
-  sender.sendPage(res, 'news');
-});
 router.get('/uploadableContent', function(req, res, next) {
-  fs.readdirsync(pathHelper.dataDirectory + 'uploadableContent').forEach(element => {
-    
+  let contentParts = [];
+  fs.readdirSync(pathHelper.uploadableContent).forEach(element => {
+    contentParts.push(fs.readFileSync(pathHelper.uploadableContent + element));
   });
+  res.send(contentParts.join(''));
 });
 router.get('/news/:index', function(req, res, next) {
   let newsObject = db.getNewsByIndex(req.params.index).then(function(dbRes) {
