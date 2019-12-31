@@ -41,7 +41,7 @@ app.use('/', router);
 // });
 
 
-schedule.startSchedule('30 * * * *');
+schedule.startSchedule('5 * * * * *');
 
 setInterval(function() {
     https.get("https://l142-kyiv.herokuapp.com/");

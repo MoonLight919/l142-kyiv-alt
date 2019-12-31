@@ -102,7 +102,7 @@ $(function(){
                     "class" : classesForCarousel_item
                 });
                 arr['flex_element'] = $('<div/>', {
-                    "class" : 'd-flex flex-column'
+                    "class" : 'd-flex flex-column h-100 w-100'
                 });
                 arr['title'] = $('<p/>', {
                     "class" : 'text-2'
