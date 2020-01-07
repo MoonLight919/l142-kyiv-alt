@@ -42,7 +42,7 @@ router.get('/news/:index', function(req, res, next) {
     const keyValue = {
       'folderId' : 0
     }
-    res.sendFile(pathHelper.dataDirectory + dbRes[keyValue['folderId']] + '/' + 'content.html');
+    res.sendFile(pathHelper.data_newsDirectory + dbRes[keyValue['folderId']] + '/' + 'content.html');
   });
 });
 
@@ -53,7 +53,7 @@ router.post('/entranceExam', jsonParser, function(req, res, next) {
   sender.sendFile(req, res, 'entranceExam');
 });
 router.post('/news', jsonParser, function(req, res, next) {
-  if(fs.existsSync(pathHelper.dataDirectory)){
+  if(fs.existsSync(pathHelper.data_newsDirectory)){
     const keyValue = {
       'id' : 0,
       'title' : 1,
@@ -68,7 +68,7 @@ router.post('/news', jsonParser, function(req, res, next) {
       let image_buffer;
       Array.from(dbRes).forEach(element => {
         let imageExt = element[keyValue['imageFile']].split('.')[1];
-        image_buffer = fs.readFileSync(pathHelper.dataDirectory + element[keyValue['folderId']] + '/' + 'image.' + imageExt);
+        image_buffer = fs.readFileSync(pathHelper.data_newsDirectory + element[keyValue['folderId']] + '/' + 'image.' + imageExt);
         let dataUri = imageDataURI.encode(image_buffer, imageExt);
         let date = element[keyValue['published']].toString().split(' ');
         console.log(date[1]);

@@ -112,25 +112,31 @@ $(function(){
                     "href" : 'news/' + element.id
                 });
                 $(arr['ref']).text(element.title);
+                arr['q'] = $('<div/>', {
+                    "class" : 'flex-grow-1 w-100'
+                });
                 arr['picture'] = $('<img/>', {
                     "src" : element.imageSrc
                 });
+                $(arr['q']).append(arr['picture']);
+                $(arr['flex_element']).append(arr['q']);
                 $(arr['flex_element']).append(arr['ref']);
-                $(arr['flex_element']).append(arr['picture']);
                 $(arr['carousel_item']).append(arr['flex_element']);
                 $('#news .carousel-inner').append(arr['carousel_item']);
             });
         }
-        $.post(
-            "/news",
-            {
-                page: 0,
-                amount: 5
-            },
-            constructNewsWidget
-        );
+        // $.post(
+        //     "/news",
+        //     {
+        //         page: 0,
+        //         amount: 5
+        //     },
+        //     constructNewsWidget
+        // );
     });
 });
+
+
 
 //send request and receive file from server
 export let receiveFile = function (page, eventData)

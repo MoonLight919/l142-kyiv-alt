@@ -286,6 +286,7 @@ footer h4{
 /* #endregion */
 /*#region News*/
 #news{
+    display: none !important;
     width: 33%;
     height: calc(50%);
     max-height: calc(50%);
@@ -298,8 +299,8 @@ footer h4{
     border: 8px teal outset;
 }
 #news img{
-    max-width:90%;
-    max-height:90%;
+    max-height:100%;
+    width:auto;
 }
 #news a, #news p, #news h2{
     color: white !important;
@@ -308,6 +309,7 @@ footer h4{
     border-bottom: 3px white dashed;
 }
 #bookmark{
+    display: none;
     position: fixed;
     right: 10px;
     top: calc(30%);

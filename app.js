@@ -43,8 +43,8 @@ app.use('/', router);
 
 schedule.startSchedule('5 * * * * *');
 
-setInterval(function() {
-    https.get("https://l142-kyiv.herokuapp.com/");
-}, 300000); // every 5 minutes
+// setInterval(function() {
+//     https.get("https://l142-kyiv.herokuapp.com/");
+// }, 300000); // every 5 minutes
 
 module.exports = app;

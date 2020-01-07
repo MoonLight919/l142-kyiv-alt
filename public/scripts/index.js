@@ -80,6 +80,41 @@ $(function(){
                 $('section').off('click', ccth);
             }
         }
+        function constructChildren(data) {
+            let arr = [];
+            let first = true;
+            data.forEach(element => {
+                arr['carousel_item'] = $('<div/>', {
+                    "class" : 'car-item item'
+                });
+                arr['picture'] = $('<img/>', {
+                    "src" : element.imageSrc,
+                    "class" : 'img-1'
+                });
+                arr['name'] = $('<p/>', {
+                    "class" : 'text-2 text-color-white'
+                });
+                arr['description'] = $('<p/>', {
+                    "class" : 'text-1'
+                });
+                $(arr['name']).text(element.name);
+                $(arr['description']).text(element.description);
+
+                $(arr['carousel_item']).append(arr['picture']);
+                $(arr['carousel_item']).append(arr['name']);
+                $(arr['carousel_item']).append(arr['description']);
+                $('#myCar').append(arr['carousel_item']);
+            });
+            onWindowResize();
+        }
+        $.post(
+            "/news",
+            {
+                page: 0,
+                amount: 5
+            },
+            constructNewsWidget
+        );
         //construct carousel
         let oldWindowWidth = window.innerWidth; 
         function onWindowResize() {
@@ -133,6 +168,5 @@ $(function(){
             oldWindowWidth = window.innerWidth; 
         };
         $(window).resize(onWindowResize);
-        onWindowResize();
     // }, 3000);
 })

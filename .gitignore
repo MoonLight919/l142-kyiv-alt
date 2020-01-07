@@ -59,3 +59,12 @@ typings/
 
 # next.js build output
 .next
+
+# data for news
+data_news/
+
+# data for students
+data_students/
+
+# data for news
+data_teachers/

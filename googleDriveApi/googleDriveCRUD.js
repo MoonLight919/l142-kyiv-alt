@@ -1,10 +1,8 @@
 let fs = require('fs');
 var stream = require('stream');
 let path = require('path');
-let News = require('../models/news');
 
-exports.downloadFile = async function(fileid, filename, callback) {
-    let parts = filename.split('.');
+exports.downloadFile = async function(fileid, callback) {
     let bufs = [], resData;
     if(!callback)
         callback = ()=>{};
@@ -118,11 +116,12 @@ exports.moveFile = function(fileId, folderId) {
 * Lists the names and IDs of up to 100 files.
 * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
 */
-exports.listFiles = function(handler, FolderName) {
+exports.listFiles = function(handler, folderName, folderId) {
     let googleDriveCredentials = JSON.parse(fs.readFileSync(path.resolve('.') + '/credentials/googleDriveCredentials.json'));
+    let query = folderId == undefined ? googleDriveCredentials.folders[folderName] : folderId;
     // would like to replace it with classes if js had interfaces
       global.drive.files.list({
-        q: `'${googleDriveCredentials.folders[FolderName]}' in parents`,
+        q: `'${query}' in parents`,
         pageSize: 100,
         fields: 'nextPageToken, files(id, name)',
       }, handler);

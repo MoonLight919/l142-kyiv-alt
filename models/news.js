@@ -1,7 +1,7 @@
 let db = require('../myModules/db');
 let iconv = require('iconv-lite');
 let newsConverterAvailableFormats = require('../myModules/newsConverterAvailableFormats');
-let googleDriveCRUD = require('../googleDriveApi/googleDriveCRUD');
+let gdCRUD = require('../googleDriveApi/googleDriveCRUD');
 let converter = require('../myModules/cloudConverter');
 let fs = require('fs');
 let path = require('path');
@@ -17,16 +17,23 @@ exports.News = class {
     this.imageFile = -1,
     this.imageData = -1,
     this.folderId = -1,
-    this.GDFolderName = 'news_incomes'
+    this.GDFolderName = 'news_incomes',
+    this.localDirectory = pathHelper.data_newsDirectory,
+    this.dbKeyValue = {
+      'folderId' : 0,
+      'convertedContentId' : 1,
+      'imageFile' : 2
+    },
+    this.uploadable = true;
   }
-  process(file, downloadedData) {
+  processFile(file, downloadedData) {
     let parts = file.name.split('.');
     if(newsConverterAvailableFormats.isDocument(parts[1])){
       this.contentId = file.id;
       converter.sendToConverter(file.name, 'html', downloadedData).then((data) => {
         this.convertedContentData = data;
-        if(this.isCompleted())
-          this.finalProcessing();
+        if(this.isDbRequestCompleted())
+          this.sendToDb();
       });
       console.log('Content recieved');
     }
@@ -40,10 +47,10 @@ exports.News = class {
       this.title = iconv.encode(iconv.decode(downloadedData, "cp1251"), "utf8").toString();
       console.log(this.title);
     }
-    if(this.isCompleted())
-      this.finalProcessing();
+    if(this.isDbRequestCompleted())
+      this.sendToDb();
   }
-  finalProcessing() {
+  sendToDb() {
     console.log('Final processing...');
     
     let currentDate = new Date();
@@ -64,7 +71,7 @@ exports.News = class {
         db.insertNews(this.title, this.published, this.convertedContentId, this.contentId, this.imageFile, this.folderId);
       })
       //saving locally
-      let pathToFolder = pathHelper.dataDirectory + folderId
+      let pathToFolder = pathHelper.data_newsDirectory + folderId
       fs.mkdirSync(pathToFolder);
       fs.writeFileSync(pathToFolder + '/image.' + this.imageFile.split('.')[1], this.imageData);
       fs.writeFileSync(pathToFolder + '/content.html', this.convertedContentData);
@@ -72,7 +79,7 @@ exports.News = class {
 
     console.log('Done final processing');
   }
-  isCompleted(){
+  isDbRequestCompleted(){
     let allFields = [
       this.title,
       this.convertedContentData,
@@ -93,4 +100,26 @@ exports.News = class {
     let ext = filename.split('.')[1];
     return ext == 'txt' || newsConverterAvailableFormats.isDocument(ext);
   }
+  downloadData(){
+    db.getAllNewsFolders().then((dbRes)=>{
+      console.log(dbRes.length + ' news arrived');
+      dbRes.forEach(element => {
+        let pathToFolder = this.localDirectory + element[this.dbKeyValue['folderId']];
+        fs.mkdirSync(pathToFolder);
+        let imageParts = element[this.dbKeyValue['imageFile']].split('.');
+        let imageName = 'image.' + imageParts[1];
+        let imageId = imageParts[0];
+        let contentParts = element[this.dbKeyValue['convertedContentId']].split('.');
+        let contentId = contentParts[0];
+        gdCRUD.downloadFile(imageId, function (downloadedData) {
+          fs.writeFileSync(pathToFolder + '/' + imageName, downloadedData);
+        });
+        gdCRUD.downloadFile(contentId, function (downloadedData) {
+          fs.writeFileSync(pathToFolder + '/content.html', downloadedData);
+        });
+        console.log('News saved');
+      });
+    });
+  }
+
 }
