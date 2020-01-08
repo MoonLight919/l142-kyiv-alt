@@ -1,10 +1,9 @@
 var express = require('express');
-var sender = require('./myModules/sender');
-var pathHelper = require('./myModules/pathHelper');
-let converter = require('./myModules/monthConverter');
+var pathHelper = require('../myModules/pathHelper');
+let converter = require('../myModules/monthConverter');
 const fs = require('fs');
 let imageDataURI = require('image-data-uri');
-var db = require('./myModules/db');
+var db = require('../myModules/db');
 
 var router = express.Router();
 const bodyParser = require('body-parser');
@@ -12,32 +11,7 @@ const bodyParser = require('body-parser');
 // Create application/json parser
 var jsonParser = bodyParser.json();
 
-router.get('/', function(req, res, next) {
-  sender.sendPage(res, 'index');
-});
-router.get('/teachers', function(req, res, next) {
-  sender.sendPage(res, 'teachers');
-});
-router.get('/entranceExam', function(req, res, next) {
-  sender.sendPage(res, 'entranceExam');
-});
-router.get('/financeReports', function(req, res, next) {
-  sender.sendPage(res, 'financeReports');
-});
-router.get('/contacts', function(req, res, next) {
-  sender.sendPage(res, 'contacts');
-});
-router.get('/news', function(req, res, next) {
-  sender.sendPage(res, 'news');
-});
-router.get('/uploadableContent', function(req, res, next) {
-  let contentParts = [];
-  fs.readdirSync(pathHelper.uploadableContent).forEach(element => {
-    contentParts.push(fs.readFileSync(pathHelper.uploadableContent + element));
-  });
-  res.send(contentParts.join(''));
-});
-router.get('/news/:index', function(req, res, next) {
+router.get('/:index', function(req, res, next) {
   let newsObject = db.getNewsByIndex(req.params.index).then(function(dbRes) {
     const keyValue = {
       'folderId' : 0
@@ -46,13 +20,7 @@ router.get('/news/:index', function(req, res, next) {
   });
 });
 
-router.post('/financeReports', jsonParser, function(req, res, next) {
-  sender.sendFile(req, res, 'financeReports');
-});
-router.post('/entranceExam', jsonParser, function(req, res, next) {
-  sender.sendFile(req, res, 'entranceExam');
-});
-router.post('/news', jsonParser, function(req, res, next) {
+router.post('/', jsonParser, function(req, res, next) {
   if(fs.existsSync(pathHelper.data_newsDirectory)){
     const keyValue = {
       'id' : 0,
@@ -71,7 +39,6 @@ router.post('/news', jsonParser, function(req, res, next) {
         image_buffer = fs.readFileSync(pathHelper.data_newsDirectory + element[keyValue['folderId']] + '/' + 'image.' + imageExt);
         let dataUri = imageDataURI.encode(image_buffer, imageExt);
         let date = element[keyValue['published']].toString().split(' ');
-        console.log(date[1]);
         let resDate = date[2] + ' ' + converter.EngToUA(date[1]) + ' ' + date[3];
         result.push({
           id : element[keyValue['id']],

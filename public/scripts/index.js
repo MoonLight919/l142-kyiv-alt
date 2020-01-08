@@ -80,16 +80,15 @@ $(function(){
                 $('section').off('click', ccth);
             }
         }
-        function constructChildren(data) {
+        function constructStudents(data) {
             let arr = [];
-            let first = true;
             data.forEach(element => {
                 arr['carousel_item'] = $('<div/>', {
-                    "class" : 'car-item item'
+                    "class" : 'car-item item w-100'
                 });
                 arr['picture'] = $('<img/>', {
                     "src" : element.imageSrc,
-                    "class" : 'img-1'
+                    "class" : 'img-carousel'
                 });
                 arr['name'] = $('<p/>', {
                     "class" : 'text-2 text-color-white'
@@ -107,13 +106,17 @@ $(function(){
             });
             onWindowResize();
         }
+        // $.post(
+        //     "/news",
+        //     {
+        //         page: 0,
+        //         amount: 5
+        //     },
+        //     constructNewsWidget
+        // );
         $.post(
-            "/news",
-            {
-                page: 0,
-                amount: 5
-            },
-            constructNewsWidget
+            "/index",
+            constructStudents
         );
         //construct carousel
         let oldWindowWidth = window.innerWidth; 
@@ -143,8 +146,8 @@ $(function(){
             $(parent).empty();
             for (let i = 0; i < arr.length;) {
                 classes = i == 0 ? 
-                    "carousel-item active" : 
-                    "carousel-item";
+                    "carousel-item w-100 active" : 
+                    "carousel-item w-100";
                 row = $('<div/>', {
                     "class" : classes,
                     "data-interval" : "6000"

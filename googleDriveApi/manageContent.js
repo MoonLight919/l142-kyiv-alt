@@ -1,4 +1,3 @@
-let schedule = require('node-schedule');
 let fs = require('fs');
 let gdCRUD = require('../googleDriveApi/googleDriveCRUD');
 let authorization = require('../googleDriveApi/authorization');
@@ -11,21 +10,18 @@ models.push(new News.News());
 models.push(new Teacher.Teacher());
 models.push(new Student.Student());
 
-//export function startSchedule(timeString) {
-exports.startSchedule = function(timeString) {
-  var job = schedule.scheduleJob(timeString, async function(){
-    authorization.readCredentialsAndAuthorize().then(function () {
-      models.forEach((model)=>{
-        if(model.uploadable)
-          gdCRUD.listFiles(processIncomingData, model.GDFolderName);
-        if(!fs.existsSync(model.localDirectory))
-        {
-          fs.mkdirSync(model.localDirectory);
-          model.downloadData();
-        }
-      })
+exports.manageContent = function() {
+  authorization.readCredentialsAndAuthorize().then(function () {
+    models.forEach((model)=>{
+      if(model.uploadable)
+        gdCRUD.listFiles(processIncomingData, model.GDFolderName);
+      if(!fs.existsSync(model.localDirectory))
+      {
+        fs.mkdirSync(model.localDirectory);
+        model.downloadData();
+      }
     })
-  });
+  })
 }
 
 async function processIncomingData(err, res){

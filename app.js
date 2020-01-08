@@ -12,14 +12,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
-var schedule = require('./googleDriveApi/manageContent');
-var db = require('./myModules/db');
-var https = require("https");
-var htmlTableConverter = require('./myModules/htmlTableConverter');
-
+var googleDriveApi = require('./googleDriveApi/manageContent');
 
 var app = express();
-var router = require('./router');
+var mainRouter = require('./routers/mainRouter');
+var newsRouter = require('./routers/newsRouter');
 
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({
@@ -30,7 +27,8 @@ app.use(cookieParser());
 app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', router);
+app.use('/news', newsRouter);
+app.use('/', mainRouter);
 
 //db.createNewsTable();
 //db.truncateTable('additional');
@@ -40,8 +38,7 @@ app.use('/', router);
 //   console.log(JSON.stringify(dbRes));
 // });
 
-
-schedule.startSchedule('5 * * * * *');
+googleDriveApi.manageContent();
 
 // setInterval(function() {
 //     https.get("https://l142-kyiv.herokuapp.com/");
