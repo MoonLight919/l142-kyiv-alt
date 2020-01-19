@@ -80,6 +80,46 @@ $(function(){
                 $('section').off('click', ccth);
             }
         }
+        function constructStudents(data) {
+            let arr = [];
+            data.forEach(element => {
+                arr['carousel_item'] = $('<div/>', {
+                    "class" : 'car-item item w-100'
+                });
+                arr['picture'] = $('<img/>', {
+                    "src" : element.imageSrc,
+                    "class" : 'img-carousel'
+                });
+                arr['name'] = $('<p/>', {
+                    "class" : 'text-2 text-color-white'
+                });
+                arr['description'] = $('<p/>', {
+                    "class" : 'text-1'
+                });
+                $(arr['name']).text(element.name);
+                $(arr['description']).text(element.description);
+
+                $(arr['carousel_item']).append(arr['picture']);
+                $(arr['carousel_item']).append(arr['name']);
+                $(arr['carousel_item']).append(arr['description']);
+                $('#myCar').append(arr['carousel_item']);
+            });
+            onWindowResize();
+        }
+        //request for data for news widget
+        //temporary disabled 
+        // $.post(
+        //     "/news",
+        //     {
+        //         page: 0,
+        //         amount: 5
+        //     },
+        //     constructNewsWidget
+        // );
+        $.post(
+            "/index",
+            constructStudents
+        );
         //construct carousel
         let oldWindowWidth = window.innerWidth; 
         function onWindowResize() {
@@ -108,8 +148,8 @@ $(function(){
             $(parent).empty();
             for (let i = 0; i < arr.length;) {
                 classes = i == 0 ? 
-                    "carousel-item active" : 
-                    "carousel-item";
+                    "carousel-item w-100 active" : 
+                    "carousel-item w-100";
                 row = $('<div/>', {
                     "class" : classes,
                     "data-interval" : "6000"
@@ -133,6 +173,5 @@ $(function(){
             oldWindowWidth = window.innerWidth; 
         };
         $(window).resize(onWindowResize);
-        onWindowResize();
     // }, 3000);
 })

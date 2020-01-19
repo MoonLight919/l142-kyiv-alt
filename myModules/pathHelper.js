@@ -1,3 +1,6 @@
 let path = require('path');
 
-exports.dataDirectory = path.resolve('.') + '/data/';
+exports.data_newsDirectory = path.resolve('.') + '/data_news/';
+exports.data_studentsDirectory = path.resolve('.') + '/data_students/';
+exports.data_teachersDirectory = path.resolve('.') + '/data_teachers/';
+exports.uploadableContent = path.resolve('.') + '/uploadableContent/';

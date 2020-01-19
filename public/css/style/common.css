@@ -177,8 +177,12 @@ h4{
     height: 150px;
 }
 .img-1{
-    width: 128px;
-    height: 128px;
+    width: 120px;
+    height: 120px;
+}
+.img-carousel{
+    max-height: 200px;
+    width: auto;
 }
 /*#endregion*/
 /*#region Colors*/
@@ -286,20 +290,22 @@ footer h4{
 /* #endregion */
 /*#region News*/
 #news{
+    /*temporary disabled*/
+    display: none !important;
     width: 33%;
-    height: auto;
+    height: calc(50%);
+    max-height: calc(50%);
     position: fixed;
     right: 10px;
-    /* top: calc(40%); */
-    top: calc(30%);
+    top: calc(25%);
     background-color: yellowgreen;
     text-align: center !important;
     z-index: 2;
     border: 8px teal outset;
-    /* display: none !important; */
 }
 #news img{
-    height: 75%;
+    max-height:100%;
+    width:auto;
 }
 #news a, #news p, #news h2{
     color: white !important;
@@ -308,6 +314,8 @@ footer h4{
     border-bottom: 3px white dashed;
 }
 #bookmark{
+    /*temporary disabled*/
+    display: none;
     position: fixed;
     right: 10px;
     top: calc(30%);
