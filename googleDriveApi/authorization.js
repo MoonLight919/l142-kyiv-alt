@@ -35,11 +35,9 @@ exports.readCredentialsAndAuthorize = function() {
     // Authorize a client with credentials, then call the Google Drive API.
     //return new Promise(function(resolve, reject){
     return authorize(JSON.parse(credentials), (auth) => {
-        global.drive = google.drive({version: 'v3', auth});
-        console.log('Drive created!');
-      });
-      //resolve('Drive created!');
-  //})
+      global.drive = google.drive({version: 'v3', auth});
+      console.log('Drive created!');
+    })
 }
 
 /**

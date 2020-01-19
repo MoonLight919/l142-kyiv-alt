@@ -290,6 +290,7 @@ footer h4{
 /* #endregion */
 /*#region News*/
 #news{
+    /*temporary disabled*/
     display: none !important;
     width: 33%;
     height: calc(50%);
@@ -313,6 +314,7 @@ footer h4{
     border-bottom: 3px white dashed;
 }
 #bookmark{
+    /*temporary disabled*/
     display: none;
     position: fixed;
     right: 10px;

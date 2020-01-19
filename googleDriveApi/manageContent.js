@@ -6,27 +6,58 @@ let Teacher = require('../models/teacher');
 let Student = require('../models/student');
 
 let models = [];
-models.push(new News.News());
-models.push(new Teacher.Teacher());
 models.push(new Student.Student());
+models.push(new Teacher.Teacher());
+models.push(new News.News());
 
-exports.manageContent = function() {
-  authorization.readCredentialsAndAuthorize().then(function () {
-    models.forEach((model)=>{
-      if(model.uploadable)
-        gdCRUD.listFiles(processIncomingData, model.GDFolderName);
-      if(!fs.existsSync(model.localDirectory))
-      {
-        fs.mkdirSync(model.localDirectory);
-        model.downloadData();
+exports.manageContent = async function() {
+  for (let i = 0; i < models.length; i++){
+    if(global.drive == undefined){
+      await authorization.readCredentialsAndAuthorize().then(async function () {
+        if(models[i].uploadable){
+          console.log('uploadable');
+          gdCRUD.listFiles(models[i].GDFolderName, true).then(processIncomingData);
+        }
+        if(!fs.existsSync(models[i].localDirectory))
+        {
+          fs.mkdirSync(models[i].localDirectory);
+          await models[i].downloadData();
+        }
+      });
+    }
+    else
+    {
+      if(models[i].uploadable){
+        console.log('uploadable');
+        gdCRUD.listFiles(models[i].GDFolderName, true).then(processIncomingData);
       }
-    })
-  })
+      if(!fs.existsSync(models[i].localDirectory))
+      {
+        fs.mkdirSync(models[i].localDirectory);
+        await models[i].downloadData();
+      }
+    }
+  }
+  console.log('Done management');
 }
 
-async function processIncomingData(err, res){
-  if (err) return console.log('The API returned an error: ' + err);
-  let files = res.data.files;
+async function manageContentHandler() {
+  if(models[i].uploadable)
+    gdCRUD.listFiles(models[i].GDFolderName, true, processIncomingData);
+  if(!fs.existsSync(models[i].localDirectory))
+  {
+    fs.mkdirSync(models[i].localDirectory);
+    await models[i].downloadData();
+  }
+}
+
+// In a case if you download data for further serving
+// with db and uploading to Google Drive
+async function processIncomingData(files){
+  // console.log('CHECKING...');
+  
+  // if (err) return console.log('The API returned an error: ' + err);
+  // let files = res.data.files;
   let model = new News.News();
   if (files.length) {
     console.log('Files:');

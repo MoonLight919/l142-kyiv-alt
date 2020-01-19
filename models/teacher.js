@@ -9,22 +9,35 @@ exports.Teacher = class {
     this.uploadable = false
   }
   downloadData(){
-    gdCRUD.listFiles((err, res)=>{
-      let folders = res.data.files;
-      folders.forEach((folder)=>{
-        gdCRUD.listFiles((err, res)=>{
-          let files = res.data.files;
-          let pathToFolder = this.localDirectory + folder.name;
-          fs.mkdirSync(pathToFolder);
-          files.forEach((file)=>{
-            gdCRUD.downloadFile(file.id).then(function (downloadedData) {
-                let ext = file.name.split('.')[1];
-                let filename = ext == 'txt' ? 'description' : 'image';
-                fs.writeFileSync(pathToFolder + '/' + filename + '.' + ext, downloadedData);
-            });
-          })
-        }, undefined, folder.id)
-      })
-    }, this.GDFolderName);
+    return new Promise((resolve, reject)=>{
+    gdCRUD.listFiles(this.GDFolderName, true).then((departments)=>{
+      return Promise.all(departments.map((department) =>{
+        return gdCRUD.listFiles(department.id, false).then((teachers)=>{
+          if(teachers.length > 0){
+            let pathToDepartment = this.localDirectory + department.name;
+            fs.mkdirSync(pathToDepartment);
+            return Promise.all(teachers.map((teacher) =>{
+              return gdCRUD.listFiles(teacher.id, false).then((files)=>{
+                if(files.length == 2){
+                  let pathToTeacher = pathToDepartment + '/' + teacher.name;
+                  fs.mkdirSync(pathToTeacher);
+                  return Promise.all(files.map((file) =>{
+                    return gdCRUD.downloadFile(file.id).then(function (downloadedData) {
+                        let ext = file.name.split('.')[1];
+                        let filename = ext == 'txt' ? 'description' : 'image';
+                        fs.writeFileSync(pathToTeacher + '/' + filename + '.' + ext, downloadedData);
+                        console.log('Resolved teacher');
+                    });
+                  }))
+                }
+              })
+            }))
+          }
+        })
+      } ))
+    }).then(()=>{
+      resolve(1);
+    });;
+  })
   }
 }

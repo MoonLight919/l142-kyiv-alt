@@ -106,6 +106,8 @@ $(function(){
             });
             onWindowResize();
         }
+        //request for data for news widget
+        //temporary disabled 
         // $.post(
         //     "/news",
         //     {

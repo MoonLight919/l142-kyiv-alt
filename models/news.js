@@ -60,12 +60,12 @@ exports.News = class {
     this.published = year + '-' + month + '-' + day;
     let googleDriveCredentials = JSON.parse(fs.readFileSync(path.resolve('.') + '/credentials/googleDriveCredentials.json'));
     //uploading to google drive
-    googleDriveCRUD.createFolder(this.title, googleDriveCredentials['news_all']).then((folderId) => {
-      googleDriveCRUD.moveFile(this.imageFile.split('.')[0], folderId);
-      googleDriveCRUD.moveFile(this.contentId, folderId);
-      googleDriveCRUD.storeFile(this.contentId, this.convertedContentData, folderId).then((fileId) => {
+    gdCRUD.createFolder(this.title, googleDriveCredentials['news_all']).then((folderId) => {
+      gdCRUD.moveFile(this.imageFile.split('.')[0], folderId);
+      gdCRUD.moveFile(this.contentId, folderId);
+      gdCRUD.storeFile(this.contentId, this.convertedContentData, folderId).then((fileId) => {
         //shitty approach
-        //googleDriveCRUD.moveFile(folderId, googleDriveCredentials['news_all']);
+        //gdCRUD.moveFile(folderId, googleDriveCredentials['news_all']);
         this.convertedContentId = fileId;
         this.folderId = folderId;
         db.insertNews(this.title, this.published, this.convertedContentId, this.contentId, this.imageFile, this.folderId);
@@ -101,25 +101,29 @@ exports.News = class {
     return ext == 'txt' || newsConverterAvailableFormats.isDocument(ext);
   }
   downloadData(){
+    return new Promise((resolve, reject)=>{
     db.getAllNewsFolders().then((dbRes)=>{
-      console.log(dbRes.length + ' news arrived');
-      dbRes.forEach(element => {
-        let pathToFolder = this.localDirectory + element[this.dbKeyValue['folderId']];
+      return Promise.all(dbRes.map((res)=>{
+        let pathToFolder = this.localDirectory + res[this.dbKeyValue['folderId']];
         fs.mkdirSync(pathToFolder);
-        let imageParts = element[this.dbKeyValue['imageFile']].split('.');
+        let imageParts = res[this.dbKeyValue['imageFile']].split('.');
         let imageName = 'image.' + imageParts[1];
         let imageId = imageParts[0];
-        let contentParts = element[this.dbKeyValue['convertedContentId']].split('.');
+        let contentParts = res[this.dbKeyValue['convertedContentId']].split('.');
         let contentId = contentParts[0];
-        gdCRUD.downloadFile(imageId, function (downloadedData) {
+        return gdCRUD.downloadFile(imageId).then((downloadedData)=>{
           fs.writeFileSync(pathToFolder + '/' + imageName, downloadedData);
+        }).then(()=>{
+          return gdCRUD.downloadFile(contentId).then((downloadedData)=>{
+            fs.writeFileSync(pathToFolder + '/content.html', downloadedData);
+            console.log('Resolved news');
+          });
         });
-        gdCRUD.downloadFile(contentId, function (downloadedData) {
-          fs.writeFileSync(pathToFolder + '/content.html', downloadedData);
-        });
-        console.log('News saved');
-      });
+      }))
+    }).then(()=>{
+      resolve(1);
     });
+  })
   }
 
 }

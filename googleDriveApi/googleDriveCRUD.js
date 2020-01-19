@@ -2,25 +2,25 @@ let fs = require('fs');
 var stream = require('stream');
 let path = require('path');
 
-exports.downloadFile = async function(fileid, callback) {
-    let bufs = [], resData;
+exports.downloadFile = function downloadFile(fileid, callback) {
     if(!callback)
         callback = ()=>{};
+    let buffs = [];
     return new Promise(function(resolve, reject){
         global.drive.files.get({fileId: fileid, alt: 'media'}, {responseType: 'stream'},
-            function(err, res){
+        function(err, res){
             res.data.on('data', function(data){
-                bufs.push(data); 
+                buffs.push(data); 
             })
             .on('end', function(){
-                resData = Buffer.concat(bufs);
+                resData = Buffer.concat(buffs);
                 resolve(resData);
             })
             .on('error', err => {
                 console.log('Error', err);
             })
             .on('end', callback)
-        });
+        });   
     })
 }
   
@@ -116,13 +116,19 @@ exports.moveFile = function(fileId, folderId) {
 * Lists the names and IDs of up to 100 files.
 * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
 */
-exports.listFiles = function(handler, folderName, folderId) {
-    let googleDriveCredentials = JSON.parse(fs.readFileSync(path.resolve('.') + '/credentials/googleDriveCredentials.json'));
-    let query = folderId == undefined ? googleDriveCredentials.folders[folderName] : folderId;
-    // would like to replace it with classes if js had interfaces
-      global.drive.files.list({
-        q: `'${query}' in parents`,
-        pageSize: 100,
-        fields: 'nextPageToken, files(id, name)',
-      }, handler);
-  }
+exports.listFiles = function listFiles(folder, isName, callback) {
+    if(!callback)
+        callback = ()=>{};
+    return new Promise(function(resolve, reject){
+        let googleDriveCredentials = JSON.parse(fs.readFileSync(path.resolve('.') + '/credentials/googleDriveCredentials.json'));
+        let query = isName == true ? googleDriveCredentials.folders[folder] : folder;
+        // would like to replace it with classes if js had interfaces
+        global.drive.files.list({
+            q: `'${query}' in parents`,
+            pageSize: 100,
+            fields: 'nextPageToken, files(id, name)',
+        }, function(err, res){
+            resolve(res.data.files)
+        });
+    })
+}
