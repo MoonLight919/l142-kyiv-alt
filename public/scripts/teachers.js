@@ -38,8 +38,8 @@ $(function(){
                 $(arr['cols']).append(arr['item']);
                 $(arr['row']).append(arr['cols']);
             });
-            $('.container-fluid').append(arr['header']);
-            $('.container-fluid').append(arr['row']);
+            $('section').append(arr['header']);
+            $('section').append(arr['row']);
         });
     }
     $.post(
