@@ -34,9 +34,6 @@ app.use('/', mainRouter);
 //db.truncateTable('additional');
 //db.createNewsRowsCount();
 //console.log('done');
-// db.getAllNewsFolders().then((dbRes) =>{
-//   console.log(JSON.stringify(dbRes));
-// });
 
 googleDriveApi.manageContent();
 
