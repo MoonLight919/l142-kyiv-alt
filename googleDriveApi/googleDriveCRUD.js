@@ -9,6 +9,8 @@ exports.downloadFile = function downloadFile(fileid, callback) {
     return new Promise(function(resolve, reject){
         global.drive.files.get({fileId: fileid, alt: 'media'}, {responseType: 'stream'},
         function(err, res){
+            if(res == undefined)
+                return downloadFile(fileid, callback);
             res.data.on('data', function(data){
                 buffs.push(data); 
             })
@@ -128,6 +130,8 @@ exports.listFiles = function listFiles(folder, isName, callback) {
             pageSize: 100,
             fields: 'nextPageToken, files(id, name)',
         }, function(err, res){
+            if(res == undefined)
+                return listFiles(folder, isName, callback);
             resolve(res.data.files)
         });
     })
