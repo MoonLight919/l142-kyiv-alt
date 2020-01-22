@@ -9,12 +9,29 @@ $(function(){
             },
             showNews
         );
-           
     }
+    // let allNewsLoaded = false;
+    // let intervalId = setInterval(()=>{
+    //     $.post(
+    //         "/news",
+    //         {
+    //             page: 0,
+    //             amount: 6
+    //         },
+    //         function(data) {
+    //             allNewsLoaded = data.allNewsLoaded;
+    //             showNews(data);
+    //         }
+    //     );
+    //     console.log(allNewsLoaded);
+    //     if(allNewsLoaded)
+    //         clearInterval(intervalId);
+    // }, 1000);
     function showNews(data)
     {
         let arr = [];
-        data.forEach(element => {
+        $('#upload').empty();
+        data.content.reverse().forEach(element => {
             arr['news_item'] = $('<div/>', {
                 "class" : 'news-item col-sm-11 col-md-5 col-lg-3 item myborder'
             });
@@ -38,5 +55,5 @@ $(function(){
             $('#upload').append(arr['news_item']);
         });
     }
-    loadNews(0, 10);   
+    loadNews(0, 6);
 })

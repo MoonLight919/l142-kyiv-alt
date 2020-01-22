@@ -82,7 +82,8 @@ $(function(){
         }
         function constructStudents(data) {
             let arr = [];
-            data.forEach(element => {
+            $('#myCar').empty();
+            data.content.forEach(element => {
                 arr['carousel_item'] = $('<div/>', {
                     "class" : 'car-item item w-100'
                 });
@@ -116,10 +117,21 @@ $(function(){
         //     },
         //     constructNewsWidget
         // );
-        $.post(
-            "/index",
-            constructStudents
-        );
+        let allStudentsLoaded = false;
+        let intervalId = setInterval(()=>{
+            $.post(
+                "/index",
+                function(data) {
+                    allStudentsLoaded = data.allStudentsLoaded;
+                    constructStudents(data);
+                    console.log(data.allStudentsLoaded);
+                }
+            );
+            if(allStudentsLoaded){
+                clearInterval(intervalId);
+                console.log(1111);
+            }
+        }, 1000);
         //construct carousel
         let oldWindowWidth = window.innerWidth; 
         function onWindowResize() {

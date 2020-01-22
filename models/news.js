@@ -101,6 +101,7 @@ exports.News = class {
     return ext == 'txt' || newsConverterAvailableFormats.isDocument(ext);
   }
   downloadData(){
+    global.allNewsLoaded = false;
     return new Promise((resolve, reject)=>{
     db.getAllNewsFolders().then((dbRes)=>{
       return Promise.all(dbRes.map((res)=>{
@@ -122,8 +123,11 @@ exports.News = class {
       }))
     }).then(()=>{
       resolve(1);
+      global.allNewsLoaded = true;
     });
   })
   }
-
+  canBeDownloaded(){
+    global.allNewsLoaded = true;
+  }
 }

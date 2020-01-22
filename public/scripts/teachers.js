@@ -1,7 +1,8 @@
 $(function(){
     function constructTeachers(data) {
         let arr = [];
-        data.forEach(department => {
+        $('#teachersContent').empty();
+        data.content.forEach(department => {
             arr['header'] = $('<div/>', {
                 "class" : 'item margin-top-50 department-header'
             });
@@ -38,12 +39,24 @@ $(function(){
                 $(arr['cols']).append(arr['item']);
                 $(arr['row']).append(arr['cols']);
             });
-            $('section').append(arr['header']);
-            $('section').append(arr['row']);
+            $('#teachersContent').append(arr['header']);
+            $('#teachersContent').append(arr['row']);
         });
     }
-    $.post(
-        "/teachers",
-        constructTeachers
-    );
+    let allTeachersLoaded = false;
+    let intervalId = setInterval(()=>{
+        $.post(
+            "/teachers",
+            function(data) {
+                allTeachersLoaded = data.allTeachersLoaded;
+                constructTeachers(data);
+                //console.log(data.allTeachersLoaded);
+            }
+        );
+        console.log(allTeachersLoaded);
+        
+        if(allTeachersLoaded){
+            clearInterval(intervalId);
+        }
+    }, 1000);
 });

@@ -9,38 +9,7 @@ exports.Student = class {
     this.uploadable = false
   }
 
-  // downloadData(){
-  //   return new Promise((resolve, reject)=>{
-  //   gdCRUD.listFiles(this.GDFolderName, true).then((downloadedData)=>{
-  //     let folders = downloadedData;
-  //     for (let i = 0; i < folders.length; i++){
-  //       gdCRUD.listFiles(folders[i].id, false).then((downloadedData)=>{
-  //         let files = downloadedData;
-  //         let pathToFolder = this.localDirectory + folders[i].name;
-  //         fs.mkdirSync(pathToFolder);
-  //         for (let j = 0; j < files.length; j++){
-  //           gdCRUD.downloadFile(files[j].id).then((downloadedData)=>{
-  //               let ext = files[j].name.split('.')[1];
-  //               let filename = ext == 'txt' ? 'description' : 'image';
-  //               fs.writeFileSync(pathToFolder + '/' + filename + '.' + ext, downloadedData);
-  //               console.log('i: ' + i);
-  //               console.log('j: ' + j);
-  //               if(fs.readdirSync(pathToFolder).length == 2 &&
-  //                 i == folders.length - 1 && 
-  //                 j == files.length - 1){
-  //                 console.log('Resolved student');
-  //                 resolve(1);
-  //                 return 1;
-  //               }
-  //           });
-  //         }
-  //       })
-  //     }
-  //   });
-  // });
-  // }
-
-  downloadData(){
+  downloadDataV2(){
     return new Promise((resolve, reject)=>{
       gdCRUD.listFiles(this.GDFolderName, true).then((folders)=>{
         return Promise.all(folders.map((folder) =>{
@@ -60,6 +29,42 @@ exports.Student = class {
       }).then(()=>{
         resolve(1);
       });
-  })
+    })
+  }
+
+  downloadData(){
+    global.allStudentsLoaded = false;
+    return new Promise(async(resolve, reject)=>{
+      let students = [], result = [];
+      await gdCRUD.listFiles(this.GDFolderName, true).then((s)=>{
+        students = s;
+      });
+      for (let i = 0; i < students.length; i++) {
+        await gdCRUD.listFiles(students[i].id, false).then((files)=>{
+          result.push({
+            student : students[i],
+            files: files
+          });
+        });
+        if(result[i].files.length != 2)
+          continue;
+        let pathToStudents = this.localDirectory + students[i].name;
+        result[i].pathToStudent = pathToStudents;
+        fs.mkdirSync(pathToStudents);
+        for (let j = 0; j < result[i].files.length; j++) {
+          await gdCRUD.downloadFile(result[i].files[j].id).then((downloadedData)=>{
+            let ext = result[i].files[j].name.split('.')[1];
+            let filename = ext == 'txt' ? 'description' : 'image';
+            fs.writeFileSync(result[i].pathToStudent + '/' + filename + '.' + ext, downloadedData);
+            console.log('Resolved student');
+          });
+        }
+      }
+      resolve(1);
+      global.allStudentsLoaded = true;
+    });
+  }
+  canBeDownloaded(){
+    global.allStudentsLoaded = true;
   }
 }

@@ -53,7 +53,10 @@ router.post('/entranceExam', jsonParser, function(req, res, next) {
   sender.sendFile(req, res, 'entranceExam');
 });
 router.post('/index', jsonParser, function(req, res, next) {
-  let result = [];
+  let result = {
+    content: new Array(),
+    allStudentsLoaded: global.allStudentsLoaded
+  };
   if(fs.existsSync(pathHelper.data_studentsDirectory)){
     fs.readdirSync(pathHelper.data_studentsDirectory).forEach(folder => {
       let files =  fs.readdirSync(pathHelper.data_studentsDirectory + '/' + folder);
@@ -71,7 +74,7 @@ router.post('/index', jsonParser, function(req, res, next) {
           imageSrc = imageDataURI.encode(image_buffer, imageExt);
         }
       });
-      result.push({
+      result.content.push({
         name : folder,
         description : descriptionFile,
         imageSrc : imageSrc
@@ -81,7 +84,12 @@ router.post('/index', jsonParser, function(req, res, next) {
   }
 });
 router.post('/teachers', jsonParser, function(req, res, next) {
-  let result = [];
+  console.log(global.allTeachersLoaded);
+  
+  let result = {
+    content: new Array(),
+    allTeachersLoaded: global.allTeachersLoaded
+  };
   if(fs.existsSync(pathHelper.data_teachersDirectory)){
     fs.readdirSync(pathHelper.data_teachersDirectory).forEach(department => {
       let teachers = [];
@@ -107,7 +115,7 @@ router.post('/teachers', jsonParser, function(req, res, next) {
           imageSrc : imageSrc
         });
       });
-      result.push({
+      result.content.push({
         name : department,
         teachers : teachers
       });

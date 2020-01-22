@@ -23,6 +23,8 @@ exports.manageContent = async function() {
           fs.mkdirSync(models[i].localDirectory);
           await models[i].downloadData();
         }
+        else
+          models[i].canBeDownloaded();
       });
     }
     else
@@ -36,7 +38,10 @@ exports.manageContent = async function() {
         fs.mkdirSync(models[i].localDirectory);
         await models[i].downloadData();
       }
+      else
+          models[i].canBeDownloaded();
     }
+    console.log('model resolved');
   }
   console.log('Done management');
 }

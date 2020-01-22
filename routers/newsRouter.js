@@ -31,7 +31,10 @@ router.post('/', jsonParser, function(req, res, next) {
       'imageFile' : 5,
       'folderId' : 6
     }
-    let result = [];
+    let result = {
+      content: new Array(),
+      allNewsLoaded: global.allNewsLoaded
+    };
     db.getManyNews(req.body.page, req.body.amount).then(function(dbRes) {
       let image_buffer;
       Array.from(dbRes).forEach(element => {
@@ -40,7 +43,7 @@ router.post('/', jsonParser, function(req, res, next) {
         let dataUri = imageDataURI.encode(image_buffer, imageExt);
         let date = element[keyValue['published']].toString().split(' ');
         let resDate = date[2] + ' ' + converter.EngToUA(date[1]) + ' ' + date[3];
-        result.push({
+        result.content.push({
           id : element[keyValue['id']],
           title : element[keyValue['title']],
           published : resDate,
