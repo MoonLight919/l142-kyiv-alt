@@ -1,0 +1,31 @@
+section{
+    min-height: 100vh;
+}
+body{
+    background-color: whitesmoke !important; 
+}
+.margin-top-50{
+    margin-top: 50px;
+}
+.teacher-image{
+    height: 256px;
+    width: 220px;
+    border-radius: 20px;
+}
+.teachers-row div{
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.department-header{
+    color: teal
+}
+.department-header h3{
+    margin-bottom: 0;
+}
+img{
+    object-fit: cover;
+}
+td, li{
+    text-align: center;
+    vertical-align: middle !important;
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ліцей №142 | Інформація</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style/common.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style/information.css" />
+    <link rel="stylesheet" type="text/css" href="../css/fonts.css">
+    <link rel="stylesheet" type="text/css" href="../css/mediaQueries/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/mediaQueries/information.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous" defer>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/divjax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous" defer></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous" defer></script>
+    <script type="text/javascript">
+        let arr = ["common.js"];
+        let directoryPath = '../scripts/';
+        function downloadJSAtOnload(fileName) 
+        {
+            let elem = document.createElement("script");
+            elem.type = 'module';
+            elem.src = directoryPath + fileName + '?' + Math.random(1, 1000);
+            document.body.appendChild(elem);
+        }
+        arr.forEach(element => {
+            if (window.addEventListener)
+                window.addEventListener("load", downloadJSAtOnload.bind(downloadJSAtOnload, element), false);
+            else if (window.attachEvent)
+                window.attachEvent("onload", downloadJSAtOnload.bind(downloadJSAtOnload, element));
+            else
+                window.onload = downloadJSAtOnload.bind(downloadJSAtOnload, element);
+        });
+    </script>
+</head>
+<body>
+    <section class="container d-flex align-items-center flex-column">
+        <div class="item" id="section-header">
+            <h2 class="text-4 text-color-for-teachers text-center">Умови прийому учнів</h2>
+            <img class="w-100" src="../images/divider2.png" alt="">
+        </div>
+        <p class="text-2 text-justify">Прийом учнів до 5 та 8-10 класів здійснюється за конкурсом на підставі результатів письмових іспитів, співбесід. В конкурсному відборі можуть брати участь всі бажаючі учні, незалежно від місця проживання.</p><hr>
+        <p class="text-2 text-justify">Прийом заяв проводиться з 1 листопада кожного року в години прийому (вівторок з 14:00 до 17:00 та п’ятниця з 10:00 до 13:00). Письмові іспити проводяться за додатковим розкладом. Для участі в конкурсі учні або іх батьки (або особи, які їх заміняють) повинні подати заяву про участь у конкурсі.</p>
+        <hr>
+        <p class="text-2 text-justify">Учні складають наступні іспити:</p>
+        <hr>
+        <div class="table-responsive-sm table-bordered">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>До 5 класу</td>
+                        <td>Математика</td>
+                    </tr>
+                    <tr>
+                        <td>До класів фізико-математичного профілю (8-10 кл.)</td>
+                        <td>Математика</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">До класів хіміко-технологічного профілю (8-10 кл.)</td>
+                        <td>8 клас – фізика, математика</td>
+                    </tr>
+                    <tr>
+                        <td>9-10 клас – хімія, математика</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <h2 class="text-4 department-header">Проведення конкурсу</h2>
+        <hr>
+        <p class="text-2 text-justify">
+            Конкурсні іспити проводить конкурсна комісія, яка складається з викладачів математики, української мови, фізики та хімії. Склад комісії затверджується наказом директора ліцею за погодженням з Радою ліцею.
+        </p>
+        <hr>
+        <p class="text-2 text-justify">
+            Варіанти письмових завдань (тестів) для конкурсних іспитів розробляються головами предметних комісій та зберігаються у директора ліцею в запечатаному конверті, який відкривається в день проведення іспиту в присутності членів предметної комісії та учнів.
+        </p>
+        <hr>
+        <p class="text-2 text-justify"> 
+            Для проведення іспитів у письмовій формі учням видається папір із штампом ліцею. Після закінчення іспиту письмові роботи шифруються головою конкурсної комісії і передаються для перевірки членам цієї комісії без титульної сторінки. Дешифруються роботи після того, як виставляються оцінки за роботи.
+        <hr>
+        <p class="text-2 text-justify">
+            Результати іспитів оформлюються у вигляді протоколу і оголошуються у письмовій формі для загального ознайомлення всіх учасників не пізніше ніж через три дні після проведення випробувань.
+        </p>
+        <hr>
+        <h2 class="text-4 department-header">Порядок зарахування</h2>
+        <hr>
+        <p class="text-2 text-justify">
+            Підсумки конкурсу підводяться на засіданні конкурсної комісії, яка приймає рішення про зарахування учнів до ліцею. При однакових результатах конкурсних іспитів перевага надається учням Солом’янського району, а також переможцям районних, міських олімпіад та МАН.
+            Зарахування дітей проводиться протягом 5 днів після оголошення результатів конкурсу.
+        </p>
+        <hr>
+        <p class="text-2 text-justify">
+            До ліцею подаються такі документи:
+        </p>
+        <hr>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Копія свідоцтва про народження</li>
+            <li class="list-group-item">Особова справа</li>
+            <li class="list-group-item">Медична картка встановленого зразка</li>
+        </ul>
+        <hr>
+        <p class="text-2 text-justify">
+            При зарахуванні до ліцею враховуються такі фактори:
+        </p>
+        <hr>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Загальний рівень культури виховання, поведінки, освіти і розвитку учнів</li>
+            <li class="list-group-item">Медичні показники</li>
+            <li class="list-group-item">Індивідуальні та моральні якості</li>
+            <li class="list-group-item">Схильність та інтерес до досліджень, пошуку, технічної творчості, міркувань, логічного мислення</li>
+        </ul>
+        <hr>
+        <p class="text-2 text-justify">
+            Якщо учні, їх батьки або особи, які їх замінюють, не згодні з рішенням конкурсної комісії, вони можуть звернутися до голови цієї комісії з апеляцією. Апеляція подається протягом тижня після оголошення результатів конкурсу і розглядається протягом трьох днів з дня ії подання. Для розгляду апеляцій створюється апеляційна комісія, чисельність та склад якої визначаються ліцеєм за погодженням з управлінням освіти Солом’янського району Києва. Проведення додаткових випробувань під час розгляду апеляції забороняється.
+        </p>
+        <hr>
+        <p class="text-2 text-justify"> 
+            Діти, які зараховані до ліцею, але не приступили до занять без поважних причин протягом 10 днів від їх початку, відраховуються з навчального закладу. На звільнені місця може проводитися додатковий конкурс.
+        <hr>
+        <p class="text-2 text-justify">
+            При наявності відповідної підготовки прийом та зарахування до ліцею може проводитись в будь-якому класі, за виключенням 11 класів.
+        </p>
+    </section>
+    <div id="uploadableContent">
+
+    </div>
+</body>
+</html>

@@ -18,6 +18,7 @@ var googleDriveApi = require('./googleDriveApi/manageContent');
 var app = express();
 var mainRouter = require('./routers/mainRouter');
 var newsRouter = require('./routers/newsRouter');
+var teachersRouter = require('./routers/teachersRouter');
 
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({
@@ -28,6 +29,7 @@ app.use(cookieParser());
 app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/teachers', teachersRouter);
 app.use('/news', newsRouter);
 app.use('/', mainRouter);
 

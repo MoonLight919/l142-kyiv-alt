@@ -9,14 +9,12 @@ exports.sendPage = function(response, page){
 
 exports.sendFile = function(req, res, page){
 //export function sendFile(req, res, page) {
-    // let dataPath = pathHelper.dataDirectory + page;
-    // let files = fs.readdirSync(dataPath);
-    // let val = req.body.val;
-    
-    // let ind = files.findIndex(function (element, index, array) {
-    //   return element.includes(val);
-    // });
-    
-    // res.setHeader('Filename', encodeURI(files[ind]));
-    // res.sendFile(dataPath + '/' + files[ind]);
+    let dataPath = path.resolve('.') + '/' + page + '/';
+    let files = fs.readdirSync(dataPath);
+    let val = req.body.val;
+    let ind = files.findIndex(function (element, index, array) {
+      return element.includes(val);
+    });
+    res.setHeader('Filename', encodeURI(files[ind]));
+    res.sendFile(dataPath + '/' + files[ind]);
 };

@@ -19,6 +19,9 @@ router.get('/', function(req, res, next) {
 router.get('/teachers', function(req, res, next) {
   sender.sendPage(res, 'teachers');
 });
+router.get('/information', function(req, res, next) {
+  sender.sendPage(res, 'information');
+});
 router.get('/entranceExam', function(req, res, next) {
   sender.sendPage(res, 'entranceExam');
 });
@@ -83,76 +86,5 @@ router.post('/index', jsonParser, function(req, res, next) {
     res.send(result);
   }
 });
-router.post('/teachers', jsonParser, function(req, res, next) {
-  console.log(global.allTeachersLoaded);
-  
-  let result = {
-    content: new Array(),
-    allTeachersLoaded: global.allTeachersLoaded
-  };
-  if(fs.existsSync(pathHelper.data_teachersDirectory)){
-    fs.readdirSync(pathHelper.data_teachersDirectory).forEach(department => {
-      let teachers = [];
-      fs.readdirSync(pathHelper.data_teachersDirectory + department).forEach((teacher)=>{
-        let descriptionFile, imageSrc;
-        fs.readdirSync(pathHelper.data_teachersDirectory + '/' +
-         department + '/' + teacher).forEach((file)=>{
-          if(file.includes('description')){
-            let descriptionData = fs.readFileSync(pathHelper.data_teachersDirectory 
-              + department + '/' + '/' + teacher + '/' + file);
-            descriptionFile = iconv.encode(iconv.decode(descriptionData, "cp1251"), "utf8").toString();  
-          }
-          else{
-            let imageExt = file.split('.')[1];
-            let image_buffer = fs.readFileSync(pathHelper.data_teachersDirectory 
-              + department + '/' + '/' + teacher + '/' + file);
-            imageSrc = imageDataURI.encode(image_buffer, imageExt);
-          }
-        });
-        teachers.push({
-          name : teacher,
-          description : descriptionFile,
-          imageSrc : imageSrc
-        });
-      });
-      result.content.push({
-        name : department,
-        teachers : teachers
-      });
-    });
-    res.send(result);
-  }
-});
-// router.post('/news', jsonParser, function(req, res, next) {
-//   if(fs.existsSync(pathHelper.data_newsDirectory)){
-//     const keyValue = {
-//       'id' : 0,
-//       'title' : 1,
-//       'published' : 2,
-//       'convertedContentId' : 3,
-//       'contentId' : 4,
-//       'imageFile' : 5,
-//       'folderId' : 6
-//     }
-//     let result = [];
-//     db.getManyNews(req.body.page, req.body.amount).then(function(dbRes) {
-//       let image_buffer;
-//       Array.from(dbRes).forEach(element => {
-//         let imageExt = element[keyValue['imageFile']].split('.')[1];
-//         image_buffer = fs.readFileSync(pathHelper.data_newsDirectory + element[keyValue['folderId']] + '/' + 'image.' + imageExt);
-//         let dataUri = imageDataURI.encode(image_buffer, imageExt);
-//         let date = element[keyValue['published']].toString().split(' ');
-//         let resDate = date[2] + ' ' + converter.EngToUA(date[1]) + ' ' + date[3];
-//         result.push({
-//           id : element[keyValue['id']],
-//           title : element[keyValue['title']],
-//           published : resDate,
-//           imageSrc : dataUri
-//         });
-//       });
-//       res.send(result);
-//     });
-//   }
-// });
 
 module.exports = router;
