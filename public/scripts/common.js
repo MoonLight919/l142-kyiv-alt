@@ -141,7 +141,26 @@ $(function(){
 //send request and receive file from server
 export let receiveFile = function (page, eventData)
 {
-    let ind = $(eventData.currentTarget).attr('data-index');      
+    let ind = $(eventData.currentTarget).attr('data-index');
+    let dataObject;
+    switch (page) {
+        case 'financeReports':
+            let period = $(eventData.currentTarget).attr('data-group');
+            dataObject = JSON.stringify({
+                "val":ind,
+                "group" : period
+            });
+            break;
+        case 'entranceExam':
+            dataObject = JSON.stringify({
+                "val":ind,
+                "group" : ind
+            });
+            break;
+    
+        default:
+            break;
+    }   
     
     $.ajax({
         url:'/' + page,
@@ -149,7 +168,7 @@ export let receiveFile = function (page, eventData)
         xhrFields: {
             responseType: 'blob'
         },
-        data: JSON.stringify({"val":ind}),
+        data: dataObject,
         contentType: "application/json; charset=utf-8",
         success: function (data, textStatus, request) {
             var a = document.createElement('a');

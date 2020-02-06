@@ -68,3 +68,9 @@ data_students/
 
 # data for news
 data_teachers/
+
+# data for entrance exams
+data_entranceExam/
+
+# data for finance reports
+data_financeReports/

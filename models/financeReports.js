@@ -4,7 +4,7 @@ let gdCRUD = require('../googleDriveApi/googleDriveCRUD');
 
 exports.FinanceReports = class {
   constructor() {
-    this.GDFolderName = 'financeReports',
+    this.GDFolderName = 'data_financeReports',
     this.localDirectory = pathHelper.data_financeReports,
     this.uploadable = false
   }
