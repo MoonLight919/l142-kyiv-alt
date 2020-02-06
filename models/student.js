@@ -42,7 +42,6 @@ exports.Student = class {
       for (let i = 0; i < students.length; i++) {
         await gdCRUD.listFiles(students[i].id, false).then((files)=>{
           result.push({
-            student : students[i],
             files: files
           });
         });

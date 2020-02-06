@@ -4,11 +4,15 @@ let authorization = require('../googleDriveApi/authorization');
 let News = require('../models/news');
 let Teacher = require('../models/teacher');
 let Student = require('../models/student');
+let EntranceExams = require('../models/entranceExams');
+let FinanceReports = require('../models/financeReports');
 
 let models = [];
 models.push(new Student.Student());
 models.push(new Teacher.Teacher());
 models.push(new News.News());
+models.push(new FinanceReports.FinanceReports());
+models.push(new EntranceExams.EntranceExams());
 
 exports.manageContent = async function() {
   for (let i = 0; i < models.length; i++){

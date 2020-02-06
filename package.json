@@ -7,6 +7,7 @@
     "test": "mocha Tests --require babel-core/register"
   },
   "dependencies": {
+    "adm-zip": "^0.4.14",
     "body-parser": "^1.19.0",
     "cloudconvert": "^1.1.2",
     "cookie-parser": "~1.4.4",
