@@ -34,14 +34,6 @@ router.get('/contacts', function(req, res, next) {
 router.get('/news', function(req, res, next) {
   sender.sendPage(res, 'news');
 });
-router.get('/news/:index', function(req, res, next) {
-  let newsObject = db.getNewsByIndex(req.params.index).then(function(dbRes) {
-    const keyValue = {
-      'folderId' : 0
-    }
-    res.sendFile(pathHelper.data_newsDirectory + dbRes[keyValue['folderId']] + '/' + 'content.html');
-  });
-});
 router.get('/uploadableContent', function(req, res, next) {
   let contentParts = [];
   fs.readdirSync(pathHelper.uploadableContent).forEach(element => {
@@ -51,6 +43,26 @@ router.get('/uploadableContent', function(req, res, next) {
 });
 router.post('/financeReports', jsonParser, function(req, res, next) {
   sender.sendFile(req, res, 'financeReports');
+});
+router.get('/financeReports/all', jsonParser, function(req, res, next) {
+  let result = {
+    content: new Array(),
+    allLoaded: global.allFinanceReportsLoaded
+  };
+  if(fs.existsSync(pathHelper.data_financeReports)){
+    fs.readdirSync(pathHelper.data_financeReports).forEach(folder => {
+      let files =  fs.readdirSync(pathHelper.data_financeReports + '/' + folder);
+      let reports = [];
+      files.forEach((file)=>{
+        reports.push(file);
+      });
+      result.content.push({
+        name: folder,
+        reports: reports
+      });
+    });
+    res.send(result);
+  }
 });
 router.post('/entranceExam', jsonParser, function(req, res, next) {
   sender.sendFile(req, res, 'entranceExam');
