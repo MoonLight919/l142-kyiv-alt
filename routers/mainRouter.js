@@ -42,7 +42,7 @@ router.get('/uploadableContent', function(req, res, next) {
   res.send(contentParts.join(''));
 });
 router.post('/financeReports', jsonParser, function(req, res, next) {
-  sender.sendFile(req, res, 'financeReports');
+  sender.sendFile(req, res, 'data_financeReports');
 });
 router.get('/financeReports/all', jsonParser, function(req, res, next) {
   let result = {
