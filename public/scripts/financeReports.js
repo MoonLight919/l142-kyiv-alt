@@ -1,8 +1,11 @@
-import {receiveFile} from './common.js';;
+import {receiveFile} from './common.js';
 
 $(function(){
+    $('#loading').show();
     function constructReports(data)
     {
+        if(data.content.length > 0)
+            $('#loading').hide();
         $('.container').empty();
         data.content.reverse().forEach(period => {
             arr['ul'] = $('<ul/>', {

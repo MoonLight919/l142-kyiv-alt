@@ -335,6 +335,10 @@ footer h4{
 
 /*#endregion*/
 
+#loading{
+    max-height: 100vh;
+    max-width: auto;
+}
 *{
     /* font-family: "Great Vibes"; */
     font-family: "Arkhip";

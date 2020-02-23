@@ -6,6 +6,7 @@ $(function(){
     // });    
 
     //upload content (html imports replacement)
+    $('[data-toggle="tooltip"]').tooltip();
     $('#uploadableContent').load('/uploadableContent', ()=>{
          //make header smaller while scroll down
         window.onscroll = function() {

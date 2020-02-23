@@ -1,5 +1,8 @@
 $(function(){
+    $('#loading').show();
     function constructTeachers(data) {
+        if(data.content.length > 0)
+            $('#loading').hide();
         let arr = [];
         $('#teachersContent').empty();
         data.content.forEach(department => {
@@ -50,7 +53,6 @@ $(function(){
             function(data) {
                 allTeachersLoaded = data.allTeachersLoaded;
                 constructTeachers(data);
-                //console.log(data.allTeachersLoaded);
             }
         );
         console.log(allTeachersLoaded);

@@ -38,13 +38,13 @@
 <body>
     <section id="section1">
         <div class="bottom-logo img-3-container background-color-teal">
-            <img src="https://upload.wikimedia.org/wikipedia/uk/thumb/e/e1/Flag142.gif/250px-Flag142.gif" alt="Lycee#142">
+            <img src="../images/250px-Flag142.gif" alt="Lycee#142">
         </div>
     </section>
     <section id="section2" class="d-flex justify-content-center align-items-center">
         <div id="cont">
             <div id="item1" class="button flip-card" data-w="400" data-h="400">
-                <div class="front item with-border">
+                <div class="front item with-border" data-toggle="tooltip" data-placement="right" title="Переглянути маршрути">
                     <img class="img-1" src="../images/subwayPng.png" alt="...">
                     <p class="text-4 text-color-for-subway">1 хв</p>
                     <p class="text-3">До станції метро 'Політехнічний інститут'</p>
@@ -54,7 +54,7 @@
                 </div>
             </div>
             <div id="item4" class="button flip-card" data-w="400" data-h="500">
-                <div class="front item with-border">
+                <div class="front item with-border" data-toggle="tooltip" data-placement="right" title="Переглянути маршрути">
                     <img class="img-1" src="../images/tram.svg" alt="...">
                     <p class="text-4 text-color-for-tram">5 хв</p>
                     <p class="text-3">До станції трамваю 'Політехнічна'</p>
@@ -96,7 +96,7 @@
                     <p class="text-3">Різноманітних позашкільних книжок у бібліотеці</p>
                 </div>
             </div>
-            <a id="item5" class="button" href="/teachers">
+            <a id="item5" class="button" href="/teachers" data-toggle="tooltip" data-placement="right" title="Перейти до огляду педагогічного колективу">
 				<div class="front item with-border">
 					<img class="img-1" src="../images/teachers.png" alt="...">
 					<p class="text-4 text-color-for-teachers">27</p>
@@ -111,22 +111,24 @@
             </div>
             <div id="item7" class="item flex-row justify-content-around">
 				<div class="button img-2 flip-card" data-w="400" data-h="300">
-					<div class="front with-border">
+					<div class="front with-border" data-toggle="tooltip" data-placement="right" title="Національним технічним університетом України імені Ігоря Сікорського">
 						<img class="w-100 h-100" src="../images/universityJpg.jpg" alt="...">
 					</div>
 					<div class="back">
+                        <img class="h-100 w-100" src="../images/DJI_0606_kpi_skyandmethod.com_@2x.jpg" alt="...">
 					</div>
 				</div>
-				<p class="p-about-kpi">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore rerum vel, iure pariatur accusamus repellat quis a natus labore odio non aspernatur similique neque odit.</p>
+				<p class="p-about-kpi">Будівля ліцею стоїть поруч зі знаменитою Київською Політехнікою – Національним технічним університетом України імені Ігоря Сікорського, розбитими перед його корпусами старовинним парком</p>
                 <div class="button img-2 flip-card" data-w="400" data-h="300">
-					<div class="front with-border">
+					<div class="front with-border" data-toggle="tooltip" data-placement="left" title="Парк КПІ">
 						<img class="w-100 h-100" src="../images/parkJpg.jpg" alt="...">
 					</div>
 					<div class="back">
+                        <img class="h-100 w-100" src="../images/park-kpi-11.jpg" alt="...">
 					</div>
 				</div>
             </div>
-            <div id="item8" class="button">
+            <div id="item8" class="button" data-toggle="tooltip" data-placement="left" title="Функція в розробці">
                 <div class="front item with-border">
                     <img class="img-1" src="../images/security.png" alt="...">
                     <p class="text-3">Надійна охорона</h6>
@@ -154,7 +156,7 @@
                     <p class="text-3 text-color-white">Прозорість та відкритість</p>
                 </div>
             </a>
-            <div class="col-lg-3 col-md-6 col-sm-12 button">
+            <div class="col-lg-3 col-md-6 col-sm-12 button" data-toggle="tooltip" data-placement="top" title="Функція в розробці">
                 <div class="item">
                     <img src="../images/inner_furniture.png" alt="" class="img-1">
                     <p class="text-3 text-color-white">В середині ліцею</p>
@@ -175,51 +177,13 @@
         </div>
         <div id="carouselExampleInterval" class="carousel slide w-100" data-ride="carousel">
             <div class="carousel-inner w-100" id="myCar">
-                <!-- <div class="car-item item">
-                    <img src="../images/person.png" alt="" class="img-1">
-                    <p class="text-2 text-color-white">Famous Person 1</p>
-                    <p class="text-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus fugiat modi ea fuga laboriosam quos officia non quisquam eius neque expedita reiciendis, rerum cum! Aliquam error molestiae harum deleniti vitae.</p>
-                </div>
-                <div class="car-item item">
-                    <img src="../images/person.png" alt="" class="img-1">
-                    <p class="text-2 text-color-white">Famous Person 2</p>
-                    <p class="text-1">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consectetur sint, repellat numquam quasi, minima minus impedit harum recusandae ex, repellendus blanditiis cum dicta tenetur maiores veritatis delectus velit nostrum! Doloremque.</p>
-                </div>
-                <div class="car-item item">
-                    <img src="../images/person.png" alt="" class="img-1">
-                    <p class="text-2 text-color-white">Famous Person 3</p>
-                    <p class="text-1">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae rerum doloremque numquam voluptas minima repudiandae cupiditate perspiciatis commodi eius sit quam, placeat iusto eaque aut dolor magni suscipit quod aspernatur!</p>
-                </div>
-                <div class="car-item item">
-                    <img src="../images/person.png" alt="" class="img-1">
-                    <p class="text-2 text-color-white">Famous Person 4</p>
-                    <p class="text-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus fugiat modi ea fuga laboriosam quos officia non quisquam eius neque expedita reiciendis, rerum cum! Aliquam error molestiae harum deleniti vitae.</p>
-                </div>
-                <div class="car-item item">
-                    <img src="../images/person.png" alt="" class="img-1">
-                    <p class="text-2 text-color-white">Famous Person 5</p>
-                    <p class="text-1">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consectetur sint, repellat numquam quasi, minima minus impedit harum recusandae ex, repellendus blanditiis cum dicta tenetur maiores veritatis delectus velit nostrum! Doloremque.</p>
-                </div>
-                <div class="car-item item">
-                    <img src="../images/person.png" alt="" class="img-1">
-                    <p class="text-2 text-color-white">Famous Person 6</p>
-                    <p class="text-1">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae rerum doloremque numquam voluptas minima repudiandae cupiditate perspiciatis commodi eius sit quam, placeat iusto eaque aut dolor magni suscipit quod aspernatur!</p>
-                </div>
-                <div class="car-item item">
-                    <img src="../images/person.png" alt="" class="img-1">
-                    <p class="text-2 text-color-white">Famous Person 7</p>
-                    <p class="text-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus fugiat modi ea fuga laboriosam quos officia non quisquam eius neque expedita reiciendis, rerum cum! Aliquam error molestiae harum deleniti vitae.</p>
-                </div>
-                <div class="car-item item">
-                    <img src="../images/person.png" alt="" class="img-1">
-                    <p class="text-2 text-color-white">Famous Person 8</p>
-                    <p class="text-1">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consectetur sint, repellat numquam quasi, minima minus impedit harum recusandae ex, repellendus blanditiis cum dicta tenetur maiores veritatis delectus velit nostrum! Doloremque.</p>
-                </div>
+                <!-- 
                 <div class="car-item item">
                     <img src="../images/person.png" alt="" class="img-1">
                     <p class="text-2 text-color-white">Famous Person 9</p>
                     <p class="text-1">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae rerum doloremque numquam voluptas minima repudiandae cupiditate perspiciatis commodi eius sit quam, placeat iusto eaque aut dolor magni suscipit quod aspernatur!</p>
-                </div> -->
+                </div> 
+                -->
             </div>
             <a class="carousel-control-prev" href="#carouselExampleInterval" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>

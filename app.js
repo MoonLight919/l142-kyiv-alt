@@ -14,6 +14,7 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var https = require('https');
 var googleDriveApi = require('./googleDriveApi/manageContent');
+var favicon = require('serve-favicon');
 
 var app = express();
 var mainRouter = require('./routers/mainRouter');
@@ -28,6 +29,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(favicon(path.join(__dirname,'public','images','250px-Flag142.gif')));
 
 app.use('/teachers', teachersRouter);
 app.use('/news', newsRouter);

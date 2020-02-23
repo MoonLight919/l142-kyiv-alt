@@ -4,8 +4,6 @@ var pathHelper = require('../myModules/pathHelper');
 const fs = require('fs');
 let imageDataURI = require('image-data-uri');
 let iconv = require('iconv-lite');
-let converter = require('../myModules/monthConverter');
-var db = require('../myModules/db');
 
 var router = express.Router();
 const bodyParser = require('body-parser');
@@ -15,6 +13,9 @@ var jsonParser = bodyParser.json();
 
 router.get('/', function(req, res, next) {
   sender.sendPage(res, 'index');
+});
+router.get('/favicon', function(req, res, next) {
+  res.sendFile('../public/images/250px-Flag142.gif')
 });
 router.get('/teachers', function(req, res, next) {
   sender.sendPage(res, 'teachers');

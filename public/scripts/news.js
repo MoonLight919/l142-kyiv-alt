@@ -1,4 +1,5 @@
 $(function(){
+    $('#loading').show();
     function loadNews(page, amount)
     {
         $.post(
@@ -29,6 +30,8 @@ $(function(){
     // }, 1000);
     function showNews(data)
     {
+        if(data.content.length > 0)
+            $('#loading').hide();
         let arr = [];
         $('#upload').empty();
         data.content.reverse().forEach(element => {
