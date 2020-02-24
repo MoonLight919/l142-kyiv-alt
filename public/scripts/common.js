@@ -135,6 +135,7 @@ $(function(){
         //     constructNewsWidget
         // );
     });
+    $('#tipue_search_input').tipuesearch();
 });
 
 
