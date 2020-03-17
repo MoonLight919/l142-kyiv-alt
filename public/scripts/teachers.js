@@ -1,4 +1,8 @@
+import {loadContent} from './common.js';
+
 $(function(){
+    let request = '/teachers';
+    let allLoadedFieldName = 'allTeachersLoaded';
     $('#loading').show();
     function constructTeachers(data) {
         if(data.content.length > 0)
@@ -46,19 +50,5 @@ $(function(){
             $('#teachersContent').append(arr['row']);
         });
     }
-    let allTeachersLoaded = false;
-    let intervalId = setInterval(()=>{
-        $.post(
-            "/teachers",
-            function(data) {
-                allTeachersLoaded = data.allTeachersLoaded;
-                constructTeachers(data);
-            }
-        );
-        console.log(allTeachersLoaded);
-        
-        if(allTeachersLoaded){
-            clearInterval(intervalId);
-        }
-    }, 1000);
+    loadContent('/teachers', 'allTeachersLoaded', constructTeachers);
 });

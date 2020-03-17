@@ -178,12 +178,12 @@ exports.getManyNews = async function(page, amount)
   let result = await client.query({
     rowMode: 'array',
     text: `SELECT *
-          FROM News 
-          WHERE id::int <= 
-          ((SELECT value 
-          FROM Additional 
-          WHERE name like 'NewsRowsCount'
-          limit 1)::int - ${amount * page})`,
+    FROM News, (SELECT value 
+    FROM Additional 
+    WHERE name like 'NewsRowsCount'
+    limit 1) amount
+    WHERE id::int > amount.value::int - ${page * amount} AND
+    id::int <= amount.value::int - ${--page * amount}`,
   });
   await client.end()
   console.log('Sending news...');
@@ -211,4 +211,15 @@ exports.getAllNewsFolders = async function()
   });
   await client.end()
   return result.rows;
+}
+
+exports.getAmountOfNews = async function()
+{
+  let client = await pool.connect()
+  let result = await client.query({
+    rowMode: 'array',
+    text: `SELECT COUNT(*) FROM news`,
+  });
+  await client.end()
+  return result.rows[0];
 }

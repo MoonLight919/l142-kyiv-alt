@@ -29,6 +29,8 @@
     "zlib": "^1.0.5"
   },
   "devDependencies": {
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "nodemon": "^1.19.4"
   }
 }

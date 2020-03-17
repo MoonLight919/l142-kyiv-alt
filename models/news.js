@@ -122,8 +122,10 @@ exports.News = class {
         });
       }))
     }).then(()=>{
-      resolve(1);
       global.allNewsLoaded = true;
+      console.log(123123123);
+      
+      resolve(1);
     });
   })
   }

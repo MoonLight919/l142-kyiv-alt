@@ -18,6 +18,8 @@ var favicon = require('serve-favicon');
 
 var app = express();
 var mainRouter = require('./routers/mainRouter');
+var financeReportsRouter = require('./routers/financeReportsRouter');
+var indexRouter = require('./routers/indexRouter');
 var newsRouter = require('./routers/newsRouter');
 var teachersRouter = require('./routers/teachersRouter');
 
@@ -31,8 +33,10 @@ app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname,'public','images','250px-Flag142.gif')));
 
+app.use('/financeReports', financeReportsRouter);
 app.use('/teachers', teachersRouter);
 app.use('/news', newsRouter);
+app.use('/', indexRouter);
 app.use('/', mainRouter);
 
 //db.createNewsTable();

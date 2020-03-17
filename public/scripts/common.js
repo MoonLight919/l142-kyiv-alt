@@ -4,9 +4,9 @@ $(function(){
     // links.forEach(element => {
     //     $('body').append($(element.import).find('body').html());
     // });    
+    //$('[data-toggle="tooltip"]').tooltip();
 
     //upload content (html imports replacement)
-    $('[data-toggle="tooltip"]').tooltip();
     $('#uploadableContent').load('/uploadableContent', ()=>{
          //make header smaller while scroll down
         window.onscroll = function() {
@@ -135,10 +135,24 @@ $(function(){
         //     constructNewsWidget
         // );
     });
-    $('#tipue_search_input').tipuesearch();
 });
 
+function sendRequest(req) {
+    return $.post(req);
+};
 
+export let loadContent = async function(request, allLoadedFieldName, dataHandler) {
+    let data = await sendRequest(request);
+    dataHandler(data);
+    let p = new Promise(function (resolve, reject) {
+        setTimeout(function () {
+            resolve(1);
+        }, 1000);
+    }).then(()=>{
+        if(data[allLoadedFieldName] == false)
+            loadContent();
+    });
+}
 
 //send request and receive file from server
 export let receiveFile = function (page, eventData)

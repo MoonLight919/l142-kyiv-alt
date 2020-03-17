@@ -1,39 +1,38 @@
 $(function(){
+    let page = 1, amount = 2;
     $('#loading').show();
-    function loadNews(page, amount)
-    {
-        $.post(
+    function sendRequest(page, amount) { 
+        return $.post(
             "/news",
             {
                 page: page,
                 amount: amount
-            },
-            showNews
-        );
+            });
+    };
+    async function loadNews(page, amount) {
+        let data = await sendRequest(page, amount);
+        if(data.allNewsLoaded)
+            showNews(data)
+        else
+        {
+            let p = new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                  resolve(1);
+                }, 1000);
+            }).then(()=>{
+                loadNews(page, amount);
+            });
+        }
     }
-    // let allNewsLoaded = false;
-    // let intervalId = setInterval(()=>{
-    //     $.post(
-    //         "/news",
-    //         {
-    //             page: 0,
-    //             amount: 6
-    //         },
-    //         function(data) {
-    //             allNewsLoaded = data.allNewsLoaded;
-    //             showNews(data);
-    //         }
-    //     );
-    //     console.log(allNewsLoaded);
-    //     if(allNewsLoaded)
-    //         clearInterval(intervalId);
-    // }, 1000);
     function showNews(data)
     {
         if(data.content.length > 0)
             $('#loading').hide();
+        if(data.haveMoreNews == false)
+            $('#loadMore').hide();
+        else
+            $('#loadMore').show();
         let arr = [];
-        $('#upload').empty();
         data.content.reverse().forEach(element => {
             arr['news_item'] = $('<div/>', {
                 "class" : 'news-item col-sm-11 col-md-5 col-lg-3 item myborder'
@@ -58,5 +57,8 @@ $(function(){
             $('#upload').append(arr['news_item']);
         });
     }
-    loadNews(0, 6);
+    loadNews(page, amount);
+    $('#loadMore').on('click', function() {
+        loadNews(++page, amount);
+    });
 })

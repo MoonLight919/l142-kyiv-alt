@@ -1,4 +1,4 @@
-import {receiveFile} from './common.js';;
+import {receiveFile} from './common.js';
 
 $(function(){
     $('.exams').click(function (e) {

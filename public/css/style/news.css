@@ -14,16 +14,17 @@ section{
     margin-bottom: 15px;
     width: 100%;
 }
-
 .news-item{
     margin: 25px;
     padding: 15px !important;
     width: auto;
 }
-
 .news-item img{
     /* width: 150px; */
     height: 150px;
     background: 50% 50%;
     background-size: cover;
+}
+#loadMore{
+    display: none;
 }
