@@ -1,29 +1,13 @@
+import {loadContent} from './common.js';
+
 $(function(){
-    let page = 1, amount = 2;
-    $('#loading').show();
-    function sendRequest(page, amount) { 
-        return $.post(
-            "/news",
-            {
-                page: page,
-                amount: amount
-            });
-    };
-    async function loadNews(page, amount) {
-        let data = await sendRequest(page, amount);
-        if(data.allNewsLoaded)
-            showNews(data)
-        else
-        {
-            let p = new Promise(function (resolve, reject) {
-                setTimeout(function () {
-                  resolve(1);
-                }, 1000);
-            }).then(()=>{
-                loadNews(page, amount);
-            });
-        }
+    let params = {
+        page : 1,
+        amount : 2
     }
+    let request = '/news';
+    let allLoadedFieldName = 'allNewsLoaded';
+    $('#loading').show();
     function showNews(data)
     {
         if(data.content.length > 0)
@@ -57,8 +41,9 @@ $(function(){
             $('#upload').append(arr['news_item']);
         });
     }
-    loadNews(page, amount);
+    loadContent(request, allLoadedFieldName, showNews, false, params);
     $('#loadMore').on('click', function() {
-        loadNews(++page, amount);
+        params['page'] += 1;
+        loadContent(request, allLoadedFieldName, showNews, false, params);
     });
 })

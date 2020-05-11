@@ -105,26 +105,33 @@ exports.News = class {
     return new Promise((resolve, reject)=>{
     db.getAllNewsFolders().then((dbRes)=>{
       return Promise.all(dbRes.map((res)=>{
-        let pathToFolder = this.localDirectory + res[this.dbKeyValue['folderId']];
-        fs.mkdirSync(pathToFolder);
-        let imageParts = res[this.dbKeyValue['imageFile']].split('.');
-        let imageName = 'image.' + imageParts[1];
-        let imageId = imageParts[0];
-        let contentParts = res[this.dbKeyValue['convertedContentId']].split('.');
-        let contentId = contentParts[0];
-        return gdCRUD.downloadFile(imageId).then((downloadedData)=>{
-          fs.writeFileSync(pathToFolder + '/' + imageName, downloadedData);
-        }).then(()=>{
-          return gdCRUD.downloadFile(contentId).then((downloadedData)=>{
-            fs.writeFileSync(pathToFolder + '/content.html', downloadedData);
-            console.log('Resolved news');
-          });
-        });
+        gdCRUD.listFiles(res[this.dbKeyValue['folderId']], false).then((files)=>{
+          if(files != false){
+            let pathToFolder = this.localDirectory + res[this.dbKeyValue['folderId']];
+            fs.mkdirSync(pathToFolder);
+            let imageParts = res[this.dbKeyValue['imageFile']].split('.');
+            let imageName = 'image.' + imageParts[1];
+            let imageId = imageParts[0];
+            let contentParts = res[this.dbKeyValue['convertedContentId']].split('.');
+            let contentId = contentParts[0];
+            return gdCRUD.downloadFile(imageId).then((downloadedData)=>{
+              fs.writeFileSync(pathToFolder + '/' + imageName, downloadedData);
+            }).then(()=>{
+              return gdCRUD.downloadFile(contentId).then((downloadedData)=>{
+                fs.writeFileSync(pathToFolder + '/content.html', downloadedData);
+                console.log('Resolved news');
+              });
+            });
+          }
+          else{
+            //console.log(files);
+            
+            db.deleteNews(res[this.dbKeyValue['folderId']]);
+          }
+        })
       }))
     }).then(()=>{
       global.allNewsLoaded = true;
-      console.log(123123123);
-      
       resolve(1);
     });
   })

@@ -111,7 +111,7 @@ exports.checkConnection = function()
 exports.insertNews = function(title, published, convertedContentId, contentId, imageFile, folderId)
 { 
   client.connect();
-  console.log(`INSERT INTO News (
+  let queryString = `INSERT INTO News (
     title, 
     published, 
     convertedContentId, 
@@ -129,27 +129,11 @@ exports.insertNews = function(title, published, convertedContentId, contentId, i
   ); 
   UPDATE Additional 
   SET value = value::int + 1 
-  WHERE name like 'NewsRowsCount'`);
+  WHERE name like 'NewsRowsCount'`;
+
+  console.log(queryString);
   
-  client.query(`INSERT INTO News (
-    title, 
-    published, 
-    convertedContentId, 
-    contentId, 
-    imageFile, 
-    folderId
-  ) 
-  VALUES (
-    '${title}', 
-    '${published}', 
-    '${convertedContentId}', 
-    '${contentId}', 
-    '${imageFile}', 
-    '${folderId}'
-  ); 
-  UPDATE Additional 
-  SET value = value::int + 1 
-  WHERE name like 'NewsRowsCount'`, (err, res) => {
+  client.query(queryString, (err, res) => {
     if (err) {
       console.log(err);
       
@@ -174,16 +158,19 @@ exports.createNewsRowsCount = function()
 //export async function getManyNews(page, amount)
 exports.getManyNews = async function(page, amount)
 {
+  let queryString = `SELECT *
+  FROM News
+  OFFSET (SELECT value 
+  FROM Additional 
+  WHERE name like 'NewsRowsCount'
+  limit 1)::int - ${page} * ${amount}`;
+
+  console.log(queryString);
+
   let client = await pool.connect()
   let result = await client.query({
     rowMode: 'array',
-    text: `SELECT *
-    FROM News, (SELECT value 
-    FROM Additional 
-    WHERE name like 'NewsRowsCount'
-    limit 1) amount
-    WHERE id::int > amount.value::int - ${page * amount} AND
-    id::int <= amount.value::int - ${--page * amount}`,
+    text: queryString,
   });
   await client.end()
   console.log('Sending news...');
@@ -222,4 +209,20 @@ exports.getAmountOfNews = async function()
   });
   await client.end()
   return result.rows[0];
+}
+
+exports.deleteNews = async function(index)
+{
+  console.log('Deleting news from db...');
+  let client = await pool.connect()
+  let result = await client.query({
+    rowMode: 'array',
+    text: `DELETE FROM news
+    WHERE folderId = '${index}';
+    UPDATE Additional 
+    SET value = value::int - 1 
+    WHERE name like 'NewsRowsCount'`,
+  });
+  await client.end()
+  return result;
 }

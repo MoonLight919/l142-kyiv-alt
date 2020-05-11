@@ -1,3 +1,4 @@
+import {loadContent} from './common.js';
 $(function(){
     // setTimeout(function()
     // {        
@@ -117,21 +118,10 @@ $(function(){
         //     },
         //     constructNewsWidget
         // );
-        let allStudentsLoaded = false;
-        let intervalId = setInterval(()=>{
-            $.post(
-                "/index",
-                function(data) {
-                    allStudentsLoaded = data.allStudentsLoaded;
-                    constructStudents(data);
-                    console.log(data.allStudentsLoaded);
-                }
-            );
-            if(allStudentsLoaded){
-                clearInterval(intervalId);
-                console.log(1111);
-            }
-        }, 1000);
+        let request = '/index';
+        let allLoadedFieldName = 'allStudentsLoaded';
+        loadContent(request, allLoadedFieldName, constructStudents);
+
         //construct carousel
         let oldWindowWidth = window.innerWidth; 
         function onWindowResize() {

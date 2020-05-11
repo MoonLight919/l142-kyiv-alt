@@ -16,6 +16,7 @@ models.push(new EntranceExams.EntranceExams());
 
 exports.manageContent = async function() {
   for (let i = 0; i < models.length; i++){
+    // fix repetitive code with handler. Need to attach arguments to handler
     if(global.drive == undefined){
       await authorization.readCredentialsAndAuthorize().then(async function () {
         if(models[i].uploadable){
@@ -51,13 +52,17 @@ exports.manageContent = async function() {
 }
 
 async function manageContentHandler() {
-  if(models[i].uploadable)
-    gdCRUD.listFiles(models[i].GDFolderName, true, processIncomingData);
+  if(models[i].uploadable){
+    console.log('uploadable');
+    gdCRUD.listFiles(models[i].GDFolderName, true).then(processIncomingData);
+  }
   if(!fs.existsSync(models[i].localDirectory))
   {
     fs.mkdirSync(models[i].localDirectory);
     await models[i].downloadData();
   }
+  else
+      models[i].canBeDownloaded();
 }
 
 // In a case if you download data for further serving

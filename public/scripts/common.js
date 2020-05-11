@@ -20,7 +20,8 @@ $(function(){
         $('#copyright span').text(new Date().getFullYear());
 
         //rotate angle button of menu while hovering
-        $('.menuAngle').add('#menuButtonInner').add('#menuButtonOuter').hover(
+        $('.menuAngle').add('#menuButtonInner')
+        .add('#menuButtonOuter').hover(
             () => {
                 $('.menuAngle').css({
                     'transform' : 'rotateX(180deg)'
@@ -35,7 +36,8 @@ $(function(){
         );
 
         //open-close menu
-        $('#menuAngleOpen').add('#menuButtonInner').add('#menuAngleClose').add('#menuButtonOuter').click((e)=>{
+        $('#menuAngleOpen').add('#menuButtonInner')
+        .add('#menuAngleClose').add('#menuButtonOuter').click((e)=>{
             $('#leftMenuSide').toggleClass('leftMenuSideOpen')
             $('#rightMenuSide').toggleClass('rightMenuSideOpen');
         });
@@ -137,12 +139,15 @@ $(function(){
     });
 });
 
-function sendRequest(req) {
-    return $.post(req);
+function sendRequest(req, get, params) {
+    if(params == undefined)
+        params = {};
+    return get == true ? $.get(req, params) : $.post(req, params);
 };
 
-export let loadContent = async function(request, allLoadedFieldName, dataHandler) {
-    let data = await sendRequest(request);
+export let loadContent = async function(
+    request, allLoadedFieldName, dataHandler, get, params) {
+    let data = await sendRequest(request, get, params);
     dataHandler(data);
     let p = new Promise(function (resolve, reject) {
         setTimeout(function () {
@@ -173,7 +178,6 @@ export let receiveFile = function (page, eventData)
                 "group" : ind
             });
             break;
-    
         default:
             break;
     }   
@@ -197,9 +201,8 @@ export let receiveFile = function (page, eventData)
             window.URL.revokeObjectURL(url);
         },
         error: function (jqXHR, textStatus, errorThrown ) {
-            //alert(999999);
-            // console.log(jqXHR);
-            // console.log(textStatus);
+            console.log(jqXHR);
+            console.log(textStatus);
             console.log(errorThrown);
         }
     });

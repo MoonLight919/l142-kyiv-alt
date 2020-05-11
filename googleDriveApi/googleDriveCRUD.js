@@ -118,9 +118,7 @@ exports.moveFile = function(fileId, folderId) {
 * Lists the names and IDs of up to 100 files.
 * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
 */
-exports.listFiles = function listFiles(folder, isName, callback) {
-    if(!callback)
-        callback = ()=>{};
+exports.listFiles = function listFiles(folder, isName) {
     return new Promise(function(resolve, reject){
         let googleDriveCredentials = JSON.parse(fs.readFileSync(path.resolve('.') + '/credentials/googleDriveCredentials.json'));
         let query = isName == true ? googleDriveCredentials.folders[folder] : folder;
@@ -130,8 +128,10 @@ exports.listFiles = function listFiles(folder, isName, callback) {
             pageSize: 100,
             fields: 'nextPageToken, files(id, name)',
         }, function(err, res){
-            if(res == undefined)
-                return listFiles(folder, isName, callback);
+            if(res == undefined){
+                resolve(false);
+                return(false);
+            }
             resolve(res.data.files)
         });
     })

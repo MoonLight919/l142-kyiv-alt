@@ -22,6 +22,8 @@ var financeReportsRouter = require('./routers/financeReportsRouter');
 var indexRouter = require('./routers/indexRouter');
 var newsRouter = require('./routers/newsRouter');
 var teachersRouter = require('./routers/teachersRouter');
+var db = require('./myModules/db');
+let gdCRUD = require('./googleDriveApi/googleDriveCRUD');
 
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({
@@ -45,6 +47,7 @@ app.use('/', mainRouter);
 //console.log('done');
 
 googleDriveApi.manageContent();
+//db.getManyNews(0, 2);
 
 // setInterval(function() {
 //     https.get("https://l142-kyiv.herokuapp.com/");

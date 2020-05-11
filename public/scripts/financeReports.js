@@ -1,4 +1,4 @@
-import {receiveFile} from './common.js';
+import {receiveFile, loadContent} from './common.js';
 
 $(function(){
     $('#loading').show();
@@ -31,18 +31,7 @@ $(function(){
             receiveFile('financeReports', e);
         });
     }
-    let allLoaded = false;
-    let intervalId = setInterval(()=>{
-        $.get(
-            "/financeReports/all",
-            function(data) {
-                allLoaded = data.allLoaded;
-                constructReports(data);
-            }
-        );
-        console.log(allLoaded);     
-        if(allLoaded){
-            clearInterval(intervalId);
-        }
-    } , 1000);
+    let request = '/financeReports/all';
+    let allLoadedFieldName = 'allFinanceReportsLoaded';
+    loadContent(request, allLoadedFieldName, constructReports, true);
 });

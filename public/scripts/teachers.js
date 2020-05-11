@@ -50,5 +50,5 @@ $(function(){
             $('#teachersContent').append(arr['row']);
         });
     }
-    loadContent('/teachers', 'allTeachersLoaded', constructTeachers);
+    loadContent(request, allLoadedFieldName, constructTeachers);
 });
