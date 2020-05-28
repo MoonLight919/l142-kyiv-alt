@@ -16,62 +16,30 @@ models.push(new EntranceExams.EntranceExams());
 
 exports.manageContent = async function() {
   for (let i = 0; i < models.length; i++){
-    // fix repetitive code with handler. Need to attach arguments to handler
     if(global.drive == undefined){
-      await authorization.readCredentialsAndAuthorize().then(async function () {
-        if(models[i].uploadable){
-          console.log('uploadable');
-          gdCRUD.listFiles(models[i].GDFolderName, true).then(processIncomingData);
-        }
-        if(!fs.existsSync(models[i].localDirectory))
-        {
-          fs.mkdirSync(models[i].localDirectory);
-          await models[i].downloadData();
-        }
-        else
-          models[i].canBeDownloaded();
-      });
+      let manageContentHandlerFunction = manageContentHandler.bind(null, models[i]);
+      await authorization.readCredentialsAndAuthorize().then(manageContentHandlerFunction);
     }
     else
-    {
-      if(models[i].uploadable){
-        console.log('uploadable');
-        gdCRUD.listFiles(models[i].GDFolderName, true).then(processIncomingData);
-      }
-      if(!fs.existsSync(models[i].localDirectory))
-      {
-        fs.mkdirSync(models[i].localDirectory);
-        await models[i].downloadData();
-      }
-      else
-          models[i].canBeDownloaded();
-    }
-    console.log('model resolved');
+      manageContentHandler(models[i]);
   }
-  console.log('Done management');
 }
 
-async function manageContentHandler() {
-  if(models[i].uploadable){
-    console.log('uploadable');
-    gdCRUD.listFiles(models[i].GDFolderName, true).then(processIncomingData);
-  }
-  if(!fs.existsSync(models[i].localDirectory))
+async function manageContentHandler(model) {
+  if(model.uploadable)
+    gdCRUD.listFiles(model.GDFolderName, true).then(processIncomingData);
+  if(!fs.existsSync(model.localDirectory))
   {
-    fs.mkdirSync(models[i].localDirectory);
-    await models[i].downloadData();
+    fs.mkdirSync(model.localDirectory);
+    await model.downloadData();
   }
   else
-      models[i].canBeDownloaded();
+      model.canBeDownloaded();
 }
 
 // In a case if you download data for further serving
 // with db and uploading to Google Drive
 async function processIncomingData(files){
-  // console.log('CHECKING...');
-  
-  // if (err) return console.log('The API returned an error: ' + err);
-  // let files = res.data.files;
   let model = new News.News();
   if (files.length) {
     console.log('Files:');
@@ -86,11 +54,6 @@ async function processIncomingData(files){
         gdCRUD.downloadFile(files[j].id, deleteFunction).then(function (downloadedData) {
           model.processFile(files[j], downloadedData);
         });
-      // }
-      // else
-      // {
-      //   model.processFile(files[j]);
-      // }
       console.log(`${files[j].name} (${files[j].id})`);
       
     }

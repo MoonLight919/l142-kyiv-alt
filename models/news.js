@@ -1,11 +1,12 @@
 let db = require('../myModules/db');
 let iconv = require('iconv-lite');
-let newsConverterAvailableFormats = require('../myModules/newsConverterAvailableFormats');
+let formats = require('../myModules/formats');
 let gdCRUD = require('../googleDriveApi/googleDriveCRUD');
 let converter = require('../myModules/cloudConverter');
 let fs = require('fs');
 let path = require('path');
 let pathHelper = require('../myModules/pathHelper');
+let splitFileName = require('../myModules/splitFileName');
 
 exports.News = class {
   constructor() {
@@ -27,8 +28,8 @@ exports.News = class {
     this.uploadable = true;
   }
   processFile(file, downloadedData) {
-    let parts = file.name.split('.');
-    if(newsConverterAvailableFormats.isDocument(parts[1])){
+    let ext = splitFileName.getExtension(file.name);
+    if(formats.isDocument(ext)){
       this.contentId = file.id;
       converter.sendToConverter(file.name, 'html', downloadedData).then((data) => {
         this.convertedContentData = data;
@@ -37,12 +38,12 @@ exports.News = class {
       });
       console.log('Content recieved');
     }
-    else if(newsConverterAvailableFormats.isImage(parts[1])){
-      this.imageFile = file.id + '.' +  parts[1];
+    else if(formats.isImage(ext)){
+      this.imageFile = file.id + '.' +  ext;
       this.imageData = downloadedData;
       console.log('Photo recieved');
     }
-    else if(parts[1] == 'txt'){
+    else if(ext == 'txt'){
       console.log('Title recieved');
       this.title = iconv.encode(iconv.decode(downloadedData, "cp1251"), "utf8").toString();
       console.log(this.title);
@@ -61,7 +62,7 @@ exports.News = class {
     let googleDriveCredentials = JSON.parse(fs.readFileSync(path.resolve('.') + '/credentials/googleDriveCredentials.json'));
     //uploading to google drive
     gdCRUD.createFolder(this.title, googleDriveCredentials['news_all']).then((folderId) => {
-      gdCRUD.moveFile(this.imageFile.split('.')[0], folderId);
+      gdCRUD.moveFile(splitFileName.filename(this.imageFile), folderId);
       gdCRUD.moveFile(this.contentId, folderId);
       gdCRUD.storeFile(this.contentId, this.convertedContentData, folderId).then((fileId) => {
         //shitty approach
@@ -73,7 +74,7 @@ exports.News = class {
       //saving locally
       let pathToFolder = pathHelper.data_newsDirectory + folderId
       fs.mkdirSync(pathToFolder);
-      fs.writeFileSync(pathToFolder + '/image.' + this.imageFile.split('.')[1], this.imageData);
+      fs.writeFileSync(pathToFolder + '/image.' + splitFileName.getExtension(this.imageFile), this.imageData);
       fs.writeFileSync(pathToFolder + '/content.html', this.convertedContentData);
     });
 
@@ -94,11 +95,11 @@ exports.News = class {
     return !allFields.includes(-1);
   }
   toDelete(filename){
-    return filename.split('.')[1] == 'txt';
+    return splitFileName.getExtension(filename) == 'txt';
   }
   toDownload(filename){
-    let ext = filename.split('.')[1];
-    return ext == 'txt' || newsConverterAvailableFormats.isDocument(ext);
+    let ext = splitFileName.getExtension(filename);
+    return ext == 'txt' || formats.isDocument(ext);
   }
   downloadData(){
     global.allNewsLoaded = false;
@@ -109,29 +110,24 @@ exports.News = class {
           if(files != false){
             let pathToFolder = this.localDirectory + res[this.dbKeyValue['folderId']];
             fs.mkdirSync(pathToFolder);
-            let imageParts = res[this.dbKeyValue['imageFile']].split('.');
-            let imageName = 'image.' + imageParts[1];
-            let imageId = imageParts[0];
-            let contentParts = res[this.dbKeyValue['convertedContentId']].split('.');
-            let contentId = contentParts[0];
+            let imageName = 'image.' + splitFileName.getExtension(res[this.dbKeyValue['imageFile']]);
+            let imageId = splitFileName.filename(res[this.dbKeyValue['imageFile']]);
+            let contentId = res[this.dbKeyValue['convertedContentId']];
             return gdCRUD.downloadFile(imageId).then((downloadedData)=>{
               fs.writeFileSync(pathToFolder + '/' + imageName, downloadedData);
             }).then(()=>{
               return gdCRUD.downloadFile(contentId).then((downloadedData)=>{
                 fs.writeFileSync(pathToFolder + '/content.html', downloadedData);
                 console.log('Resolved news');
+                resolve(1);
               });
             });
           }
-          else{
-            //console.log(files);
-            
+          else
             db.deleteNews(res[this.dbKeyValue['folderId']]);
-          }
         })
       }))
     }).then(()=>{
-      global.allNewsLoaded = true;
       resolve(1);
     });
   })

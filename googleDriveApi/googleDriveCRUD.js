@@ -1,6 +1,7 @@
 let fs = require('fs');
 var stream = require('stream');
 let path = require('path');
+let splitFileName = require('../myModules/splitFileName');
 
 exports.downloadFile = function downloadFile(fileid, callback) {
     if(!callback)
@@ -39,7 +40,6 @@ exports.deleteFile = function(fileid) {
 }
   
 exports.storeFile = function(filename, data, parentFolderId) {
-    let parts = filename.split('.');
     var fileMetadata = {
         'name': filename,
         'parents': [parentFolderId]
@@ -48,7 +48,7 @@ exports.storeFile = function(filename, data, parentFolderId) {
     let dataStream = new stream.PassThrough();
     dataStream.end(new Buffer.alloc(Array.from(data).length, data));
     var media = {
-        mimeType: mimeTypes[parts[1]],
+        mimeType: mimeTypes[splitFileName.getExtension(filename)],
         body: dataStream
     };
     return new Promise(function(resolve, reject){
@@ -121,7 +121,7 @@ exports.moveFile = function(fileId, folderId) {
 exports.listFiles = function listFiles(folder, isName) {
     return new Promise(function(resolve, reject){
         let googleDriveCredentials = JSON.parse(fs.readFileSync(path.resolve('.') + '/credentials/googleDriveCredentials.json'));
-        let query = isName == true ? googleDriveCredentials.folders[folder] : folder;
+        let query = isName == true ? googleDriveCredentials.mode[global.mode].folders[folder] : folder;
         // would like to replace it with classes if js had interfaces
         global.drive.files.list({
             q: `'${query}' in parents`,

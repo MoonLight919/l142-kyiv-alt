@@ -45,9 +45,12 @@ app.use('/', mainRouter);
 //db.truncateTable('additional');
 //db.createNewsRowsCount();
 //console.log('done');
+global.mode = 'dev';
+//global.mode = 'prod';
 
 googleDriveApi.manageContent();
 //db.getManyNews(0, 2);
+
 
 // setInterval(function() {
 //     https.get("https://l142-kyiv.herokuapp.com/");

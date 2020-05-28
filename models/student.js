@@ -1,68 +1,28 @@
-let fs = require('fs');
+let downloadModel = require('../myModules/downloadModel');
+let formats = require('../myModules/formats');
 let pathHelper = require('../myModules/pathHelper');
-let gdCRUD = require('../googleDriveApi/googleDriveCRUD');
 
 exports.Student = class {
   constructor() {
     this.GDFolderName = 'data_students',
     this.localDirectory = pathHelper.data_studentsDirectory,
-    this.uploadable = false
-  }
-
-  downloadDataV2(){
-    return new Promise((resolve, reject)=>{
-      gdCRUD.listFiles(this.GDFolderName, true).then((folders)=>{
-        return Promise.all(folders.map((folder) =>{
-          let pathToFolder = this.localDirectory + folder.name;
-          fs.mkdirSync(pathToFolder);
-          return gdCRUD.listFiles(folder.id, false).then((files)=>{
-            return Promise.all(files.map((file)=>{
-              return gdCRUD.downloadFile(file.id).then((downloadedData)=>{
-                let ext = file.name.split('.')[1];
-                let filename = ext == 'txt' ? 'description' : 'image';
-                fs.writeFileSync(pathToFolder + '/' + filename + '.' + ext, downloadedData);
-                console.log('Resolved student');
-            });
-           }));
-          });
-        }));
-      }).then(()=>{
-        resolve(1);
-      });
-    })
+    this.uploadable = false,
+    // this.filesStructure = {
+    //   "txt" : 'description'
+    // }
+    this.filesStructure = [];
+    this.filesStructure["txt"] = 'description';
+    for (let index = 0; index < formats.imageFormats.length; index++) {
+      this.filesStructure[formats.imageFormats[index]] = 'image';
+    }
   }
 
   downloadData(){
-    global.allStudentsLoaded = false;
-    return new Promise(async(resolve, reject)=>{
-      let students = [], result = [];
-      await gdCRUD.listFiles(this.GDFolderName, true).then((s)=>{
-        students = s;
-      });
-      for (let i = 0; i < students.length; i++) {
-        await gdCRUD.listFiles(students[i].id, false).then((files)=>{
-          result.push({
-            files: files
-          });
-        });
-        if(result[i].files.length != 2)
-          continue;
-        let pathToStudents = this.localDirectory + students[i].name;
-        result[i].pathToStudent = pathToStudents;
-        fs.mkdirSync(pathToStudents);
-        for (let j = 0; j < result[i].files.length; j++) {
-          await gdCRUD.downloadFile(result[i].files[j].id).then((downloadedData)=>{
-            let ext = result[i].files[j].name.split('.')[1];
-            let filename = ext == 'txt' ? 'description' : 'image';
-            fs.writeFileSync(result[i].pathToStudent + '/' + filename + '.' + ext, downloadedData);
-            console.log('Resolved student');
-          });
-        }
-      }
-      resolve(1);
-      global.allStudentsLoaded = true;
-    });
+    global.allEntranceExamsLoaded = false;
+    return downloadModel.downloadModel(this.GDFolderName, 
+      this.localDirectory, this.filesStructure, 'Student');
   }
+
   canBeDownloaded(){
     global.allStudentsLoaded = true;
   }

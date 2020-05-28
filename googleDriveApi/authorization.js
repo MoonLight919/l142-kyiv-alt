@@ -5,7 +5,6 @@
 // import * as db from './db'
 // import * as iconv from 'iconv-lite'
 // import * as streamBuffers from 'stream-buffers'
-// import * as htmlTableConverter from './newsConverterAvailableFormats'
 let readline = require('readline');
 let {google} = require('googleapis');
 let schedule = require('node-schedule');

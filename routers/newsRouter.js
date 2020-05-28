@@ -5,6 +5,7 @@ const fs = require('fs');
 let imageDataURI = require('image-data-uri');
 var db = require('../myModules/db');
 var sender = require('../myModules/sender');
+let splitFileName = require('../myModules/splitFileName');
 
 var router = express.Router();
 const bodyParser = require('body-parser');
@@ -42,6 +43,8 @@ router.post('/', jsonParser, function(req, res, next) {
       content: new Array(),
       allNewsLoaded: global.allNewsLoaded
     };
+    //temp solution
+    global.allNewsLoaded = true;
     if(global.allNewsLoaded == false)
       res.send(result);
     else
@@ -49,7 +52,7 @@ router.post('/', jsonParser, function(req, res, next) {
       db.getManyNews(req.body.page, req.body.amount).then(function(dbRes) {
         let image_buffer;
         Array.from(dbRes).forEach(element => {
-          let imageExt = element[keyValue['imageFile']].split('.')[1];
+          let imageExt = splitFileName.getExtension(element[keyValue['imageFile']]);
           image_buffer = fs.readFileSync(pathHelper.data_newsDirectory + element[keyValue['folderId']] + '/' + 'image.' + imageExt);
           let dataUri = imageDataURI.encode(image_buffer, imageExt);
           let date = element[keyValue['published']].toString().split(' ');

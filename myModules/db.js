@@ -160,6 +160,7 @@ exports.getManyNews = async function(page, amount)
 {
   let queryString = `SELECT *
   FROM News
+  LIMIT ${amount}
   OFFSET (SELECT value 
   FROM Additional 
   WHERE name like 'NewsRowsCount'

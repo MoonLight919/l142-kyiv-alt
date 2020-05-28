@@ -1,5 +1,6 @@
 let fs = require('fs');
 var stream = require('stream');
+let splitFileName = require('./splitFileName');
 
 function cloudconvertOptions(fromExt, toExt) {
     return {
@@ -30,13 +31,13 @@ function cloudconvertOptions(fromExt, toExt) {
 exports.sendToConverter = sendToConverter;
 function sendToConverter(filename, toExt, downloadedData) {
     cloudconvert = new (require('cloudconvert'))('sJo6q3UWyqWZP40py0HhLt1EFuToyZuMPzdG5oMs0fLXwlUjehaq9xtsMyX1G3NJ');
-    let parts = filename.split('.');
+    let ext = splitFileName.getExtension(filename);
     let buffs = [], resData;
     return new Promise(function(resolve, reject){
         var bufferStream = new stream.PassThrough();
         let resStream = new stream.PassThrough();
         bufferStream.end(new Buffer.alloc(Array.from(downloadedData).length, downloadedData));
-        bufferStream.pipe(cloudconvert.convert(cloudconvertOptions(parts[1], toExt)))
+        bufferStream.pipe(cloudconvert.convert(cloudconvertOptions(ext, toExt)))
         .pipe(resStream)
         .on('data', function(data){
             buffs.push(data);

@@ -4,6 +4,7 @@ const fs = require('fs');
 let imageDataURI = require('image-data-uri');
 var sender = require('../myModules/sender');
 let iconv = require('iconv-lite');
+let splitFileName = require('../myModules/splitFileName');
 
 var router = express.Router();
 const bodyParser = require('body-parser');
@@ -31,7 +32,7 @@ router.post('/index', jsonParser, function(req, res, next) {
             descriptionFile = iconv.encode(iconv.decode(descriptionData, "cp1251"), "utf8").toString();  
           }
           else{
-            let imageExt = file.split('.')[1];
+            let imageExt = splitFileName.getExtension(file);
             let image_buffer = fs.readFileSync(pathHelper.data_studentsDirectory +
               '/' + folder + '/' + file);
             imageSrc = imageDataURI.encode(image_buffer, imageExt);

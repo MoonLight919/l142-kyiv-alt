@@ -1,6 +1,7 @@
 let fs = require('fs');
 let pathHelper = require('../myModules/pathHelper');
 let gdCRUD = require('../googleDriveApi/googleDriveCRUD');
+let splitFileName = require('../myModules/splitFileName');
 
 exports.Teacher = class {
   constructor() {
@@ -23,7 +24,7 @@ exports.Teacher = class {
                   fs.mkdirSync(pathToTeacher);
                   return Promise.all(files.map((file) =>{
                     return gdCRUD.downloadFile(file.id).then(function (downloadedData) {
-                        let ext = file.name.split('.')[1];
+                        let ext = splitFileName(file.name);
                         let filename = ext == 'txt' ? 'description' : 'image';
                         fs.writeFileSync(pathToTeacher + '/' + filename + '.' + ext, downloadedData);
                         console.log('Resolved teacher');
@@ -74,7 +75,7 @@ exports.Teacher = class {
           result[i].teachers[j].pathToTeacher = pathToTeacher;
           for (let k = 0; k < result[i].teachers[j].files.length; k++) {
             await gdCRUD.downloadFile(result[i].teachers[j].files[k].id).then((downloadedData)=>{
-              let ext = result[i].teachers[j].files[k].name.split('.')[1];
+              let ext = splitFileName.getExtension(result[i].teachers[j].files[k].name);
               let filename = ext == 'txt' ? 'description' : 'image';
               fs.writeFileSync(result[i].teachers[j].pathToTeacher + '/' + filename + '.' + ext, downloadedData);
               console.log('Resolved teacher');
