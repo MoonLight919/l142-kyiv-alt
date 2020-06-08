@@ -2,17 +2,13 @@ let downloadModel = require('../myModules/downloadModel');
 let formats = require('../myModules/formats');
 let pathHelper = require('../myModules/pathHelper');
 
-exports.Student = class {
+exports.Test = class {
   constructor() {
-    this.GDFolderName = 'data_students',
-    this.localDirectory = pathHelper.data_studentsDirectory,
+    this.GDFolderName = 'test',
+    this.localDirectory = pathHelper.test + '/',
     this.uploadable = false,
-    this.filesStructure = [];
-    this.filesStructure["txt"] = 'description';
-    for (let index = 0; index < formats.imageFormats.length; index++) {
-      this.filesStructure[formats.imageFormats[index]] = 'image';
-    }
-    this.modelName = 'Student'
+    this.foldersStructure = ["Companies", "Departments", "Groups"],
+    this.modelName = 'Industry'
   }
 
   downloadData(){

@@ -5,14 +5,14 @@ exports.EntranceExams = class {
   constructor() {
     this.GDFolderName = 'data_entranceExam',
     this.localDirectory = pathHelper.data_entranceExam,
-    this.uploadable = false
-    this.filesStructure = undefined;
+    this.uploadable = false,
+    this.modelName = 'Entrance Exam'
   }
 
   downloadData(){
     global.allEntranceExamsLoaded = false;
-    return downloadModel.downloadModel(this.GDFolderName, 
-      this.localDirectory, this.filesStructure, 'Entrance Exam');
+    let downloadModelFunction = downloadModel.downloadModel.bind(this);
+    return downloadModelFunction();
   }
   canBeDownloaded(){
     global.allentranceExamsLoaded = true;

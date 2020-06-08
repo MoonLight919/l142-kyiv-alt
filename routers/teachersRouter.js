@@ -47,10 +47,12 @@ router.post('/', jsonParser, function(req, res, next) {
           imageSrc : imageSrc
         });
       });
-      result.content.push({
-        name : department,
-        teachers : teachers
-      });
+      if(teachers.length != 0){
+        result.content.push({
+          name : department,
+          teachers : teachers
+        });
+      }
     });
     res.send(result);
   }

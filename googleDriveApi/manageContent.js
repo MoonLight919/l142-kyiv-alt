@@ -6,6 +6,7 @@ let Teacher = require('../models/teacher');
 let Student = require('../models/student');
 let EntranceExams = require('../models/entranceExams');
 let FinanceReports = require('../models/financeReports');
+let Test = require('../models/test');
 
 let models = [];
 models.push(new Student.Student());

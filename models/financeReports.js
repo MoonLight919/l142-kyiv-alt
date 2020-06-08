@@ -6,13 +6,13 @@ exports.FinanceReports = class {
     this.GDFolderName = 'data_financeReports',
     this.localDirectory = pathHelper.data_financeReports,
     this.uploadable = false,
-    this.filesStructure = undefined
+    this.modelName = 'Finance Report'
   }
 
   downloadData(){
     global.allFinanceReportsLoaded = false;
-    return downloadModel.downloadModel(this.GDFolderName, 
-      this.localDirectory, this.filesStructure, 'Finance Report');
+    let downloadModelFunction = downloadModel.downloadModel.bind(this);
+    return downloadModelFunction();
   }
   canBeDownloaded(){
     global.allFinanceReportsLoaded = true;
