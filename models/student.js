@@ -7,6 +7,7 @@ exports.Student = class {
     this.GDFolderName = 'data_students',
     this.localDirectory = pathHelper.data_studentsDirectory,
     this.uploadable = false,
+    this.foldersStructure = ["Students"],
     this.filesStructure = [];
     this.filesStructure["txt"] = 'description';
     for (let index = 0; index < formats.imageFormats.length; index++) {
@@ -16,9 +17,13 @@ exports.Student = class {
   }
 
   downloadData(){
-    global.allEntranceExamsLoaded = false;
-    let downloadModelFunction = downloadModel.downloadModel.bind(this);
-    return downloadModelFunction();
+    return new Promise(async(resolve, reject)=>{
+      global.allEntranceExamsLoaded = false;
+      let downloadModelFunction = downloadModel.downloadModel.bind(this);
+      await downloadModelFunction();
+      console.log('1111111111111111111111111111111111111111111111111111');
+      resolve(1);
+    });
   }
 
   canBeDownloaded(){

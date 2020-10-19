@@ -21,9 +21,12 @@ exports.Teacher = class {
 
   downloadData()
   {
-    global.allTeachersLoaded = false;
-    let downloadModelFunction = downloadModel.downloadModel.bind(this);
-    return downloadModelFunction();
+    return new Promise(async(resolve, reject)=>{
+      global.allEntranceExamsLoaded = false;
+      let downloadModelFunction = downloadModel.downloadModel.bind(this);
+      await downloadModelFunction();
+      resolve(1);
+    });
   }
   canBeDownloaded(){
     global.allTeachersLoaded = true;

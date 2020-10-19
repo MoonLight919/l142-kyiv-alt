@@ -42,7 +42,7 @@ app.use('/', indexRouter);
 app.use('/', mainRouter);
 
 //db.createNewsTable();
-//db.truncateTable('additional');
+//db.createNewsRowsCount();
 //db.createNewsRowsCount();
 //console.log('done');
 global.mode = 'dev';

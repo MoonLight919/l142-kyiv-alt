@@ -9,9 +9,9 @@ let FinanceReports = require('../models/financeReports');
 let Test = require('../models/test');
 
 let models = [];
+models.push(new News.News());
 models.push(new Student.Student());
 models.push(new Teacher.Teacher());
-models.push(new News.News());
 models.push(new FinanceReports.FinanceReports());
 models.push(new EntranceExams.EntranceExams());
 
@@ -22,7 +22,7 @@ exports.manageContent = async function() {
       await authorization.readCredentialsAndAuthorize().then(manageContentHandlerFunction);
     }
     else
-      manageContentHandler(models[i]);
+      await manageContentHandler(models[i]);
   }
 }
 
@@ -33,6 +33,7 @@ async function manageContentHandler(model) {
   {
     fs.mkdirSync(model.localDirectory);
     await model.downloadData();
+    console.log(model.modelName + ' done');
   }
   else
       model.canBeDownloaded();

@@ -6,7 +6,8 @@ exports.FinanceReports = class {
     this.GDFolderName = 'data_financeReports',
     this.localDirectory = pathHelper.data_financeReports,
     this.uploadable = false,
-    this.modelName = 'Finance Report'
+    this.modelName = 'Finance Report',
+    this.foldersStructure = ["Periods"]
   }
 
   downloadData(){

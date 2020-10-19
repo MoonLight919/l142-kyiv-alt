@@ -25,7 +25,8 @@ exports.News = class {
       'convertedContentId' : 1,
       'imageFile' : 2
     },
-    this.uploadable = true;
+    this.modelName = 'News',
+    this.uploadable = true
   }
   processFile(file, downloadedData) {
     let ext = splitFileName.getExtension(file.name);
@@ -123,8 +124,9 @@ exports.News = class {
               });
             });
           }
-          else
-            db.deleteNews(res[this.dbKeyValue['folderId']]);
+          // Need to be redefined!
+          // else
+          //   db.deleteNews(res[this.dbKeyValue['folderId']]);
         })
       }))
     }).then(()=>{

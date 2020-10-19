@@ -1,4 +1,4 @@
-exports.docFormats = [
+let docFormats = [
     'abw', 
     'csv', 
     'doc', 
@@ -41,7 +41,8 @@ exports.docFormats = [
     'xlsx' ,
     'zabw' 
   ];
-exports.imageFormats = [
+exports.docFormats = docFormats;
+let imageFormats = [
     'jpeg', 
     'webp', 
     'gif', 
@@ -51,6 +52,8 @@ exports.imageFormats = [
     'bmp', 
     'jpg'
 ];
+exports.imageFormats = imageFormats;
+
 exports.isDocument = function(fileExt){
 //export function isDocument (fileExt) {
     return docFormats.includes(fileExt);

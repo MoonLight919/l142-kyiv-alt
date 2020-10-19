@@ -6,7 +6,8 @@ exports.EntranceExams = class {
     this.GDFolderName = 'data_entranceExam',
     this.localDirectory = pathHelper.data_entranceExam,
     this.uploadable = false,
-    this.modelName = 'Entrance Exam'
+    this.modelName = 'Entrance Exam',
+    this.foldersStructure = ["Exams"]
   }
 
   downloadData(){
